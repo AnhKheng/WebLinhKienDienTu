@@ -1,0 +1,19 @@
+# Thư mục tạm hoặc cache
+*.log
+*.tmp
+*.bak
+
+# Thư mục upload, backup
+uploads/
+backup/
+
+# IDE files
+.vscode/
+.idea/
+
+# System files
+Thumbs.db
+.DS_Store
+
+# Vertrigo không cần share file cấu hình cá nhân
+config/local_config.php
