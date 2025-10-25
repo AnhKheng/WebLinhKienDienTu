@@ -3,8 +3,6 @@
 
   // Gọi file cấu hình
   include_once '../API/Config/db_config.php';
-
-
 ?>
 
 <!DOCTYPE html>
@@ -12,34 +10,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop Linh Kiện Điện Tử</title>
+  <title>AguTech - Shop Linh Kiện Điện Tử</title>
   <link rel="stylesheet" href="assets/css/Style_main.css">
-  <link rel="icon" href="assets/img/logo.png">
+  <link rel="icon" type="image/ico" href="assets/img/favicon.ico">
 </head>
 <body>
-  <!-- ======= Thanh thông tin trên cùng ======= -->
-  <div class="top-header">
-    <div class="contact-info">
-      <span>📧 info@shoplinhkien.vn</span>
-      <span>📞 0987 654 321</span>
-    </div>
-    <div class="social-login">
-      <div class="social-icons">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-        <a href="#"><i class="fab fa-github"></i></a>
-      </div>
-      <div class="user-actions">
-        <a href="#">Đăng nhập</a> | <a href="#">Đăng ký</a>
-      </div>
-    </div>
-  </div>
-
   <!-- ======= Header chính ======= -->
   <header class="main-header">
     <div class="logo">
-      <img src="assets/img/logo.png" alt="Logo" />
-      <h1>SHOP LINH KIỆN</h1>
+      <a href = "#"><img src="assets/img/logo.png" alt="Logo" /></a>
     </div>
 
     <div class="search-bar">
@@ -61,10 +40,16 @@
       <button>🔍</button>
     </div>
 
-    <div class="cart-area">
-      <a href="#"><i class="fas fa-heart"></i><span>0</span></a>
-      <a href="#"><i class="fas fa-shopping-cart"></i><span>0</span></a>
-      <span class="cart-total">0₫</span>
+    <div class="header-right">
+      <div class="cart-area">
+        <a href="#"><i class="fas fa-heart"></i><span class="badge">0</span></a>
+        <a href="#"><i class="fas fa-shopping-cart"></i><span class="badge">0</span></a>
+        <span class="cart-total">0₫</span>
+      </div>
+      <div class="login-btn">
+        <a href="#" data-type="login">Đăng nhập</a>
+        <a href="#" data-type="register">Đăng ký</a>
+      </div>
     </div>
   </header>
 
@@ -114,9 +99,16 @@
   </section>
 
   <!-- ======= Footer ======= -->
-  <footer>
-    <p>© 2025 Shop Linh Kiện Điện Tử | Designed by CodeGym Student</p>
-  </footer>
+  <footer class="site-footer">
+  <div class="footer-info">
+    <p>────────────────────────────</p>
+    <p><strong>⚙️  Phước Khang — Founder, AguTech</strong></p>
+    <p>📧 <a href="mailto:agutech.store@gmail.com">agutech.store@gmail.com</a></p>
+    <p>🔧 Linh kiện điện tử | Giải pháp công nghệ</p>
+    <p>────────────────────────────</p>
+    <p>© 2025 AguTech | All Rights Reserved</p>
+  </div>
+</footer>
 
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/a2e0e6b9f3.js" crossorigin="anonymous"></script>
