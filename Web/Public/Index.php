@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shop Linh Kiện Điện Tử</title>
   <link rel="stylesheet" href="assets/css/Style_main.css">
-  <link rel="icon" href="assets/img/logo.png">
+  <link rel="icon" href="assets/img/logo.ico">
 </head>
 <body>
   <!-- ======= Thanh thông tin trên cùng ======= -->
@@ -38,7 +38,7 @@
   <!-- ======= Header chính ======= -->
   <header class="main-header">
     <div class="logo">
-      <img src="assets/img/logo.png" alt="Logo" />
+      <img src="assets/img/logo.jpg" alt="Logo" />
       <h1>SHOP LINH KIỆN</h1>
     </div>
 
@@ -49,11 +49,9 @@
           $sql = "SELECT MaDM, TenDM FROM tbl_danhmuc";
           $result = $connect->query($sql);
           if ($result && $result->num_rows > 0) {
-              while ($dm = $result->fetch_assoc()) {
-                  echo '<option value="' . $dm['MaDM'] . '">' . htmlspecialchars($dm['TenDM']) . '</option>';
+              while ($danhMuc= $result->fetch_assoc()) {
+                  echo '<option value="' . $danhMuc['MaDM'] . '">' . htmlspecialchars($danhMuc['TenDM']) . '</option>';
               }
-          } else {
-              echo '<option disabled>Không có danh mục</option>';
           }
         ?>
       </select>
@@ -107,7 +105,7 @@
         <h3>Nguồn & Pin</h3>
       </div>
       <div class="category-item">
-        <img src="assets/img/cat-module.jpg" alt="">
+        <img src="../assets/img/cat-module.jpg" alt="">
         <h3>Module & IC</h3>
       </div>
     </div>
