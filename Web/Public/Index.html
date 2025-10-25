@@ -1,0 +1,126 @@
+<?php
+session_start();
+require_once '../Config/dbconfig.php';
+$today = date('Y-m-d');
+?>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Trang Quản Lý Cửa Hàng</title>
+	
+	<link rel="stylesheet" href="assets/css/Style_main.css">
+
+	<!-- Thư viện Alpine.js và jQuery -->
+	<!-- <script src="https://unpkg.com/alpinejs" defer></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+</head>
+
+<body>
+
+	<!-- Header -->
+	<header class="header">
+		<div class="header-left">
+			<div class="logo">
+				<!-- <img src="../Image/logo.png" alt="Logo" width="160"> -->
+				<span class="site-name">Shop Online</span>
+			</div>
+		</div>
+
+		<div class="header-right" x-data="{ openMenu: false }">
+			<div id="user-icon" @click="openMenu = !openMenu">
+				<!-- <img src="../Image/profile.png" class="menu-icon" alt="User"> -->
+			</div>
+			<div class="submenu" x-show="openMenu" x-transition x-cloak>
+				<div class="username"></div>
+				<div class="submenu-item" data-url="../Form/profile.php">Tài khoản của tôi</div>
+				<div class="submenu-item" id="btnLogout">Đăng xuất</div>
+			</div>
+		</div>
+	</header>
+
+	<!-- Main Container -->
+	<div class="container">
+		
+		<!-- Sidebar -->
+		<aside class="sidebar" 
+			x-data="{ 
+				openSanPham: false, 
+				openDonHang: false, 
+				openKhachHang: false, 
+				openBaoCao: false 
+			}">
+			
+			<div class="menu-section">
+				<p class="menu-title">Quản lý cửa hàng</p>
+
+				<!-- Sản phẩm -->
+				<div @click="openSanPham = !openSanPham" class="menu-item">
+					<!-- <img src="../Image/product.png" class="menu-icon"> -->
+					<span>Sản phẩm</span>
+				</div>
+				<div class="submenu" x-show="openSanPham" x-transition x-cloak>
+					<!-- <div class="submenu-item" data-url="../Form/sanpham/danhsach.php">Danh sách sản phẩm</div>
+					<div class="submenu-item" data-url="../Form/sanpham/them.php">Thêm sản phẩm</div> -->
+				</div>
+
+				<!-- Đơn hàng -->
+				<div @click="openDonHang = !openDonHang" class="menu-item">
+					<!-- <img src="../Image/order.png" class="menu-icon"> -->
+					<span>Đơn hàng</span>
+				</div>
+				<div class="submenu" x-show="openDonHang" x-transition x-cloak>
+					<!-- <div class="submenu-item" data-url="../Form/donhang/danhsach.php">Danh sách đơn hàng</div>
+					<div class="submenu-item" data-url="../Form/donhang/themdon.php">Tạo đơn hàng mới</div> -->
+				</div>
+
+				<!-- Khách hàng -->
+				<div @click="openKhachHang = !openKhachHang" class="menu-item">
+					<!-- <img src="../Image/customer.png" class="menu-icon"> -->
+					<!-- <span>Khách hàng</span> -->
+				</div>
+				<div class="submenu" x-show="openKhachHang" x-transition x-cloak>
+					<!-- <div class="submenu-item" data-url="../Form/khachhang/danhsach.php">Danh sách khách hàng</div>
+					<div class="submenu-item" data-url="../Form/khachhang/them.php">Thêm khách hàng</div> -->
+				</div>
+
+				<!-- Báo cáo -->
+				<div @click="openBaoCao = !openBaoCao" class="menu-item">
+					<!-- <img src="../Image/report.png" class="menu-icon"> -->
+					<span>Báo cáo</span>
+				</div>
+				<div class="submenu" x-show="openBaoCao" x-transition x-cloak>
+					<!-- <div class="submenu-item" data-url="../Form/baocao/doanhthu.php">Doanh thu bán hàng</div>
+					<div class="submenu-item" data-url="../Form/baocao/tonkho.php">Tồn kho sản phẩm</div> -->
+				</div>
+			</div>
+		</aside>
+
+		<!-- Nội dung chính -->
+		<main class="content" id="content-area">
+			<div class="dashboard">
+				<div class="box">
+					<h3>Tổng sản phẩm</h3>
+					<p id="product-count"></p>
+				</div>
+				<div class="box">
+					<h3>Tổng đơn hàng</h3>
+					<p id="order-count"></p>
+				</div>
+				<div class="box">
+					<h3>Khách hàng</h3>
+					<p id="customer-count"></p>
+				</div>
+				<div class="box">
+					<h3>Doanh thu hôm nay</h3>
+					<p id="revenue-today"></p>
+				</div>
+			</div>
+		</main>
+	</div>
+
+
+</body>
+</html>
