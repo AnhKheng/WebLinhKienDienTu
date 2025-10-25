@@ -1,126 +1,108 @@
-<?php
-session_start();
-require_once '../Config/dbconfig.php';
-$today = date('Y-m-d');
-?>
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Trang Quản Lý Cửa Hàng</title>
-	
-	<link rel="stylesheet" href="assets/css/Style_main.css">
-
-	<!-- Thư viện Alpine.js và jQuery -->
-	<!-- <script src="https://unpkg.com/alpinejs" defer></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Linh Kiện Điện Tử</title>
+  <link rel="stylesheet" href="assets/css/Style_main.css">
+  <link rel="icon" href="assets/img/logo.png">
 </head>
-
 <body>
+  <!-- ======= Thanh thông tin trên cùng ======= -->
+  <div class="top-header">
+    <div class="contact-info">
+      <span>📧 info@shoplinhkien.vn</span>
+      <span>📞 0987 654 321</span>
+    </div>
+    <div class="social-login">
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+      <div class="user-actions">
+        <a href="#">Đăng nhập</a> | <a href="#">Đăng ký</a>
+      </div>
+    </div>
+  </div>
 
-	<!-- Header -->
-	<header class="header">
-		<div class="header-left">
-			<div class="logo">
-				<!-- <img src="../Image/logo.png" alt="Logo" width="160"> -->
-				<span class="site-name">Shop Online</span>
-			</div>
-		</div>
+  <!-- ======= Header chính ======= -->
+  <header class="main-header">
+    <div class="logo">
+      <img src="assets/img/logo.png" alt="Logo" />
+      <h1>SHOP LINH KIỆN</h1>
+    </div>
 
-		<div class="header-right" x-data="{ openMenu: false }">
-			<div id="user-icon" @click="openMenu = !openMenu">
-				<!-- <img src="../Image/profile.png" class="menu-icon" alt="User"> -->
-			</div>
-			<div class="submenu" x-show="openMenu" x-transition x-cloak>
-				<div class="username"></div>
-				<div class="submenu-item" data-url="../Form/profile.php">Tài khoản của tôi</div>
-				<div class="submenu-item" id="btnLogout">Đăng xuất</div>
-			</div>
-		</div>
-	</header>
+    <div class="search-bar">
+      <select>
+        <option>Tất cả danh mục</option>
+        <option>Vi điều khiển</option>
+        <option>Cảm biến</option>
+        <option>Điện trở - Tụ điện</option>
+        <option>Module - Mạch nạp</option>
+      </select>
+      <input type="text" placeholder="Tìm kiếm sản phẩm...">
+      <button>🔍</button>
+    </div>
 
-	<!-- Main Container -->
-	<div class="container">
-		
-		<!-- Sidebar -->
-		<aside class="sidebar" 
-			x-data="{ 
-				openSanPham: false, 
-				openDonHang: false, 
-				openKhachHang: false, 
-				openBaoCao: false 
-			}">
-			
-			<div class="menu-section">
-				<p class="menu-title">Quản lý cửa hàng</p>
+    <div class="cart-area">
+      <a href="#"><i class="fas fa-heart"></i><span>0</span></a>
+      <a href="#"><i class="fas fa-shopping-cart"></i><span>0</span></a>
+      <span class="cart-total">0₫</span>
+    </div>
+  </header>
 
-				<!-- Sản phẩm -->
-				<div @click="openSanPham = !openSanPham" class="menu-item">
-					<!-- <img src="../Image/product.png" class="menu-icon"> -->
-					<span>Sản phẩm</span>
-				</div>
-				<div class="submenu" x-show="openSanPham" x-transition x-cloak>
-					<!-- <div class="submenu-item" data-url="../Form/sanpham/danhsach.php">Danh sách sản phẩm</div>
-					<div class="submenu-item" data-url="../Form/sanpham/them.php">Thêm sản phẩm</div> -->
-				</div>
+  <!-- ======= Thanh menu chính ======= -->
+  <nav class="main-nav">
+    <ul>
+      <li><a href="#">Trang chủ</a></li>
+      <li><a href="#">Sản phẩm</a></li>
+      <li><a href="#">Khuyến mãi</a></li>
+      <li><a href="#">Tin công nghệ</a></li>
+      <li><a href="#">Liên hệ</a></li>
+      <li><a href="#">Giới thiệu</a></li>
+    </ul>
+  </nav>
 
-				<!-- Đơn hàng -->
-				<div @click="openDonHang = !openDonHang" class="menu-item">
-					<!-- <img src="../Image/order.png" class="menu-icon"> -->
-					<span>Đơn hàng</span>
-				</div>
-				<div class="submenu" x-show="openDonHang" x-transition x-cloak>
-					<!-- <div class="submenu-item" data-url="../Form/donhang/danhsach.php">Danh sách đơn hàng</div>
-					<div class="submenu-item" data-url="../Form/donhang/themdon.php">Tạo đơn hàng mới</div> -->
-				</div>
+  <!-- ======= Banner ======= -->
+  <!-- <section class="banner">
+    <img src="assets/img/banner-electronic.jpg" alt="Banner linh kiện điện tử">
+    <div class="banner-text">
+      <h2>Linh kiện chất lượng - Giá sinh viên</h2>
+      <p>Cung cấp linh kiện Arduino, cảm biến, module, IC... giao hàng toàn quốc!</p>
+      <a href="#" class="btn">Mua ngay</a>
+    </div>
+  </section> -->
 
-				<!-- Khách hàng -->
-				<div @click="openKhachHang = !openKhachHang" class="menu-item">
-					<!-- <img src="../Image/customer.png" class="menu-icon"> -->
-					<!-- <span>Khách hàng</span> -->
-				</div>
-				<div class="submenu" x-show="openKhachHang" x-transition x-cloak>
-					<!-- <div class="submenu-item" data-url="../Form/khachhang/danhsach.php">Danh sách khách hàng</div>
-					<div class="submenu-item" data-url="../Form/khachhang/them.php">Thêm khách hàng</div> -->
-				</div>
+  <!-- ======= Danh mục nổi bật ======= -->
+  <section class="categories">
+    <h2>Danh mục nổi bật</h2>
+    <div class="category-grid">
+      <div class="category-item">
+        <img src="assets/img/cat-arduino.jpg" alt="">
+        <h3>Arduino</h3>
+      </div>
+      <div class="category-item">
+        <img src="assets/img/cat-sensor.jpg" alt="">
+        <h3>Cảm biến</h3>
+      </div>
+      <div class="category-item">
+        <img src="assets/img/cat-power.jpg" alt="">
+        <h3>Nguồn & Pin</h3>
+      </div>
+      <div class="category-item">
+        <img src="assets/img/cat-module.jpg" alt="">
+        <h3>Module & IC</h3>
+      </div>
+    </div>
+  </section>
 
-				<!-- Báo cáo -->
-				<div @click="openBaoCao = !openBaoCao" class="menu-item">
-					<!-- <img src="../Image/report.png" class="menu-icon"> -->
-					<span>Báo cáo</span>
-				</div>
-				<div class="submenu" x-show="openBaoCao" x-transition x-cloak>
-					<!-- <div class="submenu-item" data-url="../Form/baocao/doanhthu.php">Doanh thu bán hàng</div>
-					<div class="submenu-item" data-url="../Form/baocao/tonkho.php">Tồn kho sản phẩm</div> -->
-				</div>
-			</div>
-		</aside>
+  <!-- ======= Footer ======= -->
+  <footer>
+    <p>© 2025 Shop Linh Kiện Điện Tử | Designed by CodeGym Student</p>
+  </footer>
 
-		<!-- Nội dung chính -->
-		<main class="content" id="content-area">
-			<div class="dashboard">
-				<div class="box">
-					<h3>Tổng sản phẩm</h3>
-					<p id="product-count"></p>
-				</div>
-				<div class="box">
-					<h3>Tổng đơn hàng</h3>
-					<p id="order-count"></p>
-				</div>
-				<div class="box">
-					<h3>Khách hàng</h3>
-					<p id="customer-count"></p>
-				</div>
-				<div class="box">
-					<h3>Doanh thu hôm nay</h3>
-					<p id="revenue-today"></p>
-				</div>
-			</div>
-		</main>
-	</div>
-
-
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a2e0e6b9f3.js" crossorigin="anonymous"></script>
 </body>
 </html>
