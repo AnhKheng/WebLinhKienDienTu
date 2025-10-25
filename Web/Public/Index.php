@@ -1,3 +1,12 @@
+<?php
+  session_start();
+
+  // Gọi file cấu hình
+  include_once '../API/Config/db_config.php';
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -35,11 +44,18 @@
 
     <div class="search-bar">
       <select>
-        <option>Tất cả danh mục</option>
-        <option>Vi điều khiển</option>
-        <option>Cảm biến</option>
-        <option>Điện trở - Tụ điện</option>
-        <option>Module - Mạch nạp</option>
+        <option value="">Tất cả danh mục</option>
+        <?php
+          $sql = "SELECT MaDM, TenDM FROM tbl_danhmuc";
+          $result = $connect->query($sql);
+          if ($result && $result->num_rows > 0) {
+              while ($dm = $result->fetch_assoc()) {
+                  echo '<option value="' . $dm['MaDM'] . '">' . htmlspecialchars($dm['TenDM']) . '</option>';
+              }
+          } else {
+              echo '<option disabled>Không có danh mục</option>';
+          }
+        ?>
       </select>
       <input type="text" placeholder="Tìm kiếm sản phẩm...">
       <button>🔍</button>
