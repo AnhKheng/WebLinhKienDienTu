@@ -2,24 +2,24 @@
   session_start();
 
   // Gọi file cấu hình
-  include_once '../API/Config/db_config.php';
+  include_once '../../API/Config/db_config.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>AguTech - Shop Linh Kiện Điện Tử</title>
-  <link rel="stylesheet" href="assets/css/Style_main.css">
-  <link rel="icon" type="image/ico" href="assets/img/favicon.ico">
+  <link rel="stylesheet" href="../assets/css/Style_main.css?v=2">
+  <link rel="icon" type="image/ico" href="../assets/img/favicon.ico">
 </head>
 <body>
   <!-- ======= Header chính ======= -->
   <header class="main-header">
     <div class="logo">
-      <a href = "#"><img src="assets/img/logo.png" alt="Logo" /></a>
+      <a href = "Index.php?do=Home"><img src="../assets/img/logo.png" alt="Logo" /></a>
     </div>
 
     <div class="search-bar">
@@ -47,7 +47,7 @@
         <a href="#"><i class="fas fa-shopping-cart"></i>Giỏ Hàng</a>
       </div>
       <div class="login-btn">
-        <a href="#"><i class="fa-regular fa-user fa-bounce"></i></a>
+        <a href="Index.php?do=LoginForm"><i class="fa-regular fa-user fa-bounce"></i></a>
       </div>
     </div>
   </header>
@@ -74,28 +74,15 @@
     </div>
   </section> -->
 
-  <!-- ======= Danh mục nổi bật ======= -->
-  <section class="categories">
-    <h2>Danh mục nổi bật</h2>
-    <div class="category-grid">
-      <div class="category-item">
-        <img src="assets/img/cat-arduino.jpg" alt="">
-        <h3>Arduino</h3>
-      </div>
-      <div class="category-item">
-        <img src="assets/img/cat-sensor.jpg" alt="">
-        <h3>Cảm biến</h3>
-      </div>
-      <div class="category-item">
-        <img src="assets/img/cat-power.jpg" alt="">
-        <h3>Nguồn & Pin</h3>
-      </div>
-      <div class="category-item">
-        <img src="assets/img/cat-module.jpg" alt="">
-        <h3>Module & IC</h3>
-      </div>
-    </div>
-  </section>
+  <!-- ======= Main ======= -->
+  <?php			
+		$do = isset($_GET['do']) ? $_GET['do'] : "Home";			
+		include $do . ".php";
+	?>
+
+  
+  
+  
 
   <!-- ======= Footer ======= -->
   <footer class="site-footer">
