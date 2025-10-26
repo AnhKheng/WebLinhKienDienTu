@@ -40,21 +40,21 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="../assets/vender/admin/jquery/jquery.min.js"></script>
-<script src="../assets/vender/admin/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vender/jquery/jquery.min.js"></script>
+<script src="assets/vender/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="../assets/vender/admin/jquery-easing/jquery.easing.min.js"></script>
+<script src="assets/venderjquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="../assets/js/admin/sb-admin-2.min.js"></script>
+<script src="assets/js/sb-admin-2.min.js"></script>
 
 <!-- Page level plugins -->
-<script src="../assets/vender/admin/chart.js/Chart.js"></script>
+<script src="assets/vender/chart.js/Chart.js"></script>
 
 <!-- Page level custom scripts -->
-<script src="../assets/js/admin/demo/chart-area-demo.js"></script>
-<script src="../assets/js/admin/demo/chart-pie-demo.js"></script>
+<script src="assets/js/demo/chart-area-demo.js"></script>
+<script src="assets/js/demo/chart-pie-demo.js"></script>
 
 </body>
 </html>

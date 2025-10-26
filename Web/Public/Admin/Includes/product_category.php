@@ -1,3 +1,1 @@
-<p>
-    Danh Mục Sản Phẩm
-</p>
+<p>Danh Mục Sản Phẩm </p>
