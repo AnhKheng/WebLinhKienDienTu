@@ -1,6 +1,6 @@
 ecommerce-php/
 │
-├── api/                             # Lớp Controller (API)
+├── api/                               # Lớp Controller (Xử lý logic và RESTful API)
 │   ├── client/
 │   │   ├── cart/
 │   │   │   ├── add.php
@@ -34,10 +34,11 @@ ecommerce-php/
 │   │   ├── supplier/manage.php
 │   │   └── warehouse/manage.php
 │   │
-│   └── config.php
+│   └── config.php                     # File cấu hình API (database, JWT, headers, ...)
 │
-├── includes/                        # Lớp Model (business & data)
-│   ├── db.php
+│
+├── includes/                          # Lớp Model (Nghiệp vụ, truy vấn DB)
+│   ├── db.php                         # Kết nối Database
 │   ├── Product.php
 │   ├── Order.php
 │   ├── User.php
@@ -46,22 +47,63 @@ ecommerce-php/
 │   ├── Warehouse.php
 │   └── Report.php
 │
-├── public/                          # Lớp View (frontend HTML/JS)
-│   ├── index.html                   # Home page
-│   ├── product.html
-│   ├── cart.html
-│   ├── checkout.html
-│   ├── login.html
-│   ├── profile.html
-│   ├── admin/
-│   │   ├── dashboard.html
-│   │   ├── products.html
-│   │   ├── orders.html
-│   │   ├── customers.html
-│   │   └── reports.html
-│   └── assets/
-│       ├── css/
-│       ├── js/
-│       └── images/
+│
+├── public/                            # Lớp View (Giao diện hiển thị)
+│   ├── assets/
+│   │   ├── css/
+│   │   │   ├── client/
+│   │   │   │   ├── style.css
+│   │   │   │   ├── product.css
+│   │   │   │   ├── cart.css
+│   │   │   │   └── responsive.css
+│   │   │   │
+│   │   │   └── admin/
+│   │   │       ├── dashboard.css
+│   │   │       ├── sidebar.css
+│   │   │       ├── forms.css
+│   │   │       └── charts.css
+│   │   │
+│   │   ├── js/
+│   │   │   ├── client/
+│   │   │   │   ├── main.js
+│   │   │   │   ├── cart.js
+│   │   │   │   └── product.js
+│   │   │   │
+│   │   │   └── admin/
+│   │   │       ├── dashboard.js
+│   │   │       ├── charts.js
+│   │   │       └── validation.js
+│   │   │
+│   │   └── images/
+│   │       ├── client/
+│   │       └── admin/
+│   │
+│   │
+│   ├── client/                        # Giao diện người dùng
+│   │   ├── includes/
+│   │   │   ├── header.html
+│   │   │   ├── footer.html
+│   │   │   └── navbar.html
+│   │   ├── index.html
+│   │   ├── product.html
+│   │   ├── cart.html
+│   │   ├── checkout.html
+│   │   ├── login.html
+│   │   └── profile.html
+│   │
+│   └── admin/                         # Giao diện quản trị
+│       ├── includes/
+│       │   ├── header.html
+│       │   ├── sidebar.html
+│       │   └── footer.html
+│       ├── dashboard.html
+│       ├── products.html
+│       ├── orders.html
+│       ├── customers.html
+│       ├── staff.html
+│       ├── suppliers.html
+│       └── reports.html
+│
 │
 └── README.md
+
