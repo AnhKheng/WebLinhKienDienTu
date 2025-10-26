@@ -1,8 +1,8 @@
 <?php
-  session_start();
+session_start();
 
-  // Gọi file cấu hình
-  include_once '../API/Config/db_config.php';
+// Gọi file cấu hình
+include_once '../API/Config/db_config.php';
 ?>
 
 <!DOCTYPE html>
@@ -18,11 +18,11 @@
   <!-- ======= Header chính ======= -->
   <header class="main-header">
     <div class="logo">
-      <a href = "#"><img src="assets/img/logo.png" alt="Logo" /></a>
+      <a href="#"><img src="assets/img/logo.png" alt="Logo" /></a>
     </div>
 
     <div class="search-bar">
-      <select>
+      <select id="categorySelect" onchange="loadProducts()">
         <option value="">Tất cả danh mục</option>
         <?php
           $sql = "SELECT MaDM, TenDM FROM tbl_danhmuc";
@@ -65,52 +65,96 @@
     </ul>
   </nav>
 
-  <!-- ======= Banner ======= -->
-  <!-- <section class="banner">
-    <img src="assets/img/banner-electronic.jpg" alt="Banner linh kiện điện tử">
-    <div class="banner-text">
-      <h2>Linh kiện chất lượng - Giá sinh viên</h2>
-      <p>Cung cấp linh kiện Arduino, cảm biến, module, IC... giao hàng toàn quốc!</p>
-      <a href="#" class="btn">Mua ngay</a>
-    </div>
-  </section> -->
-
-  <!-- ======= Danh mục nổi bật ======= -->
-  <section class="categories">
-    <h2>Danh mục nổi bật</h2>
-    <div class="category-grid">
-      <div class="category-item">
-        <img src="assets/img/cat-arduino.jpg" alt="">
-        <h3>Arduino</h3>
+  <!-- ======= Phần chính giữa (Danh mục nổi bật hoặc Sản phẩm liên quan) ======= -->
+  <main class="main-content">
+    <section class="categories" id="productSection">
+      <h2>Danh mục nổi bật</h2>
+      <div class="category-grid" id="contentArea">
+        <div class="category-item">
+          <img src="assets/img/cat-arduino.jpg" alt="">
+          <h3>Arduino</h3>
+        </div>
+        <div class="category-item">
+          <img src="assets/img/cat-sensor.jpg" alt="">
+          <h3>Cảm biến</h3>
+        </div>
+        <div class="category-item">
+          <img src="assets/img/cat-power.jpg" alt="">
+          <h3>Nguồn & Pin</h3>
+        </div>
+        <div class="category-item">
+          <img src="assets/img/cat-module.jpg" alt="">
+          <h3>Module & IC</h3>
+        </div>
       </div>
-      <div class="category-item">
-        <img src="assets/img/cat-sensor.jpg" alt="">
-        <h3>Cảm biến</h3>
-      </div>
-      <div class="category-item">
-        <img src="assets/img/cat-power.jpg" alt="">
-        <h3>Nguồn & Pin</h3>
-      </div>
-      <div class="category-item">
-        <img src="assets/img/cat-module.jpg" alt="">
-        <h3>Module & IC</h3>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- ======= Footer ======= -->
   <footer class="site-footer">
-  <div class="footer-info">
-    <p>────────────────────────────</p>
-    <p><strong>⚙️  Phước Khang — Founder, AguTech</strong></p>
-    <p>📧 <a href="mailto:agutech.store@gmail.com">agutech.store@gmail.com</a></p>
-    <p>🔧 Linh kiện điện tử | Giải pháp công nghệ</p>
-    <p>────────────────────────────</p>
-    <p>© 2025 AguTech | All Rights Reserved</p>
-  </div>
-</footer>
+    <div class="footer-info">
+      <p>────────────────────────────</p>
+      <p><strong>⚙️  Phước Khang — Founder, AguTech</strong></p>
+      <p>📧 <a href="mailto:agutech.store@gmail.com">agutech.store@gmail.com</a></p>
+      <p>🔧 Linh kiện điện tử | Giải pháp công nghệ</p>
+      <p>────────────────────────────</p>
+      <p>© 2025 AguTech | All Rights Reserved</p>
+    </div>
+  </footer>
 
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/a2e0e6b9f3.js" crossorigin="anonymous"></script>
+  <script>
+    function loadProducts() {
+      const categoryId = document.getElementById('categorySelect').value;
+      const contentArea = document.getElementById('contentArea');
+      const productSection = document.getElementById('productSection');
+
+      fetch(`get_products.php?category=${categoryId}`)
+        .then(response => response.json())
+        .then(data => {
+          contentArea.innerHTML = ''; // Xóa nội dung cũ
+          if (data.length > 0) {
+            productSection.querySelector('h2').textContent = 'Sản phẩm liên quan';
+            data.forEach(product => {
+              const item = document.createElement('div');
+              item.className = 'category-item';
+              item.innerHTML = `
+                <img src="assets/img/${product.HinhAnh}" alt="${product.TenSP}">
+                <h3>${product.TenSP}</h3>
+                <p>Giá: ${product.DonGia.toLocaleString('vi-VN')}₫</p>
+              `;
+              contentArea.appendChild(item);
+            });
+          } else {
+            productSection.querySelector('h2').textContent = 'Danh mục nổi bật';
+            contentArea.innerHTML = `
+              <div class="category-item">
+                <img src="assets/img/cat-arduino.jpg" alt="">
+                <h3>Arduino</h3>
+              </div>
+              <div class="category-item">
+                <img src="assets/img/cat-sensor.jpg" alt="">
+                <h3>Cảm biến</h3>
+              </div>
+              <div class="category-item">
+                <img src="assets/img/cat-power.jpg" alt="">
+                <h3>Nguồn & Pin</h3>
+              </div>
+              <div class="category-item">
+                <img src="assets/img/cat-module.jpg" alt="">
+                <h3>Module & IC</h3>
+              </div>
+            `;
+          }
+        })
+        .catch(error => console.error('Lỗi:', error));
+    }
+
+    // Load sản phẩm mặc định khi trang tải
+    window.onload = function() {
+      loadProducts();
+    };
+  </script>
 </body>
 </html>
