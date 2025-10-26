@@ -6,7 +6,20 @@ INSERT INTO `tbl_danhmuc` (`MaDM`, `TenDM`) VALUES
 ('DM02', 'Bàn phím'),
 ('DM03', 'Tai nghe'),
 ('DM04', 'Màn hình'),
-('DM05', 'Linh kiện khác');
+('DM05', 'Linh kiện khác'),
+('DM06', 'Laptop'),
+('DM07', 'Laptop Gaming'),
+('DM08', 'PC GVN'),
+('DM09', 'Main, CPU, VGA'),
+('DM10', 'Case, Nguồn, Tản'),
+('DM11', 'Ổ cứng, RAM, Thẻ nhớ'),
+('DM12', 'Loa, Micro, Webcam'),
+('DM13', 'Chuột + Lót chuột'),
+('DM14', 'Bàn ghế'),
+('DM15', 'Handheld, Console'),
+('DM16', 'Phụ kiện (Hub, Sạc, Cáp,...)'),
+('DM17', 'Dịch vụ và thông tin khác');
+SET FOREIGN_KEY_CHECKS = 1; -- Bật lại kiểm tra khóa ngoại
 
 -- Bảng: tbl_sanpham
 INSERT INTO `tbl_sanpham` (`MaSP`, `TenSP`, `MaDM`, `DonGia`, `MoTa`, `TrangThai`, `HinhAnh`) VALUES
@@ -20,6 +33,39 @@ INSERT INTO `tbl_sanpham` (`MaSP`, `TenSP`, `MaDM`, `DonGia`, `MoTa`, `TrangThai
 ('SP08', 'Màn hình Samsung 24 inch', 'DM04', 2390000, 'Tấm nền IPS, tần số quét 75Hz.', b'1', 'mh1.png'),
 ('SP09', 'Mainboard Asus Prime B660M', 'DM05', 3590000, 'Hỗ trợ Intel Gen 12, DDR4.', b'1', 'lk1.png'),
 ('SP10', 'RAM Kingston Fury 8GB DDR4', 'DM05', 650000, 'Bus 3200MHz, tản nhiệt hiệu quả.', b'1', 'lk2.png');
+('SP11', 'Laptop Dell Inspiron 15', 'DM06', 12900000, 'Laptop văn phòng, Core i5, RAM 8GB.', b'1', 'lap1.png'),
+('SP12', 'Laptop Gaming ASUS ROG Strix', 'DM07', 25900000, 'GPU RTX 3060, màn hình 144Hz.', b'1', 'lapG1.png'),
+('SP13', 'PC GVN Custom i7-12700', 'DM08', 18900000, 'PC lắp ráp, hiệu năng cao.', b'1', 'pc1.png'),
+('SP14', 'Mainboard MSI B550-A Pro', 'DM09', 2790000, 'Hỗ trợ AMD Ryzen, PCIe 4.0.', b'1', 'main1.png'),
+('SP15', 'Case Deepcool Matrexx 55', 'DM10', 1290000, 'Thiết kế đẹp, tản nhiệt tốt.', b'1', 'case1.png'),
+('SP16', 'Ổ cứng SSD Samsung 500GB', 'DM11', 1190000, 'Tốc độ đọc 550MB/s.', b'1', 'hard1.png'),
+('SP17', 'Loa JBL Charge 5', 'DM12', 2990000, 'Loa Bluetooth chống nước.', b'1', 'loa1.png'),
+('SP18', 'Lót chuột SteelSeries QcK', 'DM13', 250000, 'Kích thước lớn, chống trơn trượt.', b'1', 'lot1.png'),
+('SP19', 'Bàn ghế DXRacer Racing', 'DM14', 7990000, 'Ghế gaming, hỗ trợ lưng tốt.', b'1', 'bg1.png'),
+('SP20', 'Handheld Steam Deck 64GB', 'DM15', 10900000, 'Thiết bị chơi game di động.', b'1', 'hd1.png'),
+('SP21', 'Phụ kiện Hub USB 4 cổng', 'DM16', 350000, 'Tương thích đa dạng thiết bị.', b'1', 'pk1.png'),
+('SP22', 'Dịch vụ bảo hành 1 năm', 'DM17', 500000, 'Bảo hành toàn diện cho sản phẩm.', b'1', 'dv1.png'),
+('SP23', 'Laptop HP Pavilion 14', 'DM06', 14900000, 'Core i7, màn hình Full HD.', b'1', 'lap2.png'),
+('SP24', 'Laptop Gaming MSI Katana', 'DM07', 27900000, 'RTX 3070, tản nhiệt hiệu quả.', b'1', 'lapG2.png'),
+('SP25', 'PC GVN Ryzen 5 5600X', 'DM08', 15900000, 'Hiệu năng ổn định, giá tốt.', b'1', 'pc2.png'),
+('SP26', 'CPU AMD Ryzen 7 5800X', 'DM09', 5990000, '8 nhân 16 luồng, hiệu suất cao.', b'1', 'cpu1.png'),
+('SP27', 'Nguồn Corsair RM750x', 'DM10', 2290000, 'Nguồn 80+ Gold, 750W.', b'1', 'ng1.png'),
+('SP28', 'RAM Corsair Vengeance 16GB', 'DM11', 1290000, 'Bus 3600MHz, hiệu năng mạnh.', b'1', 'ram1.png'),
+('SP29', 'Micro Blue Yeti', 'DM12', 2490000, 'Mic thu âm chuyên nghiệp.', b'1', 'mic1.png'),
+('SP30', 'Lót chuột Razer Gigantus', 'DM13', 350000, 'Bề mặt vải, chống mài mòn.', b'1', 'lot2.png'),
+('SP31', 'Bàn ghế Secretlab Titan', 'DM14', 8990000, 'Ghế gaming cao cấp, độ bền cao.', b'1', 'bg2.png'),
+('SP32', 'Console Nintendo Switch OLED', 'DM15', 7990000, 'Màn hình 7 inch, chơi game di động.', b'1', 'cs1.png'),
+('SP33', 'Phụ kiện Sạc không dây 15W', 'DM16', 450000, 'Tương thích iPhone, Android.', b'1', 'pk2.png'),
+('SP34', 'Dịch vụ cài đặt phần mềm', 'DM17', 300000, 'Cài đặt và tối ưu hóa hệ thống.', b'1', 'dv2.png'),
+('SP35', 'Laptop Lenovo IdeaPad 3', 'DM06', 11900000, 'Core i3, RAM 8GB, học tập tốt.', b'1', 'lap3.png'),
+('SP36', 'Laptop Gaming Acer Nitro 5', 'DM07', 22900000, 'RTX 3050, màn hình 120Hz.', b'1', 'lapG3.png'),
+('SP37', 'PC GVN i9-12900K', 'DM08', 25900000, 'Hiệu năng mạnh mẽ, chơi game mượt.', b'1', 'pc3.png'),
+('SP38', 'VGA NVIDIA RTX 3060', 'DM09', 7990000, '6GB GDDR6, ray tracing tốt.', b'1', 'vga1.png'),
+('SP39', 'Tản nhiệt nước NZXT Kraken', 'DM10', 1990000, 'Tản nhiệt AIO, RGB đẹp mắt.', b'1', 'tan1.png'),
+('SP40', 'Thẻ nhớ SanDisk 128GB', 'DM11', 350000, 'Tốc độ cao, phù hợp camera.', b'1', 'the1.png'),
+('SP41', 'Webcam Logitech C920', 'DM12', 1290000, 'Full HD, mic tích hợp.', b'1', 'cam1.png'),
+('SP42', 'Lót chuột Logitech G440', 'DM13', 450000, 'Kích thước lớn, chất liệu cao cấp.', b'1', 'lot3.png'),
+('SP43', 'Bàn ghế Anda Seat', 'DM14', 6990000, 'Ghế gaming giá hợp lý.', b'1', 'bg3.png'),
 
 -- Bảng: tbl_nhacungcap
 INSERT INTO `tbl_nhacungcap` (`MaNCC`, `TenNCC`, `DiaChi`, `SoDienThoai`) VALUES
