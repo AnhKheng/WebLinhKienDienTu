@@ -120,7 +120,7 @@ include_once '../API/Config/db_config.php';
               const item = document.createElement('div');
               item.className = 'category-item';
               item.innerHTML = `
-                <img src="assets/img/${product.HinhAnh}" alt="${product.TenSP}">
+                <img src="assets/img/${product.HinhAnh}" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="${product.TenSP}">
                 <h3>${product.TenSP}</h3>
                 <p>Giá: ${product.DonGia.toLocaleString('vi-VN')}₫</p>
               `;
@@ -130,19 +130,19 @@ include_once '../API/Config/db_config.php';
             productSection.querySelector('h2').textContent = 'Danh mục nổi bật';
             contentArea.innerHTML = `
               <div class="category-item">
-                <img src="assets/img/cat-arduino.jpg" alt="">
+                <img src="assets/img/cat-arduino.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
                 <h3>Arduino</h3>
               </div>
               <div class="category-item">
-                <img src="assets/img/cat-sensor.jpg" alt="">
+                <img src="assets/img/cat-sensor.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
                 <h3>Cảm biến</h3>
               </div>
               <div class="category-item">
-                <img src="assets/img/cat-power.jpg" alt="">
+                <img src="assets/img/cat-power.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
                 <h3>Nguồn & Pin</h3>
               </div>
               <div class="category-item">
-                <img src="assets/img/cat-module.jpg" alt="">
+                <img src="assets/img/cat-module.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
                 <h3>Module & IC</h3>
               </div>
             `;
