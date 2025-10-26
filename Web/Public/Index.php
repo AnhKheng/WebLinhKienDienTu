@@ -36,7 +36,7 @@ include_once '../API/Config/db_config.php';
           }
         ?>
       </select>
-      <input type="text" placeholder="Tìm kiếm sản phẩm...">
+      <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
       <button>🔍</button>
     </div>
 
@@ -103,58 +103,108 @@ include_once '../API/Config/db_config.php';
   </footer>
 
   <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/a2e0e6b9f3.js" crossorigin="anonymous"></script>
-  <script>
-    function loadProducts() {
-      const categoryId = document.getElementById('categorySelect').value;
-      const contentArea = document.getElementById('contentArea');
-      const productSection = document.getElementById('productSection');
+<script src="https://kit.fontawesome.com/a2e0e6b9f3.js" crossorigin="anonymous"></script>
+<script>
+  function loadProducts() {
+    const categoryId = document.getElementById('categorySelect').value;
+    const contentArea = document.getElementById('contentArea');
+    const productSection = document.getElementById('productSection');
+    const searchInput = document.getElementById('searchInput'); // Lấy ô tìm kiếm
 
-      fetch(`get_products.php?category=${categoryId}`)
-        .then(response => response.json())
-        .then(data => {
-          contentArea.innerHTML = ''; // Xóa nội dung cũ
-          if (data.length > 0) {
-            productSection.querySelector('h2').textContent = 'Sản phẩm liên quan';
-            data.forEach(product => {
-              const item = document.createElement('div');
-              item.className = 'category-item';
-              item.innerHTML = `
-                <img src="assets/img/${product.HinhAnh}" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="${product.TenSP}">
-                <h3>${product.TenSP}</h3>
-                <p>Giá: ${product.DonGia.toLocaleString('vi-VN')}₫</p>
-              `;
-              contentArea.appendChild(item);
-            });
-          } else {
-            productSection.querySelector('h2').textContent = 'Danh mục nổi bật';
-            contentArea.innerHTML = `
-              <div class="category-item">
-                <img src="assets/img/cat-arduino.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
-                <h3>Arduino</h3>
-              </div>
-              <div class="category-item">
-                <img src="assets/img/cat-sensor.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
-                <h3>Cảm biến</h3>
-              </div>
-              <div class="category-item">
-                <img src="assets/img/cat-power.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
-                <h3>Nguồn & Pin</h3>
-              </div>
-              <div class="category-item">
-                <img src="assets/img/cat-module.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
-                <h3>Module & IC</h3>
-              </div>
-            `;
-          }
-        })
-        .catch(error => console.error('Lỗi:', error));
+    // Làm rỗng ô tìm kiếm khi chọn danh mục
+    if (searchInput) {
+      searchInput.value = ''; // Đặt giá trị về rỗng
     }
 
-    // Load sản phẩm mặc định khi trang tải
-    window.onload = function() {
-      loadProducts();
-    };
-  </script>
+    fetch(`get_products.php?category=${categoryId}`)
+      .then(response => response.json())
+      .then(data => {
+        contentArea.innerHTML = ''; // Xóa nội dung cũ
+        if (data.length > 0) {
+          productSection.querySelector('h2').textContent = 'Sản phẩm liên quan';
+          data.forEach(product => {
+            const item = document.createElement('div');
+            item.className = 'category-item';
+            item.innerHTML = `
+              <img src="assets/img/${product.HinhAnh}" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="${product.TenSP}">
+              <h3>${product.TenSP}</h3>
+              <p>Giá: ${product.DonGia.toLocaleString('vi-VN')}₫</p>
+            `;
+            contentArea.appendChild(item);
+          });
+        } else {
+          productSection.querySelector('h2').textContent = 'Danh mục nổi bật';
+          contentArea.innerHTML = `
+            <div class="category-item">
+              <img src="assets/img/cat-arduino.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
+              <h3>Arduino</h3>
+            </div>
+            <div class="category-item">
+              <img src="assets/img/cat-sensor.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
+              <h3>Cảm biến</h3>
+            </div>
+            <div class="category-item">
+              <img src="assets/img/cat-power.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
+              <h3>Nguồn & Pin</h3>
+            </div>
+            <div class="category-item">
+              <img src="assets/img/cat-module.jpg" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="">
+              <h3>Module & IC</h3>
+            </div>
+          `;
+        }
+      })
+      .catch(error => console.error('Lỗi:', error));
+  }
+
+  function searchProducts() {
+    const categoryId = document.getElementById('categorySelect').value;
+    const searchInput = document.getElementById('searchInput');
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const contentArea = document.getElementById('contentArea');
+    const productSection = document.getElementById('productSection');
+
+    fetch(`get_products.php?category=${categoryId}&search=${encodeURIComponent(searchTerm)}`)
+      .then(response => response.json())
+      .then(data => {
+        contentArea.innerHTML = ''; // Xóa nội dung cũ
+        if (data.length > 0) {
+          productSection.querySelector('h2').textContent = 'Kết quả tìm kiếm';
+          data.forEach(product => {
+            const item = document.createElement('div');
+            item.className = 'category-item';
+            item.innerHTML = `
+              <img src="assets/img/${product.HinhAnh}" class="category-item img" style="max-height: 150px; width: 100%; object-fit: contain;" alt="${product.TenSP}">
+              <h3>${product.TenSP}</h3>
+              <p>Giá: ${product.DonGia.toLocaleString('vi-VN')}₫</p>
+            `;
+            contentArea.appendChild(item);
+          });
+        } else {
+          contentArea.innerHTML = '<p>Không tìm thấy sản phẩm nào.</p>';
+        }
+      })
+      .catch(error => console.error('Lỗi:', error));
+  }
+
+  // Load sản phẩm mặc định khi trang tải
+  window.onload = function() {
+    loadProducts();
+  };
+
+  // Liên kết nút tìm kiếm với hàm searchProducts
+  document.querySelector('.search-bar button').addEventListener('click', function(event) {
+    event.preventDefault(); // Ngăn reload trang
+    searchProducts();
+  });
+
+  // Thêm sự kiện nhấn Enter trên ô input
+  document.getElementById('searchInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' || event.keyCode === 13) { // Kiểm tra phím Enter
+      event.preventDefault(); // Ngăn gửi form mặc định (nếu có)
+      searchProducts();
+    }
+  });
+</script>
 </body>
 </html>
