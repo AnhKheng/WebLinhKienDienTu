@@ -10,6 +10,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>AguTech - Shop Linh Kiện Điện Tử</title>
   <link rel="stylesheet" href="assets/css/Style_main.css">
   <link rel="icon" type="image/ico" href="assets/img/favicon.ico">
@@ -42,13 +43,11 @@
 
     <div class="header-right">
       <div class="cart-area">
-        <a href="#"><i class="fas fa-heart"></i><span class="badge">0</span></a>
-        <a href="#"><i class="fas fa-shopping-cart"></i><span class="badge">0</span></a>
-        <span class="cart-total">0₫</span>
+        <a href="#"><i class="fas fa-heart"></i>Yêu thích</a>
+        <a href="#"><i class="fas fa-shopping-cart"></i>Giỏ Hàng</a>
       </div>
       <div class="login-btn">
-        <a href="#" data-type="login">Đăng nhập</a>
-        <a href="#" data-type="register">Đăng ký</a>
+        <a href="#"><i class="fa-regular fa-user fa-bounce"></i></a>
       </div>
     </div>
   </header>
@@ -111,6 +110,6 @@
 </footer>
 
   <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/a2e0e6b9f3.js" crossorigin="anonymous"></script>
+  
 </body>
 </html>
