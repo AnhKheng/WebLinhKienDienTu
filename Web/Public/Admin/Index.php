@@ -34,5 +34,6 @@
             ?>
         </div>
         <script src="assets/js/sidebar_toggle.js"></script>
+        <!-- <script>src="assets/js/product.js"</script> -->
     </body>
     </html>
