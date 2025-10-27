@@ -7,8 +7,8 @@
       <button class="menu-toggle">Sản phẩm</button>
       <ul class="submenu">
         <li><a href="Index.php?action=Products">Danh sách</a></li>
-        <li><a href="#">Thêm sản phẩm</a></li>
-        <li><a href="#">Danh mục</a></li>
+        <li><a href="Index.php?action=Add-Product">Thêm sản phẩm</a></li>
+        <li><a href="Index.php?action=Category">Danh mục</a></li>
       </ul>
     </li>
 

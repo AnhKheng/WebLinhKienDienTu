@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh mục sản phẩm</title>
+    <link rel="stylesheet" href="assets/css/product.css ">
+</head>
+<body>
+    <h2>Danh mục sản phẩm</h2>
+    <button class="btn-add" id="btnOpenForm">Thêm danh mục</button>
+
+<div id="popupContainer" class="popup">
+  <div class="popup-content">
+    <span id="closePopup" class="close">&times;</span>
+    <h3>Thêm danh mục sản phẩm</h3>
+    <form id="formAddCategory" action="../../API/admin/Category/Add.php" method="post" enctype="multipart/form-data">
+      <label>Mã danh mục:</label><br>
+      <input type="text" name="idDM" required><br><br>
+
+      <label>Tên danh mục:</label><br>
+      <input type="text" name="nameDM" required><br><br>
+
+      <button type="submit">Thêm danh mục</button>
+    </form>
+  </div>
+</div>
+</div> 
+    <table id="categoryTable">
+        <thead>
+        <tr>
+            <th>Mã danh mục</th>
+            <th>Tên danh mục</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <script src="assets/js/category.js"></script>
+</body>

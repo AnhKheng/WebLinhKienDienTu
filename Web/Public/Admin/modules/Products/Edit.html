@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Sửa sản phẩm</title>
+
+  <!-- CSS riêng cho trang edit -->
+  <link rel="stylesheet" href="../../assets/css/product.css">
+  <link rel="stylesheet" href="../../assets/css/edit.css">
+</head>
+<body>
+
+  <div class="edit-container">
+    <h2>Sửa thông tin sản phẩm</h2>
+
+    <form id="editForm">
+      <div class="form-group">
+        <label for="MaSP">Mã sản phẩm</label>
+        <input type="text" id="MaSP" name="MaSP" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="TenSP">Tên sản phẩm</label>
+        <input type="text" id="TenSP" name="TenSP" required>
+      </div>
+
+      <div class="form-group">
+        <label for="MaDM">Danh mục</label>
+        <select id="MaDM" name="MaDM" required>
+          <option value="DM01">Bánh kẹo</option>
+          <option value="DM02">Đồ uống</option>
+          <option value="DM03">Gia vị</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="DonGia">Đơn giá</label>
+        <input type="number" id="DonGia" name="DonGia" step="0.01" required>
+      </div>
+
+      <div class="form-group">
+        <label for="MoTa">Mô tả</label>
+        <textarea id="MoTa" name="MoTa"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="TrangThai">Trạng thái</label>
+        <select id="TrangThai" name="TrangThai" required>
+          <option value="1">Hoạt động</option>
+          <option value="0">Ngừng bán</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="HinhAnh">Tên file hình ảnh</label>
+        <input type="text" id="HinhAnh" name="HinhAnh" placeholder="vd: biscuit.jpg">
+      </div>
+
+      <button type="submit" class="btn-submit">Cập nhật</button>
+      <div class="msg" id="msg"></div>
+    </form>
+  </div>
+
+  <script src="../../assets/js/edit_product.js"></script>
+</body>
+</html>

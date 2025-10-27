@@ -5,6 +5,94 @@ body {
   margin: 0;
   color: #333;
 }
+/* ===== NỀN POPUP (mờ toàn màn hình) ===== */
+.popup {
+  display: none;                 /* Ẩn mặc định */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Nền mờ */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;                 /* Đè lên mọi phần khác */
+}
+
+/* ===== KHUNG NỘI DUNG POPUP ===== */
+.popup-content {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 380px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+  position: relative;
+  animation: fadeIn 0.3s ease;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* ===== TIÊU ĐỀ POPUP ===== */
+.popup-content h3 {
+  text-align: center;
+  color: #4e73df;
+  margin-bottom: 20px;
+}
+
+/* ===== NÚT ĐÓNG (X) ===== */
+.close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.close:hover {
+  color: #e74a3b;
+}
+
+/* ===== INPUT FORM ===== */
+.popup-content input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+.popup-content input[type="text"]:focus {
+  border-color: #4e73df;
+  box-shadow: 0 0 4px rgba(78,115,223,0.3);
+}
+
+/* ===== NÚT SUBMIT ===== */
+.popup-content button[type="submit"] {
+  width: 100%;
+  padding: 10px 0;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #04AA6D;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.popup-content button[type="submit"]:hover {
+  background-color: #038e5c;
+  transform: translateY(-1px);
+}
+
+/* ===== HIỆU ỨNG HIỆN POPUP ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
 
 /* ==== Tiêu đề ==== */
 h2 {
@@ -150,6 +238,22 @@ color: white;
 padding: 6px 10px;
 font-size: 13px;
 text-align: center;
+}
+.btn-add {
+background-color: #4e73df; /* Green */
+border-radius: 15px;
+color: white;
+padding: 6px 10px;
+text-align: center;
+display: block;
+font-size: 14px;
+margin-right: 20px;
+float: right;
+border: none;
+cursor: pointer;
+transition: 0.3s ease;
+width: 200px;
+height: 35px;
 }
 .btn-edit,
 .btn-delete {
