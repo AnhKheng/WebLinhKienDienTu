@@ -10,14 +10,239 @@ ul.nav-admin li {
 .clear{
     clear: both;
 }
-.wrapper {
-    border: 1px solid #000;
-    height: auto;
-    width: 95%;
-    margin: 0 auto;
-}
 h1{
     display: block; 
     text-align: center;
     color: #ca1b1b;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+.container {
+  display: flex;
+  flex: 1;
+  min-height: 0;  /* Đảm bảo không vượt quá chiều cao của viewport */
+}
+/*-------------------------------------- Sidebar-------------------------------------- */
+.sidebar {
+  width: 250px;
+  background-color: #3D63D2;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Tiêu đề sidebar */
+.sidebar-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Danh sách menu */
+.menu {
+  list-style: none;
+}
+
+/* Mục menu */
+.menu-item {
+  margin-bottom: 10px;
+}
+
+/* Nút chính (menu cha) */
+.menu-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+/* Hover menu cha */
+.menu-toggle:hover {
+  background-color: #34495e;
+}
+
+/* Submenu ẩn mặc định */
+.submenu {
+  list-style: none;
+  padding-left: 20px;
+  display: none;
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Liên kết submenu */
+.submenu li a {
+  color: #bdc3c7;
+  text-decoration: none;
+  display: block;
+  padding: 6px 0;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.submenu li a:hover {
+  color: #fff;
+}
+
+/* Khi mở submenu */
+.menu-item.active .submenu {
+  display: block;
+}
+.menu-item.has-sub::after {
+  content: "▸";
+  float: right;
+  transition: transform 0.3s;
+}
+.menu-item.active::after {
+  transform: rotate(90deg);
+}
+
+/* Hiệu ứng nhỏ */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/*------------------------------------------------------------------------------------ */
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+/*------------------------------------------ Header--------------------------------------- */
+.header {
+  position: fixed;
+  top: 0;
+  left: 250px;
+  right: 0;
+  height: 60px;
+  background: #fff;
+  border-bottom: 1px solid #e3e6f0;
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+  z-index: 1000;
+}
+
+/* Header trái */
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+/* Ô tìm kiếm */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fc;
+  border-radius: 6px;
+  overflow: hidden;
+  width: 600px;
+  height: 40px;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px 15px;
+  background: transparent;
+  font-size: 14px;
+}
+
+.search-bar .search-btn {
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+/* Header phải */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-left: auto;
+}
+
+/* Icon phần thông báo */
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon-item {
+  position: relative;
+  color: #858796;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.icon-item .badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background-color: #e74a3b;
+  color: white;
+  font-size: 11px;
+  padding: 2px 5px;
+  border-radius: 10px;
+}
+
+/* Thông tin user */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 1px solid #ddd;
+  padding-left: 15px;
+}
+
+.username {
+  color: #5a5c69;
+  font-weight: 500;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/*-------------------------------------- --------- -------------------------------------- */
+
+/* Main content */
+.main-content {
+  flex: 1;  /* Chiếm toàn bộ không gian còn lại */
+  background-color: #ecf0f1;
+  padding: 80px 20px 20px;
+  overflow: visible; 
+  margin-top: 60px; 
+}
+
+.footer {
+  background-color: #062544;
+  color: white;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  flex-shrink: 0;
 }

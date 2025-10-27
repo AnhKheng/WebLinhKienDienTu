@@ -1,24 +1,33 @@
-<!-- header.php -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<div class="header">
+  <!-- Ô tìm kiếm -->
+  <div class="header-left">
+    <div class="search-bar">
+      <input type="text" placeholder="Search for..." />
+      <button class="search-btn">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </div>
 
-  <title>AguTech Admin</title>
+  <!-- Khu vực thông báo + người dùng -->
+  <div class="header-right">
+    <div class="icons">
+      <div class="icon-item">
+        <i class="fas fa-bell"></i>
+        <span class="badge">3+</span>
+      </div>
+      <div class="icon-item">
+        <i class="fas fa-envelope"></i>
+        <span class="badge">7</span>
+      </div>
+    </div>
 
-  <!-- Custom fonts for this template-->
-  <link href="assets/vender/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
-  <link rel="icon" href="assets/img/favicon.ico" type="image/ico">
-  <!-- Custom styles for this template-->
-  <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
-</head>
+    <div class="user-info">
+      <span class="username">Douglas McGee</span>
+      <img src="#" alt="User" class="avatar">
+    </div>
+  </div>
+</div>
 
-<body id="page-top">
-
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
