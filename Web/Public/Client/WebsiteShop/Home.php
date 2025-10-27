@@ -4,63 +4,76 @@
 </section>
 
 <script>
+  // 🧭 Tạo biến gốc đường dẫn API (tự động hoạt động khi đổi vị trí file)
+  const apiBasePath = '../../../API/client/Product/get_products.php';
+  const imgBasePath = '../assets/img/';
+
   function loadProducts() {
-    const categoryId = document.getElementById('categorySelect').value;
+    const categorySelect = document.getElementById('categorySelect');
+    const categoryId = categorySelect ? categorySelect.value : '';
     const contentArea = document.getElementById('contentArea');
     const productSection = document.getElementById('productSection');
     const searchInput = document.getElementById('searchInput');
 
     if (searchInput) searchInput.value = '';
 
-    fetch('/WebLinhKienDienTu/Web/API/client/Product/get_products.php?category=' + categoryId)
-      .then(response => response.json())
+    fetch(`${apiBasePath}?category=${categoryId}`)
+      .then(response => {
+        if (!response.ok) throw new Error('API không phản hồi.');
+        return response.json();
+      })
       .then(data => {
         contentArea.innerHTML = '';
-        if (data.length > 0) {
+        if (data && data.length > 0) {
           productSection.querySelector('h2').textContent = 'Sản phẩm liên quan';
           data.forEach(product => {
             const item = document.createElement('div');
             item.className = 'category-item';
             item.innerHTML = `
-              <img src="/WebLinhKienDienTu/Web/Public/Client/assets/img/${product.HinhAnh}" style="max-height: 150px; width: 100%; object-fit: contain;" alt="${product.TenSP}">
+              <img src="${imgBasePath}${product.HinhAnh}" 
+                   alt="${product.TenSP}" 
+                   style="max-height: 150px; width: 100%; object-fit: contain;">
               <h3>${product.TenSP}</h3>
-              <p>Giá: ${product.DonGia.toLocaleString('vi-VN')}₫</p>
+              <p>Giá: ${Number(product.DonGia).toLocaleString('vi-VN')}₫</p>
             `;
             contentArea.appendChild(item);
           });
         } else {
-          productSection.querySelector('h2').textContent = 'Danh mục nổi bật';
-          contentArea.innerHTML = `
-            <div class="category-item"><img src="../assets/img/cat-arduino.jpg" alt="Arduino"><h3>Arduino</h3></div>
-            <div class="category-item"><img src="../assets/img/cat-sensor.jpg" alt="Cảm biến"><h3>Cảm biến</h3></div>
-            <div class="category-item"><img src="../assets/img/cat-module.jpg" alt="Module & IC"><h3>Module & IC</h3></div>
-            <div class="category-item"><img src="../assets/img/cat-power.jpg" alt="Nguồn & Pin"><h3>Nguồn & Pin</h3></div>
-          `;
+          showDefaultCategories(contentArea, productSection);
         }
       })
-      .catch(error => console.error('Error fetching products:', error));
+      .catch(error => {
+        console.error('❌ Lỗi khi load sản phẩm:', error);
+        showDefaultCategories(contentArea, productSection);
+      });
   }
 
   function searchProducts() {
-    const categoryId = document.getElementById('categorySelect').value;
+    const categorySelect = document.getElementById('categorySelect');
+    const categoryId = categorySelect ? categorySelect.value : '';
     const searchInput = document.getElementById('searchInput');
-    const searchTerm = searchInput.value.trim().toLowerCase();
+    const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
     const contentArea = document.getElementById('contentArea');
     const productSection = document.getElementById('productSection');
 
-    fetch('/WebLinhKienDienTu/Web/API/client/Product/get_products.php?category=' + categoryId + '&search=' + encodeURIComponent(searchTerm))
-      .then(response => response.json())
+    fetch(`${apiBasePath}?category=${categoryId}&search=${encodeURIComponent(searchTerm)}`)
+      .then(response => {
+        if (!response.ok) throw new Error('API không phản hồi.');
+        return response.json();
+      })
       .then(data => {
         contentArea.innerHTML = '';
-        if (data.length > 0) {
+        if (data && data.length > 0) {
           productSection.querySelector('h2').textContent = 'Kết quả tìm kiếm';
           data.forEach(product => {
             const item = document.createElement('div');
             item.className = 'category-item';
             item.innerHTML = `
-              <img src="/WebLinhKienDienTu/Web/Public/Client/assets/img/${product.HinhAnh}" style="max-height: 150px; width: 100%; object-fit: contain;" alt="${product.TenSP}">
+              <img src="${imgBasePath}${product.HinhAnh}" 
+                   alt="${product.TenSP}" 
+                   style="max-height: 150px; width: 100%; object-fit: contain;">
               <h3>${product.TenSP}</h3>
-              <p>Giá: ${product.DonGia.toLocaleString('vi-VN')}₫</p>
+              <p>Giá: ${Number(product.DonGia).toLocaleString('vi-VN')}₫</p>
             `;
             contentArea.appendChild(item);
           });
@@ -68,13 +81,28 @@
           contentArea.innerHTML = '<p>Không tìm thấy sản phẩm nào.</p>';
         }
       })
-      .catch(error => console.error('Error searching products:', error));
+      .catch(error => console.error('❌ Lỗi tìm kiếm sản phẩm:', error));
+  }
+
+  // Hiển thị danh mục mặc định nếu không có sản phẩm
+  function showDefaultCategories(contentArea, productSection) {
+    productSection.querySelector('h2').textContent = 'Danh mục nổi bật';
+    contentArea.innerHTML = `
+      <div class="category-item"><img src="${imgBasePath}cat-arduino.jpg" alt="Arduino"><h3>Arduino</h3></div>
+      <div class="category-item"><img src="${imgBasePath}cat-sensor.jpg" alt="Cảm biến"><h3>Cảm biến</h3></div>
+      <div class="category-item"><img src="${imgBasePath}cat-module.jpg" alt="Module & IC"><h3>Module & IC</h3></div>
+      <div class="category-item"><img src="${imgBasePath}cat-power.jpg" alt="Nguồn & Pin"><h3>Nguồn & Pin</h3></div>
+    `;
   }
 
   // Khi trang Home load
   window.onload = loadProducts;
-  document.getElementById('searchBtn').addEventListener('click', e => { e.preventDefault(); searchProducts(); });
-  document.getElementById('searchInput').addEventListener('keydown', e => {
+
+  const searchBtn = document.getElementById('searchBtn');
+  const searchInput = document.getElementById('searchInput');
+
+  if (searchBtn) searchBtn.addEventListener('click', e => { e.preventDefault(); searchProducts(); });
+  if (searchInput) searchInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') { e.preventDefault(); searchProducts(); }
   });
 </script>

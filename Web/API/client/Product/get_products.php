@@ -2,7 +2,9 @@
 header('Content-Type: application/json');
 
 // Gọi file cấu hình với đường dẫn tuyệt đối
-include_once 'D:/VertrigoServ/www/WebLinhKienDienTu/Web/API/Config/db_config.php';
+include_once(__DIR__ . '/../../Config/db_config.php');
+
+
 
 $categoryId = isset($_GET['category']) ? $_GET['category'] : '';
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';

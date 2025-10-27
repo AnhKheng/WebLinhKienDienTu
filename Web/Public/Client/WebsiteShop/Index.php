@@ -115,7 +115,5 @@ include_once '../../../API/Config/db_config.php';
     </div>
   </footer>
 
-  <!-- JS -->
-  <script src="../assets/js/main.js?v=2"></script>
 </body>
 </html>

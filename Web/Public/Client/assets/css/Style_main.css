@@ -213,6 +213,39 @@ body {
   color: #c40000;
 }
 
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.category-item {
+  padding: 10px;
+  text-align: center;
+}
+
+.category-item img {
+  width: 100% !important;
+  max-height: 150px !important; /* Giới hạn chiều cao tối đa */
+  height: auto !important; /* Giữ tỷ lệ tự động */
+  object-fit: contain !important; /* Giữ toàn bộ nội dung */
+  border-radius: 8px !important;
+  display: block !important; /* Tránh vấn đề bố cục */
+  max-width: 100% !important; /* Giới hạn chiều rộng */
+}
+
+.category-item h3 {
+  margin: 10px 0 5px;
+  font-size: 16px;
+}
+
+.category-item p {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+}
+
 /* --- Footer --- */
 footer {
   background: #222;
