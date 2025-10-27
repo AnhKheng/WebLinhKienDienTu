@@ -6,8 +6,8 @@
     $temp = isset($_GET['action']) ? $_GET['action'] : $temp=" ";
 
     switch ($temp) {
-      case 'ShowProducts':
-        include "modules/ShowProducts.php";
+      case 'Products':
+        include "modules/Products/Products.html";
         break;
       
       default:
