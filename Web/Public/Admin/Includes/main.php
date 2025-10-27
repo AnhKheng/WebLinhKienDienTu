@@ -8,7 +8,12 @@
       case 'Products':
         include "modules/Products/Products.html";
         break;
-      
+      case 'Add-Product':
+        include "modules/Products/Add.html";
+        break;
+      case 'Category':
+        include "modules/Category/View.html";
+        break;
       default:
         include "modules/dashboard.php";
         break;
