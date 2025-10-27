@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>AguTech - Shop Linh Kiện Điện Tử</title>
-  <link rel="stylesheet" href="../assets/css/Style_main.css?v=3">
+  <link rel="stylesheet" href="../assets/css/Style_main.css?v=4">
   <link rel="icon" type="image/ico" href="../assets/img/favicon.ico">
 </head>
 <body>
