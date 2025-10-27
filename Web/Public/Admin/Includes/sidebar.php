@@ -6,7 +6,7 @@
     <li class="menu-item has-sub">
       <button class="menu-toggle">Sản phẩm</button>
       <ul class="submenu">
-        <li><a href="Index.php?action=ShowProducts">Danh sách</a></li>
+        <li><a href="Index.php?action=Products">Danh sách</a></li>
         <li><a href="#">Thêm sản phẩm</a></li>
         <li><a href="#">Danh mục</a></li>
       </ul>
