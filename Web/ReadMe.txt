@@ -49,7 +49,7 @@ ecommerce-php/
 │
 │
 ├── public/                            # Lớp View (Giao diện hiển thị)
-│   ├── assets/
+│   ├── assets/                         #assets nằm trong từng client && admin
 │   │   ├── css/
 │   │   │   ├── client/
 │   │   │   │   ├── style.css
