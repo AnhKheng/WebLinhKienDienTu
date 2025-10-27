@@ -1,0 +1,348 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fafafa;
+  color: #222;
+}
+
+/* --- Header chính --- */
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  background: #fff;
+  padding: 10px 0; 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  gap: 25px;
+  min-height: 80px;
+}
+
+/* Logo sát thanh tìm kiếm */
+.logo {
+  height: 60px;
+  width: 120px;    
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  height: 80px; 
+  width: auto;
+}
+
+/* ===== Thanh tìm kiếm ===== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 700px;
+  margin: 0; /* bỏ khoảng trống hai bên */
+}
+
+.search-bar select,
+.search-bar input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+
+.search-bar input {
+  flex: 1;
+  border-left: none;
+}
+
+.search-bar button {
+  background: #d10024;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background: #b0001f;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: 20px;
+}
+
+.cart-area a {
+  position: relative;
+  color: #333;
+  font-size: 18px;
+  text-decoration: none;
+  padding: 6px;
+  border-radius: 10%;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.cart-area a:hover {
+  background-color: rgba(209, 0, 36, 0.1); /* đỏ nhạt trong suốt */
+  transform: scale(1.1); 
+}
+
+.login-btn a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px; 
+}
+
+.login-btn a i {
+  font-size: 22px;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.login-btn a:hover {
+  color: #d10024;
+}
+
+.login-btn a:hover i {
+  color: #d10024;
+  transform: scale(1.1);
+}
+
+/* --- Navigation --- */
+.main-nav {
+  background: #222;
+}
+
+.main-nav ul {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-nav li {
+  margin: 0 20px;
+}
+
+.main-nav a {
+  color: white;
+  text-decoration: none;
+  padding: 12px 0;
+  display: inline-block;
+}
+
+.main-nav a:hover {
+  color: #ffcc00;
+}
+
+.main {
+  display: flex;
+  gap: 20px;           /* khoảng cách giữa sidebar và nội dung */
+  padding: 20px 40px;
+  align-items: flex-start;
+}
+
+/* Sidebar (menu-bar) */
+.menu-bar {
+  flex: 0 0 250px;     /* chiều rộng cố định của sidebar */
+}
+
+/* Nội dung chính */
+.main-content {
+  flex: 1;             /* chiếm toàn bộ phần còn lại */
+}
+
+/* Sidebar style cơ bản (nếu chưa có) */
+.sidebar {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 10px 20px;
+  background: #f8f8f8;
+  border-bottom: 1px solid #eee;
+}
+
+.sidebar-header i {
+  margin-right: 8px;
+  color: #d40000;
+}
+
+.sidebar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
+  font-size: 15px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-menu li a i {
+  margin-right: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+.sidebar-menu li:hover a {
+  background: #f3f3f3;
+  color: #c40000;
+}
+
+.sidebar-menu li:hover i {
+  color: #c40000;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.category-item {
+  padding: 10px;
+  text-align: center;
+}
+
+.category-item img {
+  width: 100% !important;
+  max-height: 150px !important; /* Giới hạn chiều cao tối đa */
+  height: auto !important; /* Giữ tỷ lệ tự động */
+  object-fit: contain !important; /* Giữ toàn bộ nội dung */
+  border-radius: 8px !important;
+  display: block !important; /* Tránh vấn đề bố cục */
+  max-width: 100% !important; /* Giới hạn chiều rộng */
+}
+
+.category-item h3 {
+  margin: 10px 0 5px;
+  font-size: 16px;
+}
+
+.category-item p {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+}
+
+/* --- Footer --- */
+footer {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+/* === LOGIN PAGE STYLE FIX === */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #b0001f, #300012);
+}
+
+.login-container .logo {
+  margin-bottom: 15px;
+}
+
+.login-container .logo img {
+  height: 80px;
+  width: auto;
+  display: block;
+}
+
+.login-title {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.login-form {
+  background: #fff;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.login-form input:focus {
+  border-color: #d10024;
+  box-shadow: 0 0 6px rgba(209, 0, 36, 0.3);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: #d10024;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-login:hover {
+  background: #b0001f;
+  transform: scale(1.02);
+}
+
+.login-links {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.login-links a {
+  color: #d10024;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+  color: #b0001f;
+}

@@ -1,0 +1,23 @@
+ul.nav-admin {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+ul.nav-admin li {
+    float: left;
+    margin: 5px;
+}
+.clear{
+    clear: both;
+}
+.wrapper {
+    border: 1px solid #000;
+    height: auto;
+    width: 95%;
+    margin: 0 auto;
+}
+h1{
+    display: block; 
+    text-align: center;
+    color: #ca1b1b;
+}
