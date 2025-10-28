@@ -17,7 +17,7 @@ include_once '../../../API/Config/db_config.php';
 
   <!-- CSS -->
   <link rel="stylesheet" href="../assets/css/Style_main.css?v=5">
-  <link rel="icon" type="image/ico" href="../assets/img/favicon.ico">
+  <link rel="icon" type="image/ico" href="assets/img/favicon.ico">
 </head>
 <body>
   <!-- ======= Header ======= -->
