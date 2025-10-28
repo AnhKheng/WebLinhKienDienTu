@@ -3,9 +3,27 @@ let allHoaDon = []; // Lưu toàn bộ dữ liệu hóa đơn để lọc
 // 🧾 Tải danh sách hóa đơn từ API
 async function loadHoaDon() {
   try {
+    console.log("🏁 DOMContentLoaded triggered");
+    const tbody = document.querySelector("#hoadonTable tbody");
+    console.log("tbody:", tbody);
     const response = await fetch("../../API/admin/HoaDon/ViewHoaDon.php");
-    const result = await response.json();
 
+    // ✅ Kiểm tra HTTP status trước
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // ✅ Kiểm tra nội dung có phải JSON không
+    const text = await response.text();
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch (err) {
+      console.error("Phản hồi API không phải JSON:", text);
+      throw new Error("API không trả về dữ liệu JSON hợp lệ.");
+    }
+
+    // ✅ Nếu JSON hợp lệ, xử lý dữ liệu
     if (result.status === "success") {
       allHoaDon = result.data;
       renderNhanVienOptions(allHoaDon);
@@ -13,9 +31,10 @@ async function loadHoaDon() {
     } else {
       alert(result.message || "Không thể tải danh sách hóa đơn");
     }
+
   } catch (error) {
     console.error("Lỗi khi tải hóa đơn:", error);
-    alert("Không thể kết nối đến API.");
+    alert("Không thể kết nối đến API. Chi tiết: " + error.message);
   }
 }
 
@@ -92,3 +111,4 @@ function deleteHoaDon(id) {
 
 // Khi trang load
 window.addEventListener("DOMContentLoaded", loadHoaDon);
+

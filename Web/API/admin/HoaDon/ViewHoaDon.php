@@ -4,8 +4,8 @@ ini_set('display_errors', 1);
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-require_once "../../Config/db_config.php";
-require_once "../../../Includes/HoaDon.php";
+require_once("../../Config/db_config.php");
+require_once("../../../Includes/HoaDon.php");
 
 $hoadon = new HoaDon($connect);
 $result = $hoadon->getAll();
