@@ -255,94 +255,54 @@ footer {
   font-size: 14px;
 }
 
-/* === LOGIN PAGE STYLE FIX === */
-.login-container {
-  display: flex;
-  flex-direction: column;
+
+/* === LOGIN OVERLAY === */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* làm mờ nền */
+  display: none; /* ẩn mặc định */
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #b0001f, #300012);
+  z-index: 999; /* đảm bảo nằm trên cùng */
+  backdrop-filter: blur(3px); /* làm mờ nền phía sau */
 }
 
-.login-container .logo {
-  margin-bottom: 15px;
+.overlay.active {
+  display: flex; /* hiển thị khi bật */
 }
 
-.login-container .logo img {
-  height: 80px;
-  width: auto;
-  display: block;
-}
-
-.login-title {
-  font-size: 26px;
-  color: #fff;
-  margin-bottom: 20px;
-  letter-spacing: 1px;
-}
-
-.login-form {
+.overlay-content {
   background: #fff;
-  padding: 40px 50px;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 380px;
-  text-align: center;
+  border-radius: 0;            
+  padding: 0;                  
+  width: auto;                 
+  max-width: none;               
+  box-shadow: none; 
+  position: relative;
+  animation: popup 0.3s ease;
+  justify-content: center;
+  align-items: center;
 }
 
-.form-group {
-  margin-bottom: 15px;
+@keyframes popup {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-.login-form input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.login-form input:focus {
-  border-color: #d10024;
-  box-shadow: 0 0 6px rgba(209, 0, 36, 0.3);
-}
-
-.btn-login {
-  width: 100%;
-  padding: 12px;
-  background: #d10024;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
+/* Nút đóng overlay */
+.overlay-content .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  color: #555;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background 0.3s, transform 0.2s;
-}
-
-.btn-login:hover {
-  background: #b0001f;
-  transform: scale(1.02);
-}
-
-.login-links {
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-}
-
-.login-links a {
-  color: #d10024;
-  text-decoration: none;
   transition: color 0.3s;
 }
-
-.login-links a:hover {
-  text-decoration: underline;
-  color: #b0001f;
+.overlay-content .close-btn:hover {
+  color: #d10024;
 }
