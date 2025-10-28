@@ -114,6 +114,8 @@ include_once '../../API/Config/db_config.php';
       <p>© 2025 AguTech | All Rights Reserved</p>
     </div>
   </footer>
+  
+<script src="assets/js/productHandler.js?v=1"></script>
 
 </body>
 </html>
