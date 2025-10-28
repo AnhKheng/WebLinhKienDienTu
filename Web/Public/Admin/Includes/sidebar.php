@@ -11,13 +11,6 @@
         <li><a href="Index.php?action=Category">Danh mục</a></li>
       </ul>
     </li>
-    <li class="menu-item has-sub">
-      <button class="menu-toggle">Quản lý hóa đơn</button>
-      <ul class="submenu">
-        <li><a href="Index.php?action=Invoice">Hóa đơn bán</a></li>
-      </ul>
-    </li>
-
 
     <li class="menu-item has-sub">
       <button class="menu-toggle">Cấu hình</button>

@@ -1,12 +1,23 @@
-// ==== MỞ & ĐÓNG POPUP ====
-const popup = document.getElementById("popupContainer");
-const btnOpen = document.getElementById("btnOpenForm");
-const btnClose = document.getElementById("closePopup");
+// === MỞ & ĐÓNG POPUP ===
+const addModal = document.getElementById("categoryAddModal");
+const editModal = document.getElementById("categoryEditModal");
 
-btnOpen.onclick = () => popup.style.display = "flex";
-btnClose.onclick = () => popup.style.display = "none";
-window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
+const btnOpenAdd = document.getElementById("btnOpenForm");
+const btnCloseAdd = document.getElementById("closeAddModal");
+const btnCloseEdit = document.getElementById("closeEditModal");
 
+// === SỰ KIỆN MỞ/ĐÓNG POPUP THÊM ===
+btnOpenAdd.onclick = () => addModal.style.display = "flex";
+btnCloseAdd.onclick = () => addModal.style.display = "none";
+
+// === ĐÓNG POPUP KHI CLICK NỀN ===
+window.onclick = e => {
+  if (e.target === addModal) addModal.style.display = "none";
+  if (e.target === editModal) editModal.style.display = "none";
+};
+
+// === ĐÓNG POPUP SỬA ===
+btnCloseEdit.onclick = () => editModal.style.display = "none";
 
 // ==== GỬI DỮ LIỆU THÊM DANH MỤC ====
 document.getElementById("formAddCategory").addEventListener("submit", function(e) {
@@ -21,12 +32,53 @@ document.getElementById("formAddCategory").addEventListener("submit", function(e
   .then(data => {
     alert(data.message);
     if (data.status === "success") {
-      popup.style.display = "none"; // Đóng popup
-      this.reset();                // Xóa form
-      loadCategories();            // 🔁 Tải lại bảng
+      addModal.style.display = "none"; // Đóng popup
+      this.reset();                    // Xóa form
+      loadCategories();                // 🔁 Tải lại bảng
     }
   })
   .catch(err => console.error(err));
+});
+
+
+// === MỞ POPUP SỬA ===
+async function editCategory(maDM) {
+  const res = await fetch(`../../API/admin/Category/Detail.php?MaDM=${maDM}`);
+  const data = await res.json();
+
+  if (data.status === "success") {
+    const c = data.data;
+    document.getElementById("edit_idDM_old").value = c.MaDM;
+    document.getElementById("edit_idDM").value = c.MaDM;
+    document.getElementById("edit_nameDM").value = c.TenDM;
+    editModal.style.display = "flex";
+  } else {
+    alert(data.message || "Không tìm thấy danh mục.");
+  }
+}
+
+
+// ==== GỬI DỮ LIỆU CẬP NHẬT DANH MỤC ====
+document.getElementById("formEditCategory").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  try {
+    const res = await fetch("../../API/admin/Category/Edit.php", {
+      method: "POST",
+      body: formData
+    });
+    const data = await res.json();
+
+    alert(data.message);
+    if (data.status === "success") {
+      editModal.style.display = "none";
+      loadCategories();
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Không thể cập nhật danh mục.");
+  }
 });
 
 
@@ -39,6 +91,10 @@ function renderCategoryTable(categories) {
       <tr>
         <td>${c.MaDM}</td>
         <td>${c.TenDM}</td>
+        <td>
+          <button class="btn-edit" onclick="editCategory('${c.MaDM}')">Sửa</button>
+          <button class="btn-delete" onclick="deleteCategory('${c.MaDM}')">Xóa</button>
+        </td>
       </tr>`;
     tbody.insertAdjacentHTML("beforeend", row);
   });
@@ -47,18 +103,18 @@ function renderCategoryTable(categories) {
 
 // ==== HÀM LOAD DANH MỤC TỪ API ====
 async function loadCategories() {
-    try{
-        const response = await fetch("../../API/admin/Category/View.php");
-        const result = await response.json();
-        if (result.status === "success") {
-            renderCategoryTable(result.data);
-        }else {
-            alert(result.message || "Không thể tải danh mục");
-        }
-    } catch (error) {
-        console.error("Lỗi khi tải danh mục:", error);
-        alert("Không thể kết nối đến API.");
+  try {
+    const response = await fetch("../../API/admin/Category/View.php");
+    const result = await response.json();
+    if (result.status === "success") {
+      renderCategoryTable(result.data);
+    } else {
+      alert(result.message || "Không thể tải danh mục.");
     }
+  } catch (error) {
+    console.error("Lỗi khi tải danh mục:", error);
+    alert("Không thể kết nối đến API.");
+  }
 }
 
 

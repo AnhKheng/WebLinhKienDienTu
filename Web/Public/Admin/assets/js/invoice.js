@@ -1,7 +1,7 @@
 
 let allHoaDon = []; // Lưu toàn bộ dữ liệu hóa đơn để lọc
 
-// 🧾 Tải danh sách hóa đơn từ API
+// Tải danh sách hóa đơn từ API
 async function loadHoaDon() {
   try {
     console.log("🏁 DOMContentLoaded triggered");
@@ -14,7 +14,7 @@ async function loadHoaDon() {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    // ✅ Kiểm tra nội dung có phải JSON không
+    //  Kiểm tra nội dung có phải JSON không
     const text = await response.text();
     let result;
     try {
@@ -24,7 +24,7 @@ async function loadHoaDon() {
       throw new Error("API không trả về dữ liệu JSON hợp lệ.");
     }
 
-    // ✅ Nếu JSON hợp lệ, xử lý dữ liệu
+    // Nếu JSON hợp lệ, xử lý dữ liệu
     if (result.status === "success") {
       allHoaDon = result.data;
       renderNhanVienOptions(allHoaDon);
@@ -39,7 +39,7 @@ async function loadHoaDon() {
   }
 }
 
-// 🧩 Hiển thị dữ liệu ra bảng
+// Hiển thị dữ liệu ra bảng
 function renderTable(hoadons) {
   const tbody = document.querySelector("#hoadonTable tbody");
   tbody.innerHTML = "";
@@ -67,7 +67,7 @@ function renderTable(hoadons) {
   });
 }
 
-// 🧩 Sinh danh sách nhân viên để lọc
+//  Sinh danh sách nhân viên để lọc
 function renderNhanVienOptions(hoadons) {
   const select = document.getElementById("nhanvienFilter");
   select.innerHTML = '<option value="all">Tất cả nhân viên</option>';
@@ -82,7 +82,7 @@ function renderNhanVienOptions(hoadons) {
   });
 }
 
-// 🧩 Lọc hóa đơn theo nhân viên
+//  Lọc hóa đơn theo nhân viên
 function applyFilter() {
   const selected = document.getElementById("nhanvienFilter").value;
 
@@ -96,17 +96,17 @@ function applyFilter() {
   }
 }
 
-// 🧩 Xem chi tiết hóa đơn (demo)
+//  Xem chi tiết hóa đơn (demo)
 function viewDetail(id) {
   alert(`Xem chi tiết hóa đơn: ${id}`);
-  // 👉 Sau này có thể mở modal hoặc redirect sang trang chi tiết
+  // Sau này có thể mở modal hoặc redirect sang trang chi tiết
 }
 
-// 🧩 Xóa hóa đơn (demo)
+//  Xóa hóa đơn (demo)
 function deleteHoaDon(id) {
   if (confirm(`Bạn có chắc muốn xóa hóa đơn ${id}?`)) {
     alert(`Đã xóa hóa đơn: ${id}`);
-    // 👉 Sau này bạn có thể gọi API Delete tại đây
+    //  Sau này bạn có thể gọi API Delete tại đây
   }
 }
 
