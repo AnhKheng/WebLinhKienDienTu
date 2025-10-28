@@ -29,6 +29,55 @@ document.getElementById("formAddCategory").addEventListener("submit", function(e
   .catch(err => console.error(err));
 });
 
+// ==== HÀM MỞ POPUP SỬA ====
+async function editProduct(maDM) {
+  try {
+    const res = await fetch(`../../API/admin/Category/Detail.php?MaDM=${maDM}`);
+    const data = await res.json();
+
+    if (data.status === "success") {
+      const c = data.data;
+
+      // Gán dữ liệu vào form sửa
+      document.getElementById("edit_idDM_old").value = c.MaDM;
+      document.getElementById("edit_idDM").value = c.MaDM;
+      document.getElementById("edit_nameDM").value = c.TenDM;
+
+      popup.style.display = "flex"; // Mở popup sửa
+    } else {
+      alert(data.message || "Không tìm thấy danh mục.");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Lỗi khi tải dữ liệu danh mục.");
+  }
+}
+
+
+// ==== GỬI DỮ LIỆU CẬP NHẬT DANH MỤC ====
+document.getElementById("formEditCategory").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  try {
+    const res = await fetch("../../API/admin/Category/Edit.php", {
+      method: "POST",
+      body: formData
+    });
+    const data = await res.json();
+
+    alert(data.message);
+    if (data.status === "success") {
+      popupEdit.style.display = "none";
+      loadCategories();
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Không thể cập nhật danh mục.");
+  }
+});
+
+
 
 // ==== HÀM HIỂN THỊ DANH MỤC RA BẢNG ====
 function renderCategoryTable(categories) {
@@ -39,6 +88,10 @@ function renderCategoryTable(categories) {
       <tr>
         <td>${c.MaDM}</td>
         <td>${c.TenDM}</td>
+        <td>
+          <button class="btn-edit" onclick="editProduct('${c.MaDM}')">Sửa</button>
+          <button class="btn-delete" onclick="deleteProduct('${c.MaDM}')">Xóa</button>
+        </td>
       </tr>`;
     tbody.insertAdjacentHTML("beforeend", row);
   });

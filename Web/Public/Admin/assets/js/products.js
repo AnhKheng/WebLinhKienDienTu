@@ -30,8 +30,8 @@ function renderTable(products) {
     const statusClass = isActive ? "status-active" : "status-inactive";
 
     const imgPath = p.HinhAnh
-      ? `../../assets/images/products/${p.HinhAnh}`
-      : "../../assets/images/no-image.png";
+      ? `../img/${p.HinhAnh}`
+      : "../img/no-image.png";
 
     const row = `
       <tr>
@@ -41,7 +41,7 @@ function renderTable(products) {
         <td>${Number(p.DonGia).toLocaleString("vi-VN")} ₫</td>
         <td>${p.MoTa || ""}</td>
         <td><span class="${statusClass}">${statusText}</span></td>
-        <td><img src="${imgPath}" alt="${p.TenSP}" width="60" height="60"></td>
+        <td><img class="img-thumbnail rounded-circle" src="${imgPath}" alt="${p.TenSP}" width="60" height="60"></td>
         <td>
           <button class="btn-edit" onclick="editProduct('${p.MaSP}')">Sửa</button>
           <button class="btn-delete" onclick="deleteProduct('${p.MaSP}')">Xóa</button>

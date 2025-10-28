@@ -23,6 +23,26 @@
       <button type="submit">Thêm danh mục</button>
     </form>
   </div>
+
+
+<div id="popupContainer popupEdit" class="popup">
+  <div class="popup-content">
+    <span id="closePopup" class="close">&times;</span>
+    <h3>Sửa danh mục sản phẩm</h3>
+    <form id="formEditCategory" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="idDM_old" id="edit_idDM_old">
+
+      <label>Mã danh mục:</label><br>
+      <input type="text" name="idDM" id="edit_idDM" required><br><br>
+
+      <label>Tên danh mục:</label><br>
+      <input type="text" name="nameDM" id="edit_nameDM" required><br><br>
+
+      <button type="submit">Cập nhật</button>
+    </form>
+  </div>
+</div>
+
 </div>
 </div> 
     <table id="categoryTable">
@@ -30,6 +50,7 @@
         <tr>
             <th>Mã danh mục</th>
             <th>Tên danh mục</th>
+            <th class="action-col">Hành động</th>
         </tr>
         </thead>
         <tbody>

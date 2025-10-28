@@ -164,6 +164,7 @@ h2 {
 /* ==== Bảng sản phẩm ==== */
 table {
   width: 100%;
+  text-align: center;
   border-collapse: collapse;
   margin-top: 20px;
   background-color: #fff;
@@ -180,7 +181,6 @@ th {
   font-size: 13px;
   font-weight: 600;
   padding: 12px;
-  text-align: left;
 }
 
 /* Ô dữ liệu */
@@ -211,6 +211,9 @@ td img {
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
+.action-col {
+  width: 150px;
+}
 /* ==== Trạng thái ==== */
 .status-active, .status-inactive {
   display: inline-block;
