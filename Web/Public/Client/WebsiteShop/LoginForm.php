@@ -1,10 +1,10 @@
 <head>
-    <link rel="stylesheet" href="../assets/css/Style_account_session.css?v=1">
+    <link rel="stylesheet" href="assets/css/Style_account_session.css?v=1">
 </head>
 <body>
     <div class="account-container">
         <div class="logo">
-            <a href = "#"><img src="../assets/img/logo.png" alt="Logo" /></a>
+            <a href = "#"><img src="assets/img/logo.png" alt="Logo" /></a>
         </div>
         <h2 class="title">ĐĂNG NHẬP</h2>
 

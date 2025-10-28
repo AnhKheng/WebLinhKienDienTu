@@ -2,7 +2,7 @@
   session_start();
 
   // Gọi file cấu hình
-  include_once '../../../API/Config/db_config.php';
+  include_once '../../API/Config/db_config.php';
 
 ?>
 
@@ -13,15 +13,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>AguTech - Shop Linh Kiện Điện Tử</title>
-  <link rel="stylesheet" href="../assets/css/Style_main.css?v=4">
-  <link rel="icon" type="image/ico" href="../assets/img/favicon.ico">
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=4">
+  <link rel="icon" type="image/ico" href="assets/img/favicon.ico">
 </head>
 <body>
   <!-- ======= Header chính ======= -->
   <div class="header">
     <header class="main-header">
       <div class="logo">
-        <a href = "Index.php?do=Home"><img src="../assets/img/logo.png" alt="Logo" /></a>
+        <a href = "Index.php?do=Home"><img src="assets/img/logo.png" alt="Logo" /></a>
       </div>
 
       <div class="search-bar">
@@ -106,7 +106,7 @@
     <!-- ======= Main body content ======= -->
     <?php			
 		$do = isset($_GET['do']) ? $_GET['do'] : "Home";			
-		include $do . ".php";
+		include "WebsiteShop/" . $do . ".php";
 	  ?>
   </div>
 </div>
