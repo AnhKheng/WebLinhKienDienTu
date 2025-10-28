@@ -6,28 +6,30 @@
     <link rel="stylesheet" href="assets/css/product.css ">
 </head>
 <body>
-    <h2>Danh mục sản phẩm</h2>
-    <button class="btn-add" id="btnOpenForm">Thêm danh mục</button>
+    
+      <h2>Danh mục sản phẩm</h2>
+      <button class="btn-add" id="btnOpenForm">Thêm danh mục</button>
+    <!-- POPUP THÊM (đặt trực tiếp dưới body, không nằm trong container khác) -->
+    <div id="categoryAddModal" class="modal-overlay" aria-hidden="true">
+      <div class="modal-box">
+        <span id="closeAddModal" class="modal-close" role="button" aria-label="Close">&times;</span>
+        <h3>Thêm danh mục sản phẩm</h3>
+        <form id="formAddCategory" action="../../API/admin/Category/Add.php" method="post" enctype="multipart/form-data">
+          <label>Mã danh mục:</label><br>
+          <input type="text" name="idDM" required><br><br>
 
-<div id="popupContainer" class="popup">
-  <div class="popup-content">
-    <span id="closePopup" class="close">&times;</span>
-    <h3>Thêm danh mục sản phẩm</h3>
-    <form id="formAddCategory" action="../../API/admin/Category/Add.php" method="post" enctype="multipart/form-data">
-      <label>Mã danh mục:</label><br>
-      <input type="text" name="idDM" required><br><br>
+          <label>Tên danh mục:</label><br>
+          <input type="text" name="nameDM" required><br><br>
 
-      <label>Tên danh mục:</label><br>
-      <input type="text" name="nameDM" required><br><br>
+          <button type="submit">Thêm danh mục</button>
+        </form>
+      </div>
+    </div>
 
-      <button type="submit">Thêm danh mục</button>
-    </form>
-  </div>
-
-
-<div id="popupContainer popupEdit" class="popup">
-  <div class="popup-content">
-    <span id="closePopup" class="close">&times;</span>
+<!-- POPUP SỬA (cũng là phần tử con trực tiếp của body) -->
+<div id="categoryEditModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-box">
+    <span id="closeEditModal" class="modal-close" role="button" aria-label="Close">&times;</span>
     <h3>Sửa danh mục sản phẩm</h3>
     <form id="formEditCategory" method="post" enctype="multipart/form-data">
       <input type="hidden" name="idDM_old" id="edit_idDM_old">
@@ -43,8 +45,6 @@
   </div>
 </div>
 
-</div>
-</div> 
     <table id="categoryTable">
         <thead>
         <tr>

@@ -16,21 +16,21 @@ $MaDM = isset($_GET['MaDM']) ? trim($_GET['MaDM']) : '';
 if (empty($MaDM)) {
     echo json_encode([
         "status" => "error",
-        "message" => "Thiếu tham số MaDM!"
+        "message" => "Thiếu tham số MaDM! $MaDM"
     ]);
     exit;
 }
 
 $result = $category->getOne($MaDM);
 
-if ($result && $result->num_rows > 0) {
-    $row = $result->fetch_assoc();
+$result = $category->getOne($MaDM);
 
+if ($result) {
     echo json_encode([
         "status" => "success",
         "data" => [
-            "MaDM" => $row["MaDM"],
-            "TenDM" => $row["TenDM"]
+            "MaDM" => $result["MaDM"],
+            "TenDM" => $result["TenDM"]
         ]
     ]);
 } else {
