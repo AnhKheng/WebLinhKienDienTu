@@ -1,74 +1,77 @@
 <?php
-  session_start();
+session_start();
 
-  // Gọi file cấu hình
-  include_once '../../API/Config/db_config.php';
+// Gọi file cấu hình
+include_once '../../API/Config/db_config.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>AguTech - Shop Linh Kiện Điện Tử</title>
-  <link rel="stylesheet" href="assets/css/Style_main.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=5">
   <link rel="icon" type="image/ico" href="assets/img/favicon.ico">
 </head>
 <body>
-  <!-- ======= Header chính ======= -->
-  <div class="header">
-    <header class="main-header">
-      <div class="logo">
-        <a href = "#"><img src="assets/img/logo.png" alt="Logo" /></a>
+  <!-- ======= Header ======= -->
+  <header class="main-header">
+    <div class="logo">
+      <a href="Index.php?do=Home">
+        <img src="assets/img/logo.png" alt="Logo">
+      </a>
+    </div>
+
+    <div class="search-bar">
+      <select id="categorySelect" onchange="loadProducts()">
+        <option value="">Tất cả danh mục</option>
+        <?php
+          $sql = "SELECT MaDM, TenDM FROM tbl_danhmuc";
+          $result = $connect->query($sql);
+          if ($result && $result->num_rows > 0) {
+              while ($dm = $result->fetch_assoc()) {
+                  echo '<option value="' . $dm['MaDM'] . '">' . htmlspecialchars($dm['TenDM']) . '</option>';
+              }
+          } else {
+              echo '<option disabled>Không có danh mục</option>';
+          }
+        ?>
+      </select>
+      <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+      <button id="searchBtn">🔍</button>
+    </div>
+
+    <div class="header-right">
+      <div class="cart-area">
+        <a href="#"><i class="fas fa-heart"></i>Yêu thích</a>
+        <a href="#"><i class="fas fa-shopping-cart"></i>Giỏ Hàng</a>
       </div>
-
-      <div class="search-bar">
-        <select>
-          <option value="">Tất cả danh mục</option>
-          <?php
-            $sql = "SELECT MaDM, TenDM FROM tbl_danhmuc";
-            $result = $connect->query($sql);
-            if ($result && $result->num_rows > 0) {
-                while ($dm = $result->fetch_assoc()) {
-                    echo '<option value="' . $dm['MaDM'] . '">' . htmlspecialchars($dm['TenDM']) . '</option>';
-                }
-            } else {
-                echo '<option disabled>Không có danh mục</option>';
-            }
-          ?>
-        </select>
-        <input type="text" placeholder="Tìm kiếm sản phẩm...">
-        <button>🔍</button>
+      <div class="login-btn">
+        <a href="Index.php?do=LoginForm"><i class="fa-regular fa-user fa-bounce"></i></a>
       </div>
+    </div>
+  </header>
 
-      <div class="header-right">
-        <div class="cart-area">
-          <a href="#"><i class="fas fa-heart"></i>Yêu thích</a>
-          <a href="#"><i class="fas fa-shopping-cart"></i>Giỏ Hàng</a>
-        </div>
-        <div class="login-btn">
-          <a href="#"><i class="fa-regular fa-user fa-bounce"></i></a>
-        </div>
-      </div>
-    </header>
+  <!-- ======= Menu ======= -->
+  <nav class="main-nav">
+    <ul>
+      <li><a href="Index.php?do=Home">Trang chủ</a></li>
+      <li><a href="#">Sản phẩm</a></li>
+      <li><a href="#">Khuyến mãi</a></li>
+      <li><a href="#">Tin công nghệ</a></li>
+      <li><a href="#">Liên hệ</a></li>
+      <li><a href="#">Giới thiệu</a></li>
+    </ul>
+  </nav>
 
-    <!-- ======= Thanh menu chính ======= -->
-    <nav class="main-nav">
-      <ul>
-        <li><a href="#">Trang chủ</a></li>
-        <li><a href="#">Sản phẩm</a></li>
-        <li><a href="#">Khuyến mãi</a></li>
-        <li><a href="#">Tin công nghệ</a></li>
-        <li><a href="#">Liên hệ</a></li>
-        <li><a href="#">Giới thiệu</a></li>
-      </ul>
-    </nav>
-  </div>
-
-  <!-- ======= Sidebar Danh mục ======= -->
-<div class ="main">
-  <div class="menu-bar">
+  <!-- ======= Main Layout ======= -->
+  <div class="main">
     <aside class="sidebar">
       <div class="sidebar-header">
         <i class="fas fa-bars"></i> <span>Danh mục sản phẩm</span>
@@ -91,35 +94,17 @@
         <li><a href="#"><i class="fas fa-info-circle"></i> Dịch vụ & thông tin khác</a></li>
       </ul>
     </aside>
+
+    <div class="main-content">
+      <?php			
+        $do = isset($_GET['do']) ? $_GET['do'] : "Home";			
+        include "WebsiteShop/" . $do . ".php";
+      ?>
+    </div>
   </div>
-  <div class="main-content">
-    <!-- ======= Danh mục nổi bật ======= -->
-    <section class="categories">
-      <h2>Danh mục nổi bật</h2>
-      <div class="category-grid">
-        <div class="category-item">
-          <img src="assets/img/cat-arduino.jpg" alt="">
-          <h3>Arduino</h3>
-        </div>
-        <div class="category-item">
-          <img src="assets/img/cat-sensor.jpg" alt="">
-          <h3>Cảm biến</h3>
-        </div>
-        <div class="category-item">
-          <img src="assets/img/cat-power.jpg" alt="">
-          <h3>Nguồn & Pin</h3>
-        </div>
-        <div class="category-item">
-          <img src="assets/img/cat-module.jpg" alt="">
-          <h3>Module & IC</h3>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
+
   <!-- ======= Footer ======= -->
-  <div class="footer">
-    <footer class="site-footer">
+  <footer class="site-footer">
     <div class="footer-info">
       <p>────────────────────────────</p>
       <p><strong>⚙️  Phước Khang — Founder, AguTech</strong></p>
@@ -128,10 +113,7 @@
       <p>────────────────────────────</p>
       <p>© 2025 AguTech | All Rights Reserved</p>
     </div>
-    </footer>
-  </div>
+  </footer>
 
-  <!-- Font Awesome -->
-  
 </body>
 </html>

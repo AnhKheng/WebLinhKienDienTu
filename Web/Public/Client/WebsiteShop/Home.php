@@ -5,8 +5,8 @@
 
 <script>
   // 🧭 Tạo biến gốc đường dẫn API (tự động hoạt động khi đổi vị trí file)
-  const apiBasePath = '../../../API/client/Product/get_products.php';
-  const imgBasePath = '../assets/img/';
+  const apiBasePath = '../../API/client/Product/get_products.php';
+  const imgBasePath = 'assets/img/';
 
   function loadProducts() {
     const categorySelect = document.getElementById('categorySelect');
