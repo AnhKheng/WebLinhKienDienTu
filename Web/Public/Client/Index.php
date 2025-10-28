@@ -54,7 +54,7 @@ include_once '../../API/Config/db_config.php';
         <a href="#"><i class="fas fa-shopping-cart"></i>Giỏ Hàng</a>
       </div>
       <div class="login-btn">
-        <a href="Index.php?do=LoginForm"><i class="fa-regular fa-user fa-bounce"></i></a>
+        <a href="#" onclick="openLoginForm()"><i class="fa-regular fa-user fa-bounce"></i></a>
       </div>
     </div>
   </header>
@@ -102,6 +102,13 @@ include_once '../../API/Config/db_config.php';
         include "WebsiteShop/" . $do . ".php";
       ?>
     </div>
+
+    <!-- Overlay login (ẩn mặc định) -->
+    <div id="loginOverlay" class="overlay">
+      <div class="overlay-content">
+        <?php include "WebsiteShop/LoginForm.php"; ?>
+      </div>
+    </div>
   </div>
 
   <!-- ======= Footer ======= -->
@@ -115,5 +122,7 @@ include_once '../../API/Config/db_config.php';
       <p>© 2025 AguTech | All Rights Reserved</p>
     </div>
   </footer>
+
+  <script src="assets/js/loginOverlay.js"></script>
 </body>
 </html>
