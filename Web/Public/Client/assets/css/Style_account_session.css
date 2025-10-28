@@ -6,6 +6,9 @@
   align-items: center;
   height: 100vh;
   background: linear-gradient(135deg, #b0001f, #300012);
+  padding: 30px 40px; /* thu gọn không gian bên trong */
+  max-width: 420px;  /* tăng chiều rộng */
+  width: 100%;
 }
 
 .account-container .logo {
@@ -61,7 +64,7 @@ label {
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 380px;
+  max-width: 400px;
   text-align: center;
 }
 
