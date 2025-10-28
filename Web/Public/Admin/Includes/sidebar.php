@@ -19,6 +19,14 @@
         <li><a href="#">Hệ thống</a></li>
       </ul>
     </li>
+    <li class="menu-item has-sub">
+      <button class="menu-toggle">Hóa đơn</button>
+      <ul class="submenu">
+        <li><a href="Index.php?action=HoaDon">Danh sách hóa đơn</a></li>
+        <li><a href="#">Xuất/In hóa đơn</a></li>
+        <li><a href="#">Báo cáo/Thống kê</a></li>
+      </ul>
+    </li>
 
     <li class="menu-item">
       <a href="#">Thống kê</a>

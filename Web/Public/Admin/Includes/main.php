@@ -8,7 +8,8 @@
       case 'Products':
         include "modules/Products/Products.html";
         break;
-      
+      case 'HoaDon':
+        include "modules/HoaDon/HoaDons.html";
       default:
         include "modules/dashboard.php";
         break;
