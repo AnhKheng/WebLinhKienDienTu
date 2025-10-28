@@ -17,6 +17,7 @@ include_once '../../API/Config/db_config.php';
 
   <!-- CSS -->
   <link rel="stylesheet" href="assets/css/Style_main.css?v=5">
+  <link rel="stylesheet" href="assets/css/product_style.css">
   <link rel="icon" type="image/ico" href="assets/img/favicon.ico">
 </head>
 <body>
@@ -114,8 +115,5 @@ include_once '../../API/Config/db_config.php';
       <p>© 2025 AguTech | All Rights Reserved</p>
     </div>
   </footer>
-  
-<script src="assets/js/productHandler.js?v=1"></script>
-
 </body>
 </html>
