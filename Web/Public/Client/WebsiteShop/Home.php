@@ -17,8 +17,8 @@ if (!$result) {
                 // Nếu ảnh trong DB chỉ lưu tên file (vd: "lap1.png")
                 // thì nối thêm đường dẫn "assets/img/"
                 $hinh = !empty($row['HinhAnh']) 
-                    ? 'assets/img/' . $row['HinhAnh'] 
-                    : 'assets/img/default_product.png';
+                    ? '../img/' . $row['HinhAnh'] 
+                    : '../img/default_product.png';
 
                 echo '
                 <div class="product-card">

@@ -18,14 +18,14 @@ include_once '../../API/Config/db_config.php';
   <!-- CSS -->
   <link rel="stylesheet" href="assets/css/Style_main.css?v=5">
   <link rel="stylesheet" href="assets/css/product_style.css">
-  <link rel="icon" type="image/ico" href="assets/img/favicon.ico">
+  <link rel="icon" type="image/ico" href="../img/favicon.ico">
 </head>
 <body>
   <!-- ======= Header ======= -->
   <header class="main-header">
     <div class="logo">
       <a href="Index.php?do=Home">
-        <img src="assets/img/logo.png" alt="Logo">
+        <img src="../img/logo.png" alt="Logo">
       </a>
     </div>
 
