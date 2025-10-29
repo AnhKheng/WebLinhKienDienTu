@@ -5,9 +5,61 @@ body {
   margin: 0;
   color: #333;
 }
+
+/* ===== HIỆU ỨNG HIỆN POPUP ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ==== Tiêu đề ==== */
+h2 {
+  color: #4e73df;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* ===== OVERLAY THÔNG BÁO ===== */
+#notifyOverlay {
+  display: none; /* Ẩn mặc định */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.notify-box {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  min-width: 300px;
+}
+
+.btn-confirm {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.btn-confirm:hover {
+  background: #0056b3;
+}
+
 /* ===== NỀN POPUP (mờ toàn màn hình) ===== */
 .popup {
-  display: none;                 /* Ẩn mặc định */
+  display: none; /* Ẩn mặc định */
   position: fixed;
   top: 0;
   left: 0;
@@ -16,7 +68,7 @@ body {
   background: rgba(0, 0, 0, 0.5); /* Nền mờ */
   justify-content: center;
   align-items: center;
-  z-index: 9999;                 /* Đè lên mọi phần khác */
+  z-index: 9999;
 }
 
 /* ===== KHUNG NỘI DUNG POPUP ===== */
@@ -54,8 +106,7 @@ body {
   color: #e74a3b;
 }
 
-/* ===== INPUT FORM ===== */
-/* ===== NỀN POPUP ===== */
+/* ===== NỀN POPUP (Modal) ===== */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -68,7 +119,7 @@ body {
   z-index: 9999;
 }
 
-/* ===== KHUNG NỘI DUNG POPUP ===== */
+/* ===== KHUNG NỘI DUNG POPUP (Modal) ===== */
 .modal-box {
   background: #ffffff;
   padding: 25px 30px;
@@ -81,7 +132,7 @@ body {
   font-family: "Segoe UI", sans-serif;
 }
 
-/* ===== TIÊU ĐỀ POPUP ===== */
+/* ===== TIÊU ĐỀ POPUP (Modal) ===== */
 .modal-box h3 {
   text-align: center;
   color: #4e73df;
@@ -137,21 +188,6 @@ body {
   transform: translateY(-1px);
 }
 
-/* ===== HIỆU ỨNG HIỆN POPUP ===== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* ==== Tiêu đề ==== */
-h2 {
-  color: #4e73df;
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
 /* ==== Thanh lọc danh mục ==== */
 .filter-bar {
   display: flex;
@@ -183,7 +219,6 @@ h2 {
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
 }
-
 #categoryFilter:hover,
 #categoryFilter:focus {
   border-color: #4e73df;
@@ -203,7 +238,6 @@ h2 {
   transition: 0.25s ease;
   box-shadow: 0 2px 5px rgba(78, 115, 223, 0.3);
 }
-
 .filter-bar button:hover {
   background-color: #2e59d9;
   box-shadow: 0 3px 7px rgba(46, 89, 217, 0.4);
@@ -222,8 +256,6 @@ table {
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
-
-/* Tiêu đề cột */
 th {
   background-color: #4e73df;
   color: #fff;
@@ -232,21 +264,15 @@ th {
   font-weight: 600;
   padding: 12px;
 }
-
-/* Ô dữ liệu */
 td {
   padding: 12px;
   border-bottom: 1px solid #e3e6f0;
   font-size: 14px;
   color: #5a5c69;
 }
-
-/* Dòng xen kẽ */
 tbody tr:nth-child(even) {
   background-color: #f8f9fc;
 }
-
-/* Hover */
 tbody tr:hover {
   background-color: #eef3ff;
   transition: background 0.2s;
@@ -261,7 +287,6 @@ td img {
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-
 /* ==== Trạng thái ==== */
 .status-active, .status-inactive {
   display: inline-block;
@@ -272,39 +297,33 @@ td img {
   color: #fff;
   text-align: center;
 }
-
-.status-active {
-  background-color: #1cc88a;
-}
-
-.status-inactive {
-  background-color: #e74a3b;
-}
+.status-active { background-color: #1cc88a; }
+.status-inactive { background-color: #e74a3b; }
 
 /* ==== Nút hành động ==== */
 .btn-filter {
-background-color: #04AA6D; /* Green */
-border-radius: 5px;
-color: white;
-padding: 6px 10px;
-font-size: 13px;
-text-align: center;
+  background-color: #04AA6D;
+  border-radius: 5px;
+  color: white;
+  padding: 6px 10px;
+  font-size: 13px;
+  text-align: center;
 }
 .btn-add {
-background-color: #4e73df; /* Green */
-border-radius: 15px;
-color: white;
-padding: 6px 10px;
-text-align: center;
-display: block;
-font-size: 14px;
-margin: 10px 20px 20px 0;
-float: right;
-border: none;
-cursor: pointer;
-transition: 0.3s ease;
-width: 200px;
-height: 35px;
+  background-color: #4e73df;
+  border-radius: 15px;
+  color: white;
+  padding: 6px 10px;
+  text-align: center;
+  display: block;
+  font-size: 14px;
+  margin: 10px 20px 20px 0;
+  float: right;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 200px;
+  height: 35px;
 }
 .btn-add:hover {
   background-color: #2e59d9;
@@ -318,32 +337,39 @@ height: 35px;
   cursor: pointer;
   transition: 0.3s ease;
 }
-
 .btn-edit {
   background-color: #36b9cc;
   color: #fff;
   border: none;
   margin-right: 5px;
 }
-
-.btn-edit:hover {
-  background-color: #2c9faf;
-}
-
+.btn-edit:hover { background-color: #2c9faf; }
 .btn-delete {
   background-color: #e74a3b;
   color: #fff;
   border: none;
 }
+.btn-delete:hover { background-color: #c0392b; }
 
-.btn-delete:hover {
-  background-color: #c0392b;
+.btn-cancel {
+  background: #6c757d;          /* Màu xám trung tính */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-left: 10px;
+  transition: 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: #5a6268;          /* Tối hơn khi hover */
+  transform: translateY(-1px);  /* Hiệu ứng nổi nhẹ */
 }
 
 /* ==== Scrollbar cho dropdown ==== */
-select::-webkit-scrollbar {
-  width: 8px;
-}
+select::-webkit-scrollbar { width: 8px; }
 select::-webkit-scrollbar-thumb {
   background-color: #c1c1c1;
   border-radius: 10px;
@@ -351,23 +377,10 @@ select::-webkit-scrollbar-thumb {
 
 /* ==== Responsive ==== */
 @media (max-width: 768px) {
-  table {
-    font-size: 13px;
-  }
-
-  td img {
-    width: 45px;
-    height: 45px;
-  }
-
-  select, button {
-    font-size: 13px;
-  }
-
-  .btn-edit, .btn-delete {
-    padding: 5px 8px;
-  }
-
+  table { font-size: 13px; }
+  td img { width: 45px; height: 45px; }
+  select, button { font-size: 13px; }
+  .btn-edit, .btn-delete { padding: 5px 8px; }
   .filter-bar {
     flex-direction: column;
     align-items: flex-start;
