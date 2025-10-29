@@ -1,0 +1,197 @@
+/* === LOGIN PAGE STYLE FIX === */
+.account-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #b0001f, #300012);
+  padding: 30px 40px; /* thu gọn không gian bên trong */
+  max-width: 420px;  /* tăng chiều rộng */
+  width: 100%;
+}
+
+.account-container .logo {
+  margin-bottom: 15px;
+}
+
+.account-container .logo img {
+  height: 80px;
+  width: auto;
+  display: block;
+}
+
+.title {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+label {
+  font-size: 16px;   
+  font-weight: 500;   
+  color: #333;       
+}
+.form-group {
+  margin-bottom: 15px;
+}
+
+.links {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.links a {
+  color: #d10024;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.links a:hover {
+  text-decoration: underline;
+  color: #b0001f;
+}
+
+
+
+/* Login Form*/
+.login-form {
+  background: #fff;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.login-form input:focus {
+  border-color: #d10024;
+  box-shadow: 0 0 6px rgba(209, 0, 36, 0.3);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: #d10024;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-login:hover {
+  background: #b0001f;
+  transform: scale(1.02);
+}
+
+
+/* Register Form*/
+.register-form {
+  background: #fff;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.register-form input:focus {
+  border-color: #d10024;
+  box-shadow: 0 0 6px rgba(209, 0, 36, 0.3);
+}
+
+.btn-register {
+  width: 100%;
+  padding: 12px;
+  background: #d10024;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-register:hover {
+  background: #b0001f;
+  transform: scale(1.02);
+}
+
+
+
+
+
+/* Change Password Form*/
+.password-form {
+  background: #fff;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.password-form input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.password-form input:focus {
+  border-color: #d10024;
+  box-shadow: 0 0 6px rgba(209, 0, 36, 0.3);
+}
+
+.btn-password {
+  width: 100%;
+  padding: 12px;
+  background: #d10024;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-password:hover {
+  background: #b0001f;
+  transform: scale(1.02);
+}
+
+

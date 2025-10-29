@@ -1,6 +1,0 @@
-Array
-(
-    [idDM_old] => 1
-    [idDM] => 1
-    [nameDM] => 1
-)

@@ -1,32 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>AguTech - Shop Linh Kiện Điện Tử</title>
-	<meta charset="utf-8" />
-</head>
-<body>
+<?php
+// Gọi kết nối từ index (index đã include db_config.php)
+$sql = "SELECT MaSP, TenSP, DonGia, HinhAnh FROM tbl_sanpham";
+$result = $connect->query($sql);
 
-        <section class="categories">
-            <h2>Danh mục nổi bật</h2>
-            <div class="category-grid">
-            <div class="category-item">
-                <img src="assets/img/cat-arduino.jpg" alt="">
-                <h3>Arduino</h3>
-            </div>
-            <div class="category-item">
-                <img src="assets/img/cat-sensor.jpg" alt="">
-                <h3>Cảm biến</h3>
-            </div>
-            <div class="category-item">
-                <img src="assets/img/cat-power.jpg" alt="">
-                <h3>Nguồn & Pin</h3>
-            </div>
-            <div class="category-item">
-                <img src="assets/img/cat-module.jpg" alt="">
-                <h3>Module & IC</h3>
-            </div>
-            </div>
-        </section>
+if (!$result) {
+    die("Không thể truy vấn dữ liệu: " . $connect->error);
+}
+?>
 
-	</body>
-</html>
+<div class="product-section">
+    <h2>Danh sách sản phẩm</h2>
+    <div class="product-grid">
+        <?php
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // Nếu ảnh trong DB chỉ lưu tên file (vd: "lap1.png")
+                // thì nối thêm đường dẫn "assets/img/"
+                $hinh = !empty($row['HinhAnh']) 
+                    ? '../img/' . $row['HinhAnh'] 
+                    : '../img/default_product.png';
+
+                echo '
+                <div class="product-card">
+                    <img src="' . htmlspecialchars($hinh) . '" alt="' . htmlspecialchars($row['TenSP']) . '">
+                    <h3>' . htmlspecialchars($row['TenSP']) . '</h3>
+                    <p class="price">' . number_format($row['DonGia'], 0, ',', '.') . '₫</p>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>';
+            }
+        } else {
+            echo "<p>Không có sản phẩm nào.</p>";
+        }
+        ?>
+    </div>
+</div>

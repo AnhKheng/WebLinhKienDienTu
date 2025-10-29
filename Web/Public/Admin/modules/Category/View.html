@@ -6,7 +6,18 @@
     <link rel="stylesheet" href="assets/css/product.css ">
 </head>
 <body>
-    
+  <div id="confirmOverlay" class="modal-overlay" style="display: none;">
+    <div class="confirm-box popup-content" role="dialog" aria-modal="true">
+      <span id="closeConfirm" class="modal-close" role="button" aria-label="Đóng">&times;</span>
+      <div id="confirmMessage" class="confirm-message">
+        Bạn có chắc chắn muốn xóa mục này không?
+      </div>
+      <div class="confirm-actions">
+        <button id="confirmYes" class="btn-confirm">Đồng ý</button>
+        <button id="confirmNo" class="btn-cancel">Hủy</button>
+      </div>
+    </div>
+  </div>
       <h2>Danh mục sản phẩm</h2>
       <button class="btn-add" id="btnOpenForm">Thêm danh mục</button>
     <!-- POPUP THÊM (đặt trực tiếp dưới body, không nằm trong container khác) -->
@@ -57,5 +68,12 @@
 
         </tbody>
     </table>
+
     <script src="assets/js/category.js"></script>
+          <div id="notifyOverlay" class="modal-overlay" aria-hidden="true" style="display:none;">
+    <div class="notify-box popup-content" role="dialog" aria-live="polite">
+      <span id="closeNotify" class="modal-close" role="button" aria-label="Đóng">&times;</span>
+      <div id="notifyMessage"></div>
+    </div>
+  </div>
 </body>
