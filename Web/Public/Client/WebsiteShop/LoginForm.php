@@ -4,19 +4,19 @@
 <body>
     <div class="account-container">
         <div class="logo">
-            <a href = "#"><img src="assets/img/logo.png" alt="Logo" /></a>
+            <a href = "#"><img src="../img/logo.png" alt="Logo" /></a>
         </div>
         <h2 class="title">ĐĂNG NHẬP</h2>
 
-        <form action="/login-action" method="post" class="login-form">
+        <form action="Index.php?do=Login_action" method="post" class="login-form">
             <div class="form-group">
                 <label for="username">Tên tài khoản</label>
-                <input type="text" name="username" placeholder="Số điện thoại / Email" required>
+                <input type="text" name="Username" placeholder="Số điện thoại / Email" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Mật khẩu</label>
-                <input type="password" name="password" placeholder="Mật khẩu" required>
+                <input type="password" name="Password" placeholder="Mật khẩu" required>
             </div>
 
             <button type="submit" class="btn-login">ĐĂNG NHẬP</button>
