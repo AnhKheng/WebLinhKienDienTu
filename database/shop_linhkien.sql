@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `tbl_taikhoankhachhang` (
   `TenDangNhap` VARCHAR(100) DEFAULT NULL,              
   `Email` VARCHAR(150) DEFAULT NULL,                    
   `MatKhau` VARCHAR(255) DEFAULT NULL,                 
-  `NgayTao` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `NgayTao` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `TrangThai` BIT(1) DEFAULT b'1',                      
   CONSTRAINT `fk_taikhoankhachhang_khachhang`
     FOREIGN KEY (`MaKH`) REFERENCES `tbl_khachhang` (`MaKH`)
