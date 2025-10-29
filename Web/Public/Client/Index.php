@@ -142,5 +142,6 @@ include_once '../../API/Config/db_config.php';
   </footer>
 
   <script src="assets/js/loginOverlay.js"></script>
+  <script src="assets/js/loadProducts.js"></script>
 </body>
 </html>
