@@ -132,3 +132,10 @@ INSERT INTO `tbl_chitiethoadon` (`MaHD`, `MaSP`, `SoLuong`, `DonGia`) VALUES
 ('HD02', 'SP05', 1, 690000),
 ('HD02', 'SP07', 1, 950000),
 ('HD03', 'SP08', 2, 2390000);
+
+-- Bảng: tbl_taikhoankhachhang
+INSERT INTO `tbl_taikhoankhachhang` 
+(`MaKH`, `LoaiDangNhap`, `TenDangNhap`, `Email`, `MatKhau`)VALUES
+('KH01', 'local', 'nguyenminh01', 'nguyenminh@gmail.com', '123456'),
+('KH02', 'google', NULL, 'tran.hau@gmail.com', NULL),
+('KH03', 'local', 'phamlan_90', 'phamlan@yahoo.com', 'lanpass');

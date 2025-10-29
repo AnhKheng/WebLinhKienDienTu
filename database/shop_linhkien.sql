@@ -145,3 +145,16 @@ CREATE TABLE IF NOT EXISTS `tbl_chitiethoadon` (
   CONSTRAINT `tbl_chitiethoadon_ibfk_1` FOREIGN KEY (`MaHD`) REFERENCES `tbl_hoadonban` (`MaHD`),
   CONSTRAINT `tbl_chitiethoadon_ibfk_2` FOREIGN KEY (`MaSP`) REFERENCES `tbl_sanpham` (`MaSP`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `tbl_taikhoankhachhang` (
+  `MaTKKH` INT AUTO_INCREMENT PRIMARY KEY,              
+  `MaKH` VARCHAR(10) CHARACTER SET utf8 DEFAULT NULL,   
+  `LoaiDangNhap` ENUM('local', 'google') DEFAULT 'local', 
+  `TenDangNhap` VARCHAR(100) DEFAULT NULL,              
+  `Email` VARCHAR(150) DEFAULT NULL,                    
+  `MatKhau` VARCHAR(255) DEFAULT NULL,                 
+  `NgayTao` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `TrangThai` BIT(1) DEFAULT b'1',                      
+  CONSTRAINT `fk_taikhoankhachhang_khachhang`
+    FOREIGN KEY (`MaKH`) REFERENCES `tbl_khachhang` (`MaKH`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
