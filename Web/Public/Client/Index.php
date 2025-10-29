@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(!isset($_SESSION)) 
+{ 
+  session_start(); 
+}
 
 // Gọi file cấu hình
 include_once '../../API/Config/db_config.php';
@@ -53,9 +56,24 @@ include_once '../../API/Config/db_config.php';
         <a href="#"><i class="fas fa-heart"></i>Yêu thích</a>
         <a href="#"><i class="fas fa-shopping-cart"></i>Giỏ Hàng</a>
       </div>
-      <div class="login-btn">
+      <!-- <div class="login-btn">
         <a href="#" onclick="openLoginForm()"><i class="fa-regular fa-user fa-bounce"></i></a>
-      </div>
+      </div> -->
+      <?php
+        
+        if(!isset($_SESSION['MaKH']))
+        {
+          echo '<div class="login-btn">
+                  <a href="#" onclick="openLoginForm()"><i class="fa-regular fa-user fa-bounce"></i></a>
+                </div>';
+        }
+        else 
+        {
+          echo '<div class="login-btn">
+                  <a href="Index.php?do=Logout_action" ><i class="fa-regular fa-user fa-bounce"></i></a>
+                </div>';
+        }
+      ?>
     </div>
   </header>
 
