@@ -1,5 +1,10 @@
 
 <?php
+ob_clean();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
 class HoaDon {
     private $conn;
     private $table = "tbl_hoadonban";
@@ -33,32 +38,67 @@ class HoaDon {
         return $result;
     }
 
-    // 🔍 Lấy thông tin chi tiết 1 hóa đơn
-    // public function getById($MaHD) {
-    //     $sql = "SELECT * FROM $this->table WHERE MaHD = ?";
-    //     $stmt = $this->conn->prepare($sql);
-    //     $stmt->bind_param("s", $MaHD);
-    //     $stmt->execute();
-    //     $result = $stmt->get_result();
-    //     return $result->fetch_assoc();
-    // }
+    // 🧾 Lấy chi tiết hóa đơn
+public function getChiTiet($maHD) {
+    $sql = "SELECT cthd.MaHD, cthd.MaSP, sp.TenSP, cthd.SoLuong, cthd.DonGia, 
+                   (cthd.SoLuong * cthd.DonGia) AS ThanhTien
+            FROM tbl_chitiethoadon cthd
+            LEFT JOIN tbl_sanpham sp ON cthd.MaSP = sp.MaSP
+            WHERE cthd.MaHD = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("s", $maHD);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    // ✏️ Cập nhật thông tin hóa đơn
-    public function update($MaHD, $NgayBan, $MaNV, $MaKH, $MaCH, $TongTien) {
-        $sql = "UPDATE $this->table 
-                SET NgayBan = ?, MaNV = ?, MaKH = ?, MaCH = ?, TongTien = ?
-                WHERE MaHD = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssssfs", $NgayBan, $MaNV, $MaKH, $MaCH, $TongTien, $MaHD);
-        return $stmt->execute();
+    $chiTietList = [];
+    while ($row = $result->fetch_assoc()) {
+        $chiTietList[] = $row;
     }
+    return $chiTietList;
+}
 
-    // 🗑️ Xóa hóa đơn
-    public function delete($MaHD) {
-        $sql = "DELETE FROM $this->table WHERE MaHD = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("s", $MaHD);
-        return $stmt->execute();
+
+    public function getById($maHD) {
+  $sql = "SELECT * FROM tbl_hoadonban WHERE MaHD = ?";
+  $stmt = $this->conn->prepare($sql);
+  $stmt->bind_param("s", $maHD);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  return $result->fetch_assoc();
+}
+
+public function update($data) {
+  $sql = "UPDATE tbl_hoadonban SET NgayBan=?, MaNV=?, MaKH=?, MaCH=?, TongTien=? WHERE MaHD=?";
+  $stmt = $this->conn->prepare($sql);
+  $stmt->bind_param("sssdds", $data['NgayBan'], $data['MaNV'], $data['MaKH'], $data['MaCH'], $data['TongTien'], $data['MaHD']);
+  return $stmt->execute();
+}
+
+public function delete($maHD) {
+  // 1️⃣ Bắt đầu transaction để đảm bảo tính toàn vẹn dữ liệu
+    $this->conn->begin_transaction();
+
+    try {
+        
+        $sqlChiTiet = "DELETE FROM tbl_chitiethoadon WHERE MaHD = ?";
+        $stmtChiTiet = $this->conn->prepare($sqlChiTiet);
+        $stmtChiTiet->bind_param("s", $maHD);
+        $stmtChiTiet->execute();
+       
+        $sqlHD = "DELETE FROM tbl_hoadonban WHERE MaHD = ?";
+        $stmtHD = $this->conn->prepare($sqlHD);
+        $stmtHD->bind_param("s", $maHD);
+        $stmtHD->execute();
+       
+        $this->conn->commit();
+        return true;
+    } catch (Exception $e) {
+        
+        $this->conn->rollback();
+        error_log("Lỗi khi xóa hóa đơn: " . $e->getMessage());
+        return false;
     }
+}
+
 }
 ?>

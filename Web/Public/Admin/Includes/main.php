@@ -17,6 +17,7 @@
       case 'Invoice':
         include "modules/invoice/invoice.html";
         break;
+    
       default:
         include "modules/dashboard.php";
         break;

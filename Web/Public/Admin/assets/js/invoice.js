@@ -97,16 +97,66 @@ function applyFilter() {
 }
 
 //  Xem chi tiết hóa đơn (demo)
-function viewDetail(id) {
-  alert(`Xem chi tiết hóa đơn: ${id}`);
-  // Sau này có thể mở modal hoặc redirect sang trang chi tiết
+async function viewDetail(maHD) {
+  try {
+    const response = await fetch(`../../API/admin/invoice/View.php?action=viewDetail&MaHD=${maHD}`);
+    const result = await response.json();
+
+    if (result.status === "success") {
+      const details = result.data;
+
+      if (details.length === 0) {
+        alert("Không có chi tiết nào cho hóa đơn này.");
+        return;
+      }
+
+      let html = "";
+      details.forEach((hd, index) => {
+        html += `
+          <div style="border-bottom: 1px solid #ccc; padding: 5px 0;">
+            <p><strong>#${index + 1}</strong></p>
+            <p><strong>Mã HĐ:</strong> ${hd.MaHD}</p>
+            <p><strong>Mã SP:</strong> ${hd.MaSP}</p>
+            <p><strong>Số lượng:</strong> ${hd.SoLuong}</p>
+            <p><strong>Đơn giá:</strong> ${Number(hd.DonGia).toLocaleString("vi-VN")} ₫</p>
+          </div>
+        `;
+      });
+
+      document.getElementById("detailContent").innerHTML = html;
+      document.getElementById("detailModal").style.display = "block";
+    } else {
+      alert(result.message || "Không tìm thấy chi tiết hóa đơn.");
+    }
+  } catch (err) {
+    alert("Lỗi khi tải chi tiết hóa đơn: " + err.message);
+  }
 }
+
+
+function closeModal() {
+  document.getElementById("detailModal").style.display = "none";
+}
+
 
 //  Xóa hóa đơn (demo)
 function deleteHoaDon(id) {
-  if (confirm(`Bạn có chắc muốn xóa hóa đơn ${id}?`)) {
-    alert(`Đã xóa hóa đơn: ${id}`);
-    //  Sau này bạn có thể gọi API Delete tại đây
+  if (!confirm(`Bạn có chắc muốn xóa hóa đơn ${maHD}?`)) return;
+
+  try {
+    const response = fetch(`../../API/admin/invoice/View.php?action=delete&MaHD=${maHD}`);
+    const result = response.json();
+
+    if (result.status === "success") {
+      alert(result.message);
+      // Xóa dòng khỏi bảng HTML mà không cần load lại trang
+      const row = document.querySelector(`tr[data-mahd='${maHD}']`);
+      if (row) row.remove();
+    } else {
+      alert(result.message || "Không thể xóa hóa đơn.");
+    }
+  } catch (err) {
+    alert("Lỗi khi xóa hóa đơn: " + err.message);
   }
 }
 
