@@ -121,10 +121,22 @@ include_once '../../API/Config/db_config.php';
       ?>
     </div>
 
-    <!-- Overlay login (ẩn mặc định) -->
+    <!-- Overlay (ẩn mặc định) -->
     <div id="loginOverlay" class="overlay">
       <div class="overlay-content">
         <?php include "WebsiteShop/LoginForm.php"; ?>
+      </div>
+    </div>
+
+    <div id="registerOverlay" class="overlay">
+      <div class="overlay-content">
+        <?php include "WebsiteShop/RegisterForm.php"; ?>
+      </div>
+    </div>
+
+    <div id="passwordOverlay" class="overlay">
+      <div class="overlay-content">
+        <?php include "WebsiteShop/ChangePassword.php"; ?>
       </div>
     </div>
   </div>
