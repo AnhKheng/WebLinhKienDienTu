@@ -21,16 +21,8 @@ $featured_categories = [
                     <div class="product-slider" data-category="<?= $maDM ?>">
                         <!-- 4 sản phẩm sẽ load bằng JS -->
                     </div>
-                    <div class="pagination-mini">
-                        <button class="page-btn prev" data-category="<?= $maDM ?>"><</button>
-                        <span class="page-numbers">
-                            <span class="page-num active" data-category="<?= $maDM ?>" data-page="1">1</span>
-                            <span class="page-num" data-category="<?= $maDM ?>" data-page="2">2</span>
-                            <span class="page-num" data-category="<?= $maDM ?>" data-page="3">3</span>
-                            <span class="page-num" data-category="<?= $maDM ?>" data-page="4">4</span>
-                            <span class="page-num" data-category="<?= $maDM ?>" data-page="5">5</span>
-                        </span>
-                        <button class="page-btn next" data-category="<?= $maDM ?>">></button>
+                    <div class="pagination-mini" data-category="<?= $maDM ?>">
+    <!-- JS sẽ tự sinh nội dung -->
                     </div>
                 </div>
             </div>

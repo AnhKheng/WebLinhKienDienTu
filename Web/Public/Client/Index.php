@@ -19,7 +19,7 @@ include_once '../../API/Config/db_config.php';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/Style_main.css?v=7">
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=9">
   <link rel="stylesheet" href="assets/css/product_style.css">
   <link rel="icon" type="image/ico" href="../img/favicon.ico">
 </head>
