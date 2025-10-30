@@ -15,26 +15,27 @@ $action = $_GET['action'] ?? $_POST['action'] ?? '';
 switch ($action) {
     // ==== XEM DANH SÁCH DANH MỤC ====
     case 'view':
-     $MaDM = trim($_GET['MaDM'] ?? '');
-    if ($MaDM) {
-        $result = $category->getOne($MaDM);
-        if ($result) {
-            echo json_encode(["status"=>"success","data"=>$result]);
+        $MaDM = trim($_GET['MaDM'] ?? '');
+        if ($MaDM) {
+            $result = $category->getOne($MaDM);
+            if ($result) {
+                echo json_encode(["status" => "success", "data" => $result]);
+            } else {
+                echo json_encode(["status" => "error", "message" => "Không tìm thấy danh mục."]);
+            }
         } else {
-            echo json_encode(["status"=>"error","message"=>"Không tìm thấy danh mục."]);
+            $list = $category->getAll();
+            echo json_encode(["status" => "success", "data" => $list]);
         }
-    } else {
-        $list = $category->getAll();
-        echo json_encode(["status"=>"success","data"=>$list]);
-    }
-    break;
+        break;
+
     // ==== THÊM DANH MỤC ====
     case 'add':
-        $MaDM = trim($_POST['idDM'] ?? '');
         $TenDM = trim($_POST['nameDM'] ?? '');
 
-        if (!empty($MaDM) && !empty($TenDM)) {
-            if ($category->add($MaDM, $TenDM)) {
+        if (!empty($TenDM)) {
+            // Tự động sinh mã trong class Category
+            if ($category->add($TenDM)) {
                 echo json_encode([
                     "status" => "success",
                     "message" => "Thêm danh mục thành công!"
@@ -42,13 +43,13 @@ switch ($action) {
             } else {
                 echo json_encode([
                     "status" => "error",
-                    "message" => "Không thể thêm danh mục. Có thể mã đã tồn tại."
+                    "message" => "Không thể thêm danh mục. Vui lòng thử lại!"
                 ]);
             }
         } else {
             echo json_encode([
                 "status" => "error",
-                "message" => "Thiếu dữ liệu MaDM hoặc TenDM!"
+                "message" => "Thiếu dữ liệu tên danh mục!"
             ]);
         }
         break;
@@ -76,10 +77,12 @@ switch ($action) {
             ]);
         }
         break;
+
     // ==== CẬP NHẬT DANH MỤC ====
     case 'edit':
-        $MaDM = isset($_POST['idDM']) ? trim($_POST['idDM']) : '';
-        $TenDM = isset($_POST['nameDM']) ? trim($_POST['nameDM']) : '';
+        $MaDM = trim($_POST['idDM'] ?? '');
+        $TenDM = trim($_POST['nameDM'] ?? '');
+
         if (empty($MaDM) || empty($TenDM)) {
             echo json_encode([
                 "status" => "error",
@@ -87,6 +90,7 @@ switch ($action) {
             ]);
             exit;
         }
+
         if ($category->update($MaDM, $TenDM)) {
             echo json_encode([
                 "status" => "success",
@@ -99,8 +103,7 @@ switch ($action) {
             ]);
         }
         break;
-    
-    
+
     // ==== TRƯỜNG HỢP ACTION KHÔNG HỢP LỆ ====
     default:
         echo json_encode([
