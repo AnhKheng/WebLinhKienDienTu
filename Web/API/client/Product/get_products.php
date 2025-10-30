@@ -1,45 +1,74 @@
 <?php
-// Gọi file cấu hình DB (giả sử đường dẫn tương đối từ ajax_load_products.php)
-include_once '../../../API/Config/db_config.php';
+include_once '../../Config/db_config.php';
 
-// Lấy tham số từ GET (từ AJAX)
-$category = isset($_GET['category']) ? trim($_GET['category']) : '';
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-
-// Xây dựng query
-$sql = "SELECT MaSP, TenSP, DonGia, HinhAnh FROM tbl_sanpham WHERE 1=1";
-if (!empty($category)) {
-    $sql .= " AND MaDM = '" . $connect->real_escape_string($category) . "'";
-}
-if (!empty($search)) {
-    $sql .= " AND TenSP LIKE '%" . $connect->real_escape_string($search) . "%'";
-}
-
-// Thực thi query
-$result = $connect->query($sql);
-
-if (!$result) {
-    echo "<p>Lỗi truy vấn: " . $connect->error . "</p>";
+if (!isset($connect) || $connect->connect_error) {
+    http_response_code(500);
+    echo "<p style='color:red;'>Lỗi hệ thống.</p>";
     exit;
 }
 
-// Bắt đầu output HTML (chỉ phần product-grid, không bao gồm h2 để tránh trùng lặp)
-echo '<div class="product-grid">';
+$category = isset($_GET['category']) ? trim($_GET['category']) : '';
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 4;
+$offset = ($page - 1) * $limit;
+
+$sql = "SELECT MaSP, TenSP, DonGia, HinhAnh FROM tbl_sanpham WHERE 1=1";
+$params = [];
+$types = '';
+
+if (!empty($category)) {
+    $sql .= " AND MaDM = ?";
+    $params[] = $category;
+    $types .= 's';
+}
+if (!empty($search)) {
+    $sql .= " AND TenSP LIKE ?";
+    $params[] = '%' . $search . '%';
+    $types .= 's';
+}
+
+$sql .= " LIMIT ? OFFSET ?";
+$params[] = $limit;
+$params[] = $offset;
+$types .= 'ii';
+
+$stmt = $connect->prepare($sql);
+if ($stmt === false) {
+    echo "<p style='color:red;'>Lỗi truy vấn.</p>";
+    exit;
+}
+
+$stmt->bind_param($types, ...$params);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// BẮT ĐẦU IN RA 4 CARD TRONG 1 HÀNG
+echo '<div class="product-slider">';  // ← QUAN TRỌNG: MỞ SLIDER Ở ĐÂY
+
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $hinh = !empty($row['HinhAnh']) 
-            ? '../img/' . $row['HinhAnh'] 
-            : '../img/default_product.png';
+            ? '../img/' . htmlspecialchars($row['HinhAnh']) 
+            : '../img//default_product.png';
+
         echo '
         <div class="product-card">
-            <img src="' . htmlspecialchars($hinh) . '" alt="' . htmlspecialchars($row['TenSP']) . '">
+            <img src="' . $hinh . '" 
+                 alt="' . htmlspecialchars($row['TenSP']) . '" 
+                 loading="lazy"
+                 onerror="this.src=\'../../../Public/img/default_product.png\'">
             <h3>' . htmlspecialchars($row['TenSP']) . '</h3>
             <p class="price">' . number_format($row['DonGia'], 0, ',', '.') . '₫</p>
             <button class="btn-buy">Mua ngay</button>
         </div>';
     }
 } else {
-    echo "<p>Không có sản phẩm nào phù hợp.</p>";
+    echo '<p style="grid-column: 1 / -1; text-align:center; color:#999;">Không có sản phẩm.</p>';
 }
-echo '</div>';
+
+echo '</div>'; // ← ĐÓNG SLIDER Ở ĐÂY
+
+$stmt->close();
+$connect->close();
 ?>
