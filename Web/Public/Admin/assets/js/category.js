@@ -9,24 +9,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnCloseAdd = document.getElementById("closeAddModal");
   const btnCloseEdit = document.getElementById("closeEditModal");
 
-  // === NÚT ĐÓNG POPUP THÔNG BÁO ===
-  if (btnCloseNotify) {
-    btnCloseNotify.onclick = () => notifyOverlay.style.display = "none";
-  }
+  // === ĐÓNG POPUP THÔNG BÁO ===
+  if (btnCloseNotify) btnCloseNotify.onclick = () => (notifyOverlay.style.display = "none");
 
-  // === SỰ KIỆN MỞ/ĐÓNG POPUP THÊM ===
-  btnOpenAdd.onclick = () => addModal.style.display = "flex";
-  btnCloseAdd.onclick = () => addModal.style.display = "none";
+  // === MỞ/ĐÓNG POPUP THÊM ===
+  btnOpenAdd.onclick = () => (addModal.style.display = "flex");
+  btnCloseAdd.onclick = () => (addModal.style.display = "none");
 
-  // === ĐÓNG POPUP KHI CLICK NỀN ===
-  window.onclick = e => {
+  // === ĐÓNG POPUP KHI CLICK RA NGOÀI ===
+  window.onclick = (e) => {
     if (e.target === addModal) addModal.style.display = "none";
     if (e.target === editModal) editModal.style.display = "none";
     if (e.target === notifyOverlay) notifyOverlay.style.display = "none";
   };
 
   // === ĐÓNG POPUP SỬA ===
-  btnCloseEdit.onclick = () => editModal.style.display = "none";
+  btnCloseEdit.onclick = () => (editModal.style.display = "none");
 
   // === HIỂN THỊ THÔNG BÁO ===
   function showNotify(message) {
@@ -39,33 +37,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==== GỬI DỮ LIỆU THÊM DANH MỤC ====
-  document.getElementById("formAddCategory").addEventListener("submit", function(e) {
+  document.getElementById("formAddCategory").addEventListener("submit", function (e) {
     e.preventDefault();
     const formData = new FormData(this);
 
-    fetch("../../API/admin/Category/Add.php", {
+    fetch("../../API/admin/category_api.php?action=add", {
       method: "POST",
-      body: formData
+      body: formData,
     })
-    .then(res => res.json())
-    .then(data => {
-      showNotify(data.message);
-      if (data.status === "success") {
-        addModal.style.display = "none";
-        this.reset();
-        loadCategories();
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      showNotify("Đã xảy ra lỗi khi thêm danh mục.");
-    });
+      .then((res) => res.json())
+      .then((data) => {
+        showNotify(data.message);
+        if (data.status === "success") {
+          addModal.style.display = "none";
+          this.reset();
+          loadCategories();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        showNotify("Đã xảy ra lỗi khi thêm danh mục.");
+      });
   });
 
   // === MỞ POPUP SỬA ===
-  window.editCategory = async function(maDM) {
+  window.editCategory = async function (maDM) {
     try {
-      const res = await fetch(`../../API/admin/Category/Detail.php?MaDM=${maDM}`);
+      const res = await fetch(`../../API/admin/category_api.php?action=view&MaDM=${maDM}`);
       const data = await res.json();
 
       if (data.status === "success") {
@@ -81,17 +79,17 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(error);
       showNotify("Lỗi khi kết nối đến máy chủ.");
     }
-  }
+  };
 
   // ==== GỬI DỮ LIỆU CẬP NHẬT DANH MỤC ====
-  document.getElementById("formEditCategory").addEventListener("submit", async function(e) {
+  document.getElementById("formEditCategory").addEventListener("submit", async function (e) {
     e.preventDefault();
     const formData = new FormData(this);
 
     try {
-      const res = await fetch("../../API/admin/Category/Edit.php", {
+      const res = await fetch("../../API/admin/category_api.php?action=edit", {
         method: "POST",
-        body: formData
+        body: formData,
       });
       const data = await res.json();
 
@@ -106,11 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ==== HÀM HIỂN THỊ DANH MỤC RA BẢNG ====
+  // ==== HIỂN THỊ DANH MỤC RA BẢNG ====
   function renderCategoryTable(categories) {
     const tbody = document.querySelector("#categoryTable tbody");
     tbody.innerHTML = "";
-    categories.forEach(c => {
+    categories.forEach((c) => {
       const row = `
         <tr>
           <td>${c.MaDM}</td>
@@ -124,10 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ==== HÀM LOAD DANH MỤC ====
+  // ==== LOAD DANH MỤC ====
   async function loadCategories() {
     try {
-      const response = await fetch("../../API/admin/Category/View.php");
+      const response = await fetch("../../API/admin/category_api.php?action=view");
       const result = await response.json();
       if (result.status === "success") renderCategoryTable(result.data);
       else showNotify(result.message || "Không thể tải danh mục.");
@@ -138,63 +136,59 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // === POPUP XÁC NHẬN XÓA ===
-const confirmOverlay = document.getElementById("confirmOverlay");
-const confirmYes = document.getElementById("confirmYes");
-const confirmNo = document.getElementById("confirmNo");
-const closeConfirm = document.getElementById("closeConfirm");
+  const confirmOverlay = document.getElementById("confirmOverlay");
+  const confirmYes = document.getElementById("confirmYes");
+  const confirmNo = document.getElementById("confirmNo");
+  const closeConfirm = document.getElementById("closeConfirm");
 
-// Hàm mở popup xác nhận (trả về Promise để dễ await)
-function showConfirm(message = "Bạn có chắc chắn muốn xóa mục này không?") {
-  return new Promise(resolve => {
-    document.getElementById("confirmMessage").textContent = message;
-    confirmOverlay.style.display = "flex";
+  function showConfirm(message = "Bạn có chắc chắn muốn xóa mục này không?") {
+    return new Promise((resolve) => {
+      document.getElementById("confirmMessage").textContent = message;
+      confirmOverlay.style.display = "flex";
 
-    // Gỡ mọi listener cũ
-    confirmYes.onclick = null;
-    confirmNo.onclick = null;
-    closeConfirm.onclick = null;
+      confirmYes.onclick = null;
+      confirmNo.onclick = null;
+      closeConfirm.onclick = null;
 
-    // Gán sự kiện
-    confirmYes.onclick = () => {
-      confirmOverlay.style.display = "none";
-      resolve(true);
-    };
-    confirmNo.onclick = closeConfirm.onclick = () => {
-      confirmOverlay.style.display = "none";
-      resolve(false);
-    };
-    // Click ra ngoài để đóng
-    confirmOverlay.onclick = (e) => {
-      if (e.target === confirmOverlay) {
+      confirmYes.onclick = () => {
+        confirmOverlay.style.display = "none";
+        resolve(true);
+      };
+      confirmNo.onclick = closeConfirm.onclick = () => {
         confirmOverlay.style.display = "none";
         resolve(false);
-      }
-    };
-  });
-}
-
-// === CẬP NHẬT HÀM XÓA DANH MỤC ===
-window.deleteCategory = async function(maDM) {
-  const isConfirmed = await showConfirm("Bạn có chắc chắn muốn xóa danh mục này không?");
-  if (!isConfirmed) return;
-
-  try {
-    const formData = new FormData();
-    formData.append("idDM", maDM);
-
-    const res = await fetch("../../API/admin/Category/Delete.php", {
-      method: "POST",
-      body: formData
+      };
+      confirmOverlay.onclick = (e) => {
+        if (e.target === confirmOverlay) {
+          confirmOverlay.style.display = "none";
+          resolve(false);
+        }
+      };
     });
-    const data = await res.json();
-
-    showNotify(data.message);
-    if (data.status === "success") loadCategories();
-  } catch (err) {
-    console.error(err);
-    showNotify("Đã xảy ra lỗi khi xóa danh mục.");
   }
-};
+
+  // === XÓA DANH MỤC ===
+  window.deleteCategory = async function (maDM) {
+    const isConfirmed = await showConfirm("Bạn có chắc chắn muốn xóa danh mục này không?");
+    if (!isConfirmed) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("idDM", maDM);
+
+      const res = await fetch("../../API/admin/category_api.php?action=delete", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+
+      showNotify(data.message);
+      if (data.status === "success") loadCategories();
+    } catch (err) {
+      console.error(err);
+      showNotify("Đã xảy ra lỗi khi xóa danh mục.");
+    }
+  };
 
   // ==== GỌI KHI TRANG LOAD ====
   loadCategories();
