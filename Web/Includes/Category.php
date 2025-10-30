@@ -14,20 +14,25 @@ class Category {
         return $stmt->execute();
     }
 
-    public function getAll() {
+ public function getAll() {
         $sql = "SELECT MaDM, TenDM FROM $this->table";
         $result = $this->conn->query($sql);
-        return $result;
+        $data = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        return $data;
     }
 
-
+    // Lấy 1 danh mục theo mã
     public function getOne($MaDM) {
-        $sql = "SELECT MaDM, TenDM FROM $this->table WHERE MaDM = ?";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare("SELECT MaDM, TenDM FROM $this->table WHERE MaDM = ?");
         $stmt->bind_param("s", $MaDM);
         $stmt->execute();
         $result = $stmt->get_result();
-        return $result->fetch_assoc(); 
+        return $result->fetch_assoc();
     }
     public function update($MaDM, $TenDM) {
         $sql = "UPDATE $this->table SET TenDM = ? WHERE MaDM = ?";

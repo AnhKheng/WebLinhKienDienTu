@@ -14,6 +14,9 @@
       case 'Category':
         include "modules/Category/View.html";
         break;
+      case 'Invoice':
+        include "modules/invoice/invoice.html";
+        break;
       default:
         include "modules/dashboard.php";
         break;

@@ -11,6 +11,12 @@
         <li><a href="Index.php?action=Category">Danh mục</a></li>
       </ul>
     </li>
+    <li class="menu-item has-sub">
+      <button class="menu-toggle">Đơn hàng</button>
+      <ul class="submenu">
+        <li><a href="Index.php?action=Invoice">Danh sách đơn hàng</a></li>
+        <li><a href="Index.php?action=Invoice-Status">Trạng thái đơn hàng</a></li>
+      </ul>
 
     <li class="menu-item has-sub">
       <button class="menu-toggle">Cấu hình</button>
