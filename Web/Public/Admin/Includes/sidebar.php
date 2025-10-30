@@ -1,33 +1,26 @@
 <div class="sidebar">
   <h2 class="sidebar-title">Trang quản trị</h2>
+
   <ul class="menu">
-    <li class="menu-item">
-      <a href="Index.php?action=Dashboard">Bảng điều khiển</a>
+    <li><a href="index.php?module=Dashboard&page=index">Bảng điều khiển</a></li>
+
     <li class="menu-item has-sub">
       <button class="menu-toggle">Sản phẩm</button>
       <ul class="submenu">
-        <li><a href="Index.php?action=Products">Danh sách</a></li>
-        <li><a href="Index.php?action=Add-Product">Thêm sản phẩm</a></li>
-        <li><a href="Index.php?action=Category">Danh mục</a></li>
-      </ul>
-    </li>
-    <li class="menu-item has-sub">
-      <button class="menu-toggle">Đơn hàng</button>
-      <ul class="submenu">
-        <li><a href="Index.php?action=Invoice">Danh sách đơn hàng</a></li>
-        <li><a href="Index.php?action=Invoice-Status">Trạng thái đơn hàng</a></li>
-      </ul>
-
-    <li class="menu-item has-sub">
-      <button class="menu-toggle">Cấu hình</button>
-      <ul class="submenu">
-        <li><a href="#">Tài khoản</a></li>
-        <li><a href="#">Hệ thống</a></li>
+        <li><a href="index.php?module=Products&page=Products">Danh sách sản phẩm</a></li>
+        <li><a href="index.php?module=Products&page=Add">Thêm sản phẩm</a></li>
+        <li><a href="index.php?module=Category&page=View">Quản lý danh mục</a></li>
       </ul>
     </li>
 
-    <li class="menu-item">
-      <a href="#">Thống kê</a>
+    <li class="menu-item has-sub">
+      <button class="menu-toggle">Danh mục</button>
+      <ul class="submenu">
+        <li><a href="index.php?module=Category&page=View">Danh sách danh mục</a></li>
+        <li><a href="index.php?module=Category&page=Add">Thêm danh mục</a></li>
+      </ul>
     </li>
+
+    <li><a href="index.php?module=Accounts&page=View">Tài khoản</a></li>
   </ul>
 </div>

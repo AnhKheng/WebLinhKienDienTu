@@ -13,8 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnCloseNotify) btnCloseNotify.onclick = () => (notifyOverlay.style.display = "none");
 
   // === MỞ/ĐÓNG POPUP THÊM ===
-  btnOpenAdd.onclick = () => (addModal.style.display = "flex");
-  btnCloseAdd.onclick = () => (addModal.style.display = "none");
+  if (btnOpenAdd) btnOpenAdd.onclick = () => (addModal.style.display = "flex");
+  if (btnCloseAdd) btnCloseAdd.onclick = () => (addModal.style.display = "none");
+
+  // === ĐÓNG POPUP SỬA ===
+  if (btnCloseEdit) btnCloseEdit.onclick = () => (editModal.style.display = "none");
 
   // === ĐÓNG POPUP KHI CLICK RA NGOÀI ===
   window.onclick = (e) => {
@@ -23,42 +26,47 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === notifyOverlay) notifyOverlay.style.display = "none";
   };
 
-  // === ĐÓNG POPUP SỬA ===
-  btnCloseEdit.onclick = () => (editModal.style.display = "none");
-
   // === HIỂN THỊ THÔNG BÁO ===
   function showNotify(message) {
-    if (!notifyOverlay || !notifyMessage) {
-      console.warn("notifyOverlay hoặc notifyMessage không tồn tại trong DOM!");
-      return;
-    }
+    if (!notifyOverlay || !notifyMessage) return;
     notifyMessage.textContent = message ?? "";
     notifyOverlay.style.display = "flex";
   }
 
   // ==== GỬI DỮ LIỆU THÊM DANH MỤC ====
-  document.getElementById("formAddCategory").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
+  const formAdd = document.getElementById("formAddCategory");
+  if (formAdd) {
+    formAdd.addEventListener("submit", async function (e) {
+      e.preventDefault();
 
-    fetch("../../API/admin/category_api.php?action=add", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
+      const nameDM = this.querySelector("[name='nameDM']").value.trim();
+      if (!nameDM) {
+        showNotify("Vui lòng nhập tên danh mục!");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("nameDM", nameDM);
+
+      try {
+        const res = await fetch("../../API/admin/category_api.php?action=add", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+
         showNotify(data.message);
         if (data.status === "success") {
           addModal.style.display = "none";
           this.reset();
           loadCategories();
         }
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error(err);
         showNotify("Đã xảy ra lỗi khi thêm danh mục.");
-      });
-  });
+      }
+    });
+  }
 
   // === MỞ POPUP SỬA ===
   window.editCategory = async function (maDM) {
@@ -82,32 +90,42 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ==== GỬI DỮ LIỆU CẬP NHẬT DANH MỤC ====
-  document.getElementById("formEditCategory").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
+  const formEdit = document.getElementById("formEditCategory");
+  if (formEdit) {
+    formEdit.addEventListener("submit", async function (e) {
+      e.preventDefault();
 
-    try {
-      const res = await fetch("../../API/admin/category_api.php?action=edit", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
+      const formData = new FormData(this);
+      try {
+        const res = await fetch("../../API/admin/category_api.php?action=edit", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
 
-      showNotify(data.message);
-      if (data.status === "success") {
-        editModal.style.display = "none";
-        loadCategories();
+        showNotify(data.message);
+        if (data.status === "success") {
+          editModal.style.display = "none";
+          loadCategories();
+        }
+      } catch (err) {
+        console.error(err);
+        showNotify("Đã xảy ra lỗi khi cập nhật danh mục.");
       }
-    } catch (err) {
-      console.error(err);
-      showNotify("Đã xảy ra lỗi khi cập nhật danh mục.");
-    }
-  });
+    });
+  }
 
   // ==== HIỂN THỊ DANH MỤC RA BẢNG ====
   function renderCategoryTable(categories) {
     const tbody = document.querySelector("#categoryTable tbody");
+    if (!tbody) return;
     tbody.innerHTML = "";
+
+    if (!categories || categories.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Không có danh mục nào</td></tr>`;
+      return;
+    }
+
     categories.forEach((c) => {
       const row = `
         <tr>
