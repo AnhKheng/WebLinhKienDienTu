@@ -1,11 +1,11 @@
 let isSearching = false;
 
-// Load 4 sản phẩm cho 1 danh mục + trang
+// Load 4 sản phẩm nổi bật
 function loadFeaturedProducts(category, page = 1) {
     const slider = document.querySelector(`.product-slider[data-category="${category}"]`);
     if (!slider) return;
 
-    const url = `../../API/client/Product/get_products.php?category=${category}&page=${page}&limit=4`;
+    const url = `../../API/client/Product/get_products.php?category=${category}&page=${page}&limit=4&featured=1`;
     
     fetch(url)
         .then(r => r.text())
@@ -24,33 +24,19 @@ function updateActivePage(category, page) {
     });
 }
 
-// Xử lý click phân trang
+// Xử lý phân trang
 document.addEventListener('click', function(e) {
-    const target = e.target;
+    const target = e.target.closest('.page-num, .page-btn');
+    if (!target || !target.dataset.category) return;
 
-    // Click số trang
-    if (target.classList.contains('page-num') && target.dataset.category) {
-        const cat = target.dataset.category;
-        const page = parseInt(target.dataset.page);
-        loadFeaturedProducts(cat, page);
-        updateActivePage(cat, page);
-    }
+    const cat = target.dataset.category;
+    let page = parseInt(target.dataset.page) || 1;
 
-    // Click mũi tên
-    if (target.classList.contains('page-btn') && target.dataset.category) {
-        e.preventDefault();
-        const cat = target.dataset.category;
-        const current = document.querySelector(`.page-num[data-category="${cat}"].active`);
-        let page = current ? parseInt(current.dataset.page) : 1;
+    if (target.classList.contains('prev')) page = Math.max(1, page - 1);
+    if (target.classList.contains('next')) page = Math.min(5, page + 1);
 
-        if (target.classList.contains('prev')) page = Math.max(1, page - 1);
-        if (target.classList.contains('next')) page = Math.min(5, page + 1);
-
-        if (page >= 1 && page <= 5) {
-            loadFeaturedProducts(cat, page);
-            updateActivePage(cat, page);
-        }
-    }
+    loadFeaturedProducts(cat, page);
+    updateActivePage(cat, page);
 });
 
 // Tìm kiếm
@@ -72,17 +58,14 @@ function loadProducts() {
     } else {
         featured.style.display = 'block';
         results.style.display = 'none';
-        // Load trang 1 cho tất cả danh mục
         ['DM01', 'DM05', 'DM12', 'DM03'].forEach(cat => loadFeaturedProducts(cat, 1));
     }
 }
 
 // Khởi động
 document.addEventListener('DOMContentLoaded', function() {
-    // Load trang 1 cho tất cả
     ['DM01', 'DM05', 'DM12', 'DM03'].forEach(cat => loadFeaturedProducts(cat, 1));
 
-    // Sự kiện tìm kiếm
     document.getElementById('searchBtn').addEventListener('click', loadProducts);
     document.getElementById('categorySelect').addEventListener('change', loadProducts);
     document.getElementById('searchInput').addEventListener('keypress', e => {

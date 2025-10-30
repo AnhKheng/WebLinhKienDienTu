@@ -1,6 +1,6 @@
 Array
 (
-    [idDM_old] => 1
-    [idDM] => 1
-    [nameDM] => 1
+    [idDM_old] => DM12
+    [idDM] => DM12
+    [nameDM] =>  Lót chuột
 )
