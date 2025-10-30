@@ -22,8 +22,8 @@
             <button type="submit" class="btn-login">ĐĂNG NHẬP</button>
 
             <div class="links">
-                <a href="Index.php?do=RegisterForm">Đăng ký</a>
-                <a href="Index.php?do=ChangePassword">Quên mật khẩu</a>
+                <a href="#" onclick="closeLoginForm(); openRegisterForm(); return false;">Đăng ký</a>
+                <a href="#" onclick="closeLoginForm(); openPassWordForm(); return false;">Quên mật khẩu</a>
             </div>
         </form>
     </div>
