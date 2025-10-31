@@ -17,9 +17,6 @@ if (isset($_GET['id'])) {
 } else {
     $loi = "Không có mã khách hàng!";
 }
-
-// Gọi file cấu hình
-
 ?>
 
 <!DOCTYPE html>
@@ -67,10 +64,10 @@ if (isset($_GET['id'])) {
     </div>
 
     <div class="header-right" x-data="{ openTieuDe: false }">
-  <div class="cart-area">
-    <a href="#"><i class="fas fa-heart"></i> Yêu thích</a>
-    <a href="#"><i class="fas fa-shopping-cart"></i> Giỏ Hàng</a>
-  </div>
+      <div class="cart-area">
+        <a href="#"><i class="fas fa-heart"></i> Yêu thích</a>
+        <a href="#"><i class="fas fa-shopping-cart"></i> Giỏ Hàng</a>
+      </div>
 
   <?php if (isset($_SESSION['MaKH'])): ?>
     <?php
@@ -109,9 +106,7 @@ if (isset($_GET['id'])) {
       </div>
     <?php endif; ?>
   </div>
-
-
-  </header>
+</header>
 
   <!-- ======= Menu ======= -->
   <nav class="main-nav">
