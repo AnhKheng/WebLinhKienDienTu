@@ -1,11 +1,22 @@
 <?php
-if(!isset($_SESSION)) 
-{ 
-  session_start(); 
-}
-
-// Gọi file cấu hình
 include_once '../../API/Config/db_config.php';
+session_start();
+$khachhang = null;
+$loi = null;
+$makh_from_db = isset($_SESSION['MaKH']) ? $_SESSION['MaKH'] : NULL;
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $sql = "SELECT kh.TenKH FROM tbl_taikhoankhachhang tk, tbl_khachhang kh WHERE tk.MaKH=kh.MaKH and tk.MaKH = '$id'";
+    $result = $connect->query($sql);
+
+    if ($result->num_rows > 0) {
+        $khachhang = $result->fetch_assoc();
+    } else {
+        $loi = "Không tìm thấy khách hàng!";
+    }
+} else {
+    $loi = "Không có mã khách hàng!";
+}
 ?>
 
 <!DOCTYPE html>
@@ -17,9 +28,10 @@ include_once '../../API/Config/db_config.php';
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+  <!-- JS -->
+  <script src="https://unpkg.com/alpinejs" defer></script>
   <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/Style_main.css?v=7">
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=9">
   <link rel="stylesheet" href="assets/css/product_style.css">
   <link rel="icon" type="image/ico" href="../img/favicon.ico">
 </head>
@@ -51,31 +63,50 @@ include_once '../../API/Config/db_config.php';
       <button id="searchBtn">🔍</button>
     </div>
 
-    <div class="header-right">
+    <div class="header-right" x-data="{ openTieuDe: false }">
       <div class="cart-area">
-        <a href="#"><i class="fas fa-heart"></i>Yêu thích</a>
-        <a href="#"><i class="fas fa-shopping-cart"></i>Giỏ Hàng</a>
+        <a href="#"><i class="fas fa-heart"></i> Yêu thích</a>
+        <a href="#"><i class="fas fa-shopping-cart"></i> Giỏ Hàng</a>
       </div>
-      <!-- <div class="login-btn">
-        <a href="#" onclick="openLoginForm()"><i class="fa-regular fa-user fa-bounce"></i></a>
-      </div> -->
-      <?php
-        
-        if(!isset($_SESSION['MaKH']))
-        {
-          echo '<div class="login-btn">
-                  <a href="#" onclick="openLoginForm()"><i class="fa-regular fa-user fa-bounce"></i></a>
-                </div>';
-        }
-        else 
-        {
-          echo '<div class="login-btn">
-                  <a href="Index.php?do=Logout_action" ><i class="fa-regular fa-user fa-bounce"></i></a>
-                </div>';
-        }
-      ?>
+
+  <?php if (isset($_SESSION['MaKH'])): ?>
+    <?php
+      // Lấy thông tin khách hàng đang đăng nhập
+      $makh = $_SESSION['MaKH'];
+      $sqlKH = "SELECT kh.TenKH 
+                FROM tbl_taikhoankhachhang tk
+                JOIN tbl_khachhang kh ON tk.MaKH = kh.MaKH
+                WHERE tk.MaKH = '$makh'";
+      $resultKH = $connect->query($sqlKH);
+      $khachhang = $resultKH && $resultKH->num_rows > 0 ? $resultKH->fetch_assoc() : null;
+      $tenKH = $khachhang ? $khachhang['TenKH'] : 'Khách hàng';
+    ?>
+
+    <!-- Avatar + menu dropdown -->
+    <div id="taskbar" @click="openTieuDe = !openTieuDe" class="menu-item-flex">
+      <img src="assets/img/user.png" class="menu-icon" alt="Avatar">
     </div>
-  </header>
+
+    <div class="submenu" x-show="openTieuDe" x-transition x-cloak>
+      <div class="username">
+        <?php echo htmlspecialchars($tenKH); ?>
+      </div>
+      <div class="submenu-item" data-url="WebsiteShop/ThongTinKhachHang.php?id=<?php echo $makh; ?>">
+        Thông tin tài khoản
+      </div>
+      <div class="submenu-item">
+        <a href="Index.php?do=Logout_action">Đăng xuất</a>
+      </div>
+    </div>
+
+    <?php else: ?>
+      <!-- Nếu chưa đăng nhập -->
+      <div class="login-btn">
+        <a href="#" onclick="openLoginForm()"><i class="fa-regular fa-user fa-bounce"></i></a>
+      </div>
+    <?php endif; ?>
+  </div>
+</header>
 
   <!-- ======= Menu ======= -->
   <nav class="main-nav">

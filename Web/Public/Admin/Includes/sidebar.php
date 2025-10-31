@@ -14,10 +14,17 @@
     </li>
 
     <li class="menu-item has-sub">
+<<<<<<< HEAD
       <button class="menu-toggle">Danh mục</button>
       <ul class="submenu">
         <li><a href="index.php?module=Category&page=View">Danh sách danh mục</a></li>
         <li><a href="index.php?module=Category&page=Add">Thêm danh mục</a></li>
+=======
+      <button class="menu-toggle">Hóa Đơn</button>
+      <ul class="submenu">
+        <li><a href="index.php?module=invoice&page=invoice">Danh sách hóa đơn</a></li>
+        <li><a href="index.php?module=Category&page=">Thêm danh mục</a></li>
+>>>>>>> main
       </ul>
     </li>
 
