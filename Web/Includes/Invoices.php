@@ -100,5 +100,33 @@ public function delete($maHD) {
     }
 }
 
+// public function add($data) {
+//     try {
+//         $sql = "INSERT INTO tbl_hoadonban (MaHD, NgayLap, MaNV, MaKH, MaCH, TongTien)
+//                 VALUES (?, ?, ?, ?, ?, ?)";
+//         $stmt = $this->conn->prepare($sql);
+//         $stmt->bind_param(
+//             "sssssd",
+//             $data['MaHD'],
+//             $data['NgayLap'],
+//             $data['MaNV'],
+//             $data['MaKH'],
+//             $data['MaCH'],
+//             $data['TongTien']
+//         );
+
+//         if ($stmt->execute()) {
+//             return true;
+//         } else {
+//             error_log("Lỗi khi thêm hóa đơn: " . $stmt->error);
+//             return false;
+//         }
+//     } catch (Exception $e) {
+//         error_log("Lỗi khi thêm hóa đơn: " . $e->getMessage());
+//         return false;
+//     }
+// }
+
+
 }
 ?>

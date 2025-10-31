@@ -50,7 +50,8 @@ function renderTable(hoadons) {
       : "—";
 
     const row = `
-      <tr>
+     
+      <tr data-mahd="${hd.MaHD}">
         <td>${hd.MaHD}</td>
         <td>${date}</td>
         <td>${hd.MaNV} - ${hd.TenNV || "—"}</td>
@@ -59,8 +60,7 @@ function renderTable(hoadons) {
         <td>${Number(hd.TongTien).toLocaleString("vi-VN")} ₫</td>
         <td>
           <button class="btn-detail" onclick="viewDetail('${hd.MaHD}')">Chi tiết</button>
-          <button class="btn-delete" onclick="deleteHoaDon('${hd.MaHD}')">Xóa</button>
-        </td>
+          <button type="button" class="btn-delete" onclick="deleteHoaDon('${hd.MaHD}')">Xóa</button>
       </tr>
     `;
     tbody.insertAdjacentHTML("beforeend", row);
@@ -140,12 +140,12 @@ function closeModal() {
 
 
 //  Xóa hóa đơn (demo)
-function deleteHoaDon(id) {
+async function deleteHoaDon(maHD) {
   if (!confirm(`Bạn có chắc muốn xóa hóa đơn ${maHD}?`)) return;
 
   try {
-    const response = fetch(`../../API/admin/invoice/View.php?action=delete&MaHD=${maHD}`);
-    const result = response.json();
+    const response = await fetch(`../../API/admin/invoice/View.php?action=delete&MaHD=${maHD}`);
+    const result = await response.json();
 
     if (result.status === "success") {
       alert(result.message);
