@@ -7,6 +7,11 @@ body {
 
 /* --- Header chính --- */
 .main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; 
   display: flex;
   align-items: center;
   justify-content: center; 
@@ -75,48 +80,18 @@ body {
 }
 
 /* Khu vực giỏ hàng + yêu thích */
-/* === Logo to hơn === */
-.logo {
-  height: 80px; /* tăng chiều cao */
-  width: 150px; /* tăng chiều rộng */
-}
-
-.logo img {
-  height: 100px; /* logo lớn hơn */
-  width: auto;
-  object-fit: contain;
-}
-
-/* === Giỏ hàng & Yêu thích === */
-.header-right .cart-area {
-  display: flex;
-  align-items: center;
-  gap: 25px; /* khoảng cách giữa 2 mục */
-}
-
 .header-right .cart-area a {
   color: #333;
   text-decoration: none;
-  font-size: 18px; /* tăng kích thước chữ */
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s ease;
+  margin-right: 12px;
+  font-size: 20px;
+  transition: color 0.3s;
 }
 
-.header-right .cart-area a i {
-  font-size: 22px; /* icon to hơn */
-  margin-right: 8px;
-  color: #333;
-  transition: color 0.3s ease;
+.header-right .cart-area a:hover {
+  color: #d10024;
 }
 
-.header-right .cart-area a:hover,
-.header-right .cart-area a:hover i {
-  color: #d10024; /* đổi màu khi hover */
-}
-
-/* === Nút đăng nhập (login-btn) === */
 .login-btn a {
   display: flex;
   align-items: center;
@@ -137,7 +112,6 @@ body {
   border-color: #d10024;
   transform: scale(1.1);
 }
-
 /* Nút avatar */
 .menu-item-flex {
   display: flex;
@@ -213,7 +187,12 @@ body {
 
 /* --- Navigation --- */
 .main-nav {
+  position: fixed;  
+  top: 100px; 
+  left: 0;
+  width: 100%;
   background: #222;
+  z-index: 999;
 }
 
 .main-nav ul {
@@ -244,6 +223,7 @@ body {
   gap: 20px;           /* khoảng cách giữa sidebar và nội dung */
   padding: 20px 40px;
   align-items: flex-start;
+  margin-top: 130px;
 }
 
 /* Sidebar (menu-bar) */
