@@ -23,11 +23,20 @@
     </div>
 
     <div class="user-info">
-      <span class="username">Douglas McGee</span>
-      <img src="#" alt="User" class="avatar">
+      <span id="userName"></span>
+      <span id="userId" hidden></span>
+      <span id="userRole" hidden></span>
+      <button id="btn-user" class="btn-user" aria-label="User">
+        <img src="assets/img/user.png" alt="avatar">
+      </button>
+
+      <div id="profile-menu" class="profile-menu hidden">
+        <ul>
+          <li><i class="fas fa-user"></i> Hồ sơ</li>
+          <li><i class="fas fa-cog"></i> Cài đặt</li>
+          <li id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
