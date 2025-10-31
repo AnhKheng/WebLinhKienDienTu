@@ -19,7 +19,7 @@ include_once '../../API/Config/db_config.php';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/Style_main.css?v=7">
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=9">
   <link rel="stylesheet" href="assets/css/product_style.css">
   <link rel="icon" type="image/ico" href="../img/favicon.ico">
 </head>
@@ -121,22 +121,10 @@ include_once '../../API/Config/db_config.php';
       ?>
     </div>
 
-    <!-- Overlay (ẩn mặc định) -->
+    <!-- Overlay login (ẩn mặc định) -->
     <div id="loginOverlay" class="overlay">
       <div class="overlay-content">
         <?php include "WebsiteShop/LoginForm.php"; ?>
-      </div>
-    </div>
-
-    <div id="registerOverlay" class="overlay">
-      <div class="overlay-content">
-        <?php include "WebsiteShop/RegisterForm.php"; ?>
-      </div>
-    </div>
-
-    <div id="passwordOverlay" class="overlay">
-      <div class="overlay-content">
-        <?php include "WebsiteShop/ChangePassword.php"; ?>
       </div>
     </div>
   </div>
