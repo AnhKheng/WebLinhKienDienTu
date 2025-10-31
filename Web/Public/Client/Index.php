@@ -1,7 +1,7 @@
 <?php
 include_once '../../API/Config/db_config.php';
 session_start();
-$nhanvien = null;
+$khachhang = null;
 $loi = null;
 $makh_from_db = isset($_SESSION['MaKH']) ? $_SESSION['MaKH'] : NULL;
 if (isset($_GET['id'])) {
@@ -10,7 +10,7 @@ if (isset($_GET['id'])) {
     $result = $connect->query($sql);
 
     if ($result->num_rows > 0) {
-        $nhanvien = $result->fetch_assoc();
+        $khachhang = $result->fetch_assoc();
     } else {
         $loi = "Không tìm thấy khách hàng!";
     }
