@@ -7,11 +7,13 @@
   <link rel="stylesheet" href="assets/css/style_pages.css" />
 </head>
 <body>
+  <h2>Danh sách hóa đơn</h2>
+  <div class="filter-container">
   <label for="cuahangFilter">Lọc theo mã cửa hàng:</label>
-  <select id="cuahangFilter" onchange="applyFilter()">
-    <option value="all">Tất cả cửa hầng</option>
+  <select class="select-filter" id="cuahangFilter" onchange="applyFilter()">
+    <option value="all">Tất cả</option>
   </select>
-
+  </div>
   <table id="hoadonTable">
     <thead>
       <tr>

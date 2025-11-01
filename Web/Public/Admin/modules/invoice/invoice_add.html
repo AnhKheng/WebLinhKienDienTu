@@ -78,15 +78,13 @@
 
     <!-- HÀNG DƯỚI: DANH SÁCH SẢN PHẨM -->
     <div class="bottom-row card smooth-shadow">
-      <div class="filter-bar">
-        <label for="categoryFilter">Danh mục:</label>
-        <select id="categoryFilter">
-          <option value="">Tất cả</option>
-        </select>
-        <button class="btn btn-primary" onclick="filterByCategory()">Lọc</button>
-      </div>
-
       <h3>Danh sách sản phẩm</h3>
+      <div class="filter-container">
+      <label for="categoryFilter">Lọc theo danh mục:</label>
+      <select class="select-filter" id="categoryFilter" onchange="filterByCategory()">
+        <option value="all">Tất cả</option>
+      </select>
+     
       <div class="table-wrapper">
         <table class="styled-table" id="productTable">
           <thead>
@@ -97,7 +95,7 @@
               <th>Giá bán</th>
               <th>Tồn kho</th>
               <th>Số lượng</th>
-              <th>Thêm</th>
+              <th class="add-col"></th>
             </tr>
           </thead>
           <tbody id="productList"></tbody>

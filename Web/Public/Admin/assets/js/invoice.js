@@ -60,7 +60,7 @@ function renderTable(hoadons) {
         <td>${hd.MaCH}${hd.TenCH || ""}</td>
         <td>${Number(hd.TongTien).toLocaleString("vi-VN")} ₫</td>
         <td>
-          <button class="btn-detail" onclick="viewDetail('${hd.MaHD}')">Chi tiết</button>
+          <button type="button" class="btn-detail" onclick="viewDetail('${hd.MaHD}')">Chi tiết</button>
           <button type="button" class="btn-edit" onclick="openUpdateModal('${hd.MaHD}')">Cập nhật</button>        
           <button type="button" class="btn-delete" onclick="deleteHoaDon('${hd.MaHD}')">Xóa</button>
 
@@ -73,7 +73,7 @@ function renderTable(hoadons) {
 // 🔹 Sinh danh sách cửa hàng để lọc
 function renderCuaHangOptions(hoadons) {
   const select = document.getElementById("cuahangFilter");
-  select.innerHTML = '<option value="all">Tất cả cửa hàng</option>';
+  select.innerHTML = '<option value="all">Tất cả</option>';
 
   // ✅ Lấy danh sách mã cửa hàng (hoặc tên nếu có)
   const cuahangs = [...new Set(hoadons.map((hd) => hd.TenCH || hd.MaCH))];

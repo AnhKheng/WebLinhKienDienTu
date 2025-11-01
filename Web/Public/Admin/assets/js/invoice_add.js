@@ -65,8 +65,8 @@ function renderProducts(list) {
         <td>${sp.TenDM}</td>
         <td>${sp.DonGia.toLocaleString()}₫</td>
         <td>${sp.TonKho ?? '—'}</td>
-        <td><input type="number" id="qty_${sp.MaSP}" min="1" value="1" class="qty-input"></td>
-        <td><button class="btn-add" onclick="addToInvoice('${sp.MaSP}')">+</button></td>
+        <td><input type="number" id="qty_${sp.MaSP}" min="1" value="1" class="qty-input qty-col"></td>
+        <td><button class="btn-add-row" onclick="addToInvoice('${sp.MaSP}')">+</button></td>
       </tr>
     `;
   });
