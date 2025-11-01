@@ -7,9 +7,9 @@
   <link rel="stylesheet" href="assets/css/style_pages.css" />
 </head>
 <body>
-  <label for="nhanvienFilter">Lọc theo nhân viên:</label>
-  <select id="nhanvienFilter" onchange="applyFilter()">
-    <option value="all">Tất cả nhân viên</option>
+  <label for="cuahangFilter">Lọc theo mã cửa hàng:</label>
+  <select id="cuahangFilter" onchange="applyFilter()">
+    <option value="all">Tất cả cửa hầng</option>
   </select>
 
   <table id="hoadonTable">
@@ -21,18 +21,60 @@
         <th>Mã KH</th>
         <th>Mã CH</th>
         <th>Tổng tiền</th>
+        <th>Hành động</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
-  <div id="detailModal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h3>Chi tiết hóa đơn</h3>
-    <div id="detailContent">Đang tải...</div>
+  <button type="button" class="btn-add" onclick="openAddModal()">Thêm</button>
+
+<div id="detailModal" class="popup active">
+  <div class="popup-content">
+    <div class="popup-header">
+      <h2>Chi tiết hóa đơn</h2>
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+    </div>
+    <div class="popup-body" id="detailContent">
+      <!-- Dữ liệu chi tiết sẽ được nạp bằng JS -->
+    </div>
+    <div class="popup-footer" style="text-align:center;">
+      <button class="btn-cancel" onclick="closeModal()">Đóng</button>
+    </div>
   </div>
+</div>
+
+<!-- 🟢 POPUP CẬP NHẬT HÓA ĐƠN -->
+<div id="updateModal" class="popup" style="display:none;">
+  <div class="popup-content">
+    <span class="close" onclick="closeUpdateModal()">&times;</span>
+
+    <h3 style="margin-top:0; text-align:center; color:#4e73df;">Cập nhật hóa đơn</h3>
+
+    <label>Mã hóa đơn</label>
+    <input type="text" id="txtMaHD" readonly>
+
+    <label>Ngày bán</label>
+    <input type="datetime-local" id="txtNgayBan" />
+
+    <label>Mã nhân viên</label>
+    <input type="text" id="txtMaNV">
+
+    <label>Mã khách hàng</label>
+    <input type="text" id="txtMaKH">
+
+    <label>Mã cửa hàng</label>
+    <input type="text" id="txtMaCH">
+
+    <label>Tổng tiền</label>
+    <input type="number" id="txtTongTien">
+
+    <div style="display:flex; justify-content:center; gap:10px; margin-top:12px;">
+      <button class="btn-save" onclick="saveUpdate()">Lưu</button>
+      <button class="btn-cancel" onclick="closeUpdateModal()">✖ Đóng</button>
+    </div>
   </div>
+</div>
 
   <script src="assets/js/invoice.js"></script>
 </body>
