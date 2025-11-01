@@ -13,15 +13,6 @@ class HoaDon {
         $this->conn = $db;
     }
 
-    // 🧾 Thêm hóa đơn mới
-    public function add($MaHD, $NgayBan, $MaNV, $MaKH, $MaCH, $TongTien) {
-        $sql = "INSERT INTO $this->table (MaHD, NgayBan, MaNV, MaKH, MaCH, TongTien)
-                VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sssssf", $MaHD, $NgayBan, $MaNV, $MaKH, $MaCH, $TongTien);
-        return $stmt->execute();
-    }
-
     // 📋 Lấy toàn bộ hóa đơn (join tên nhân viên, khách hàng, cửa hàng)
     public function getAll() {
         $sql = "SELECT hd.MaHD, hd.NgayBan, hd.MaNV,  
@@ -67,15 +58,69 @@ public function getChiTiet($maHD) {
   return $result->fetch_assoc();
 }
 
+//----------------------------update---------------
 public function update($data) {
-  $sql = "UPDATE tbl_hoadonban SET NgayBan=?, MaNV=?, MaKH=?, MaCH=?, TongTien=? WHERE MaHD=?";
-  $stmt = $this->conn->prepare($sql);
-  $stmt->bind_param("sssdds", $data['NgayBan'], $data['MaNV'], $data['MaKH'], $data['MaCH'], $data['TongTien'], $data['MaHD']);
-  return $stmt->execute();
+  // Bắt đầu transaction để đảm bảo an toàn dữ liệu
+  $this->conn->begin_transaction();
+
+  try {
+    // 1️⃣ Cập nhật thông tin hóa đơn
+    $sql = "UPDATE tbl_hoadonban 
+            SET NgayBan=?, MaNV=?, MaKH=?, MaCH=?, TongTien=? 
+            WHERE MaHD=?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("sssdds",
+      $data['NgayBan'],
+      $data['MaNV'],
+      $data['MaKH'],
+      $data['MaCH'],
+      $data['TongTien'],
+      $data['MaHD']
+    );
+
+    if (!$stmt->execute()) {
+      throw new Exception("Không thể cập nhật hóa đơn");
+    }
+
+    // 2️⃣ Nếu có mảng chi tiết thì cập nhật lại
+    if (isset($data['ChiTiet']) && is_array($data['ChiTiet'])) {
+      // Xóa chi tiết cũ
+      $del = $this->conn->prepare("DELETE FROM tbl_chitiethoadon WHERE MaHD=?");
+      $del->bind_param("s", $data['MaHD']);
+      if (!$del->execute()) {
+        throw new Exception("Không thể xóa chi tiết cũ");
+      }
+
+      // Thêm chi tiết mới
+      $insert = $this->conn->prepare("INSERT INTO tbl_chitiethoadon (MaHD, MaSP, SoLuong, DonGia)
+                                      VALUES (?, ?, ?, ?)");
+      foreach ($data['ChiTiet'] as $ct) {
+        $insert->bind_param("ssid",
+          $data['MaHD'],
+          $ct['MaSP'],
+          $ct['SoLuong'],
+          $ct['DonGia']
+        );
+        if (!$insert->execute()) {
+          throw new Exception("Lỗi khi thêm chi tiết hóa đơn");
+        }
+      }
+    }
+
+    // 3️⃣ Commit nếu mọi thứ thành công
+    $this->conn->commit();
+    return true;
+
+  } catch (Exception $e) {
+    $this->conn->rollback();
+    error_log("❌ Update hóa đơn lỗi: " . $e->getMessage());
+    return false;
+  }
 }
 
+//------------------------------delete--------------------------
 public function delete($maHD) {
-  // 1️⃣ Bắt đầu transaction để đảm bảo tính toàn vẹn dữ liệu
+  // Bắt đầu transaction để đảm bảo tính toàn vẹn dữ liệu
     $this->conn->begin_transaction();
 
     try {
@@ -100,32 +145,67 @@ public function delete($maHD) {
     }
 }
 
-// public function add($data) {
-//     try {
-//         $sql = "INSERT INTO tbl_hoadonban (MaHD, NgayLap, MaNV, MaKH, MaCH, TongTien)
-//                 VALUES (?, ?, ?, ?, ?, ?)";
-//         $stmt = $this->conn->prepare($sql);
-//         $stmt->bind_param(
-//             "sssssd",
-//             $data['MaHD'],
-//             $data['NgayLap'],
-//             $data['MaNV'],
-//             $data['MaKH'],
-//             $data['MaCH'],
-//             $data['TongTien']
-//         );
+// --------------------------them hóa đon----------------------
+public function add($data) {
+    $this->conn->begin_transaction();
 
-//         if ($stmt->execute()) {
-//             return true;
-//         } else {
-//             error_log("Lỗi khi thêm hóa đơn: " . $stmt->error);
-//             return false;
-//         }
-//     } catch (Exception $e) {
-//         error_log("Lỗi khi thêm hóa đơn: " . $e->getMessage());
-//         return false;
-//     }
-// }
+    try {
+        // 1️⃣ Thêm hóa đơn
+        $sql = "INSERT INTO tbl_hoadonban (MaHD, NgayBan, MaNV, MaKH, MaCH, TongTien)
+                VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param(
+            "sssssd",
+            $data['MaHD'],
+            $data['NgayBan'],
+            $data['MaNV'],
+            $data['MaKH'],
+            $data['MaCH'],
+            $data['TongTien']
+        );
+
+        if (!$stmt->execute()) {
+            throw new Exception("Không thể thêm hóa đơn: " . $stmt->error);
+        }
+
+        // 2️⃣ Thêm chi tiết hóa đơn (nếu có)
+if (!empty($data['ChiTiet']) && is_array($data['ChiTiet'])) {
+    $insert = $this->conn->prepare(
+        "INSERT INTO tbl_chitiethoadon (MaHD, MaSP, SoLuong, DonGia)
+         VALUES (?, ?, ?, ?)"
+    );
+
+    // ⚠️ Thêm đoạn kiểm tra lỗi prepare ở đây
+    if (!$insert) {
+        die("❌ Lỗi SQL (prepare chi tiết): " . $this->conn->error);
+    }
+
+    foreach ($data['ChiTiet'] as $ct) {
+        $maSP = $ct['MaSP'];
+        $soLuong = (int)$ct['SoLuong'];
+        $donGia = (float)$ct['DonGia'];
+        
+        
+        $insert->bind_param("ssid", $data['MaHD'], $maSP, $soLuong, $donGia);
+
+        if (!$insert->execute()) {
+            throw new Exception("Không thể thêm chi tiết hóa đơn: " . $insert->error);
+        }
+    }
+}
+
+
+        $this->conn->commit();
+        return true;
+
+    } catch (Exception $e) {
+        $this->conn->rollback();
+        error_log("❌ Add hóa đơn lỗi: " . $e->getMessage());
+        return false;
+    }
+}
+
+
 
 
 }

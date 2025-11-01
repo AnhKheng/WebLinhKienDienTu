@@ -1,4 +1,5 @@
 <?php
+
 class Product {
     private $conn;
     private $table = "tbl_sanpham";
