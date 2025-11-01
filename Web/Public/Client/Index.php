@@ -46,7 +46,8 @@ if (isset($_GET['id'])) {
     </div>
 
     <div class="search-bar">
-      <select id="categorySelect" onchange="loadProducts()">
+      <select id="categorySelect">
+        <option value="featured">--- Danh mục nổi bật ---</option>
         <option value="">Tất cả danh mục</option>
         <?php
           $sql = "SELECT MaDM, TenDM FROM tbl_danhmuc";
@@ -175,5 +176,6 @@ if (isset($_GET['id'])) {
 
   <script src="assets/js/loginOverlay.js"></script>
   <script src="assets/js/loadProducts.js"></script>
+  <script src="assets/js/loadDetails.js"></script>
 </body>
 </html>
