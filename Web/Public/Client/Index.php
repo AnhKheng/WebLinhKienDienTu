@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include_once '../../API/Config/db_config.php';
 session_start();
 $khachhang = null;
@@ -31,7 +32,7 @@ if (isset($_GET['id'])) {
   <!-- JS -->
   <script src="https://unpkg.com/alpinejs" defer></script>
   <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/Style_main.css?v=9">
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=5">
   <link rel="stylesheet" href="assets/css/product_style.css">
   <link rel="icon" type="image/ico" href="../img/favicon.ico">
 </head>
@@ -95,7 +96,7 @@ if (isset($_GET['id'])) {
         Thông tin tài khoản
       </div>
       <div class="submenu-item">
-        <a href="Index.php?do=Logout_action">Đăng xuất</a>
+        <a href="WebsiteShop/Logout_action.php">Đăng xuất</a>
       </div>
     </div>
 
