@@ -34,4 +34,5 @@ $featured_categories = [
 <div class="product-section" id="searchResults" style="display: none;">
     <h2>Danh sách sản phẩm</h2>
     <div id="productContainer" class="product-grid"></div>
+    <div id="paginationContainer" class="pagination-main"></div>
 </div>
