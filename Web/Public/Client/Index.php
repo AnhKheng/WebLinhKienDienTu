@@ -32,8 +32,8 @@ if (isset($_GET['id'])) {
   <!-- JS -->
   <script src="https://unpkg.com/alpinejs" defer></script>
   <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/Style_main.css?v=5">
-  <link rel="stylesheet" href="assets/css/product_style.css">
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=18">
+  <link rel="stylesheet" href="assets/css/product_style.css?v=18">
   <link rel="icon" type="image/ico" href="../img/favicon.ico">
 </head>
 <body>
@@ -174,8 +174,8 @@ if (isset($_GET['id'])) {
     </div>
   </footer>
 
-  <script src="assets/js/loginOverlay.js"></script>
-  <script src="assets/js/loadProducts.js"></script>
-  <script src="assets/js/loadDetails.js"></script>
+  <script src="assets/js/loginOverlay.js?v=18"></script>
+  <script src="assets/js/loadProducts.js?v=18"></script>
+  <script src="assets/js/loadDetails.js?v=18"></script>
 </body>
 </html>

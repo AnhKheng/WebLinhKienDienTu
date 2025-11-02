@@ -14,12 +14,12 @@ if (empty($id)) {
     exit;
 }
 
+// === 1. LẤY SẢN PHẨM CHÍNH ===
 $sql = "SELECT MaSP, TenSP, DonGia, HinhAnh, MoTa FROM tbl_sanpham WHERE MaSP = ? LIMIT 1";
 $stmt = $connect->prepare($sql);
 $mota = '';
 
 if ($stmt === false) {
-    // Fallback: try without MoTa if column doesn't exist
     $sql2 = "SELECT MaSP, TenSP, DonGia, HinhAnh FROM tbl_sanpham WHERE MaSP = ? LIMIT 1";
     $stmt = $connect->prepare($sql2);
     if ($stmt === false) {
@@ -44,7 +44,7 @@ if (!$row) {
     exit;
 }
 
-// Tạo đối tượng sản phẩm để trả về
+// Tạo đối tượng sản phẩm chính
 $product_data = [
     'MaSP' => $row['MaSP'],
     'TenSP' => htmlspecialchars($row['TenSP']),
@@ -52,9 +52,27 @@ $product_data = [
     'HinhAnh' => $row['HinhAnh'],
     'MoTa' => $mota ?: '<em>Chưa có mô tả cho sản phẩm này.</em>'
 ];
-
-echo json_encode(['product' => $product_data, 'id' => $id]);
-
 $stmt->close();
+
+
+// === 2. LẤY SẢN PHẨM DỊCH VỤ (SP22 VÀ SP34) ===
+$services = [];
+// SỬA CÂU SQL: Thêm HinhAnh
+$sql_services = "SELECT MaSP, TenSP, DonGia, HinhAnh FROM tbl_sanpham WHERE MaSP = 'SP22' OR MaSP = 'SP34'";
+$res_services = $connect->query($sql_services);
+
+if ($res_services && $res_services->num_rows > 0) {
+    while ($service_row = $res_services->fetch_assoc()) {
+        $services[] = $service_row;
+    }
+}
+
+// === 3. TRẢ VỀ JSON (BAO GỒM CẢ DỊCH VỤ) ===
+echo json_encode([
+    'product' => $product_data, 
+    'services' => $services, // Thêm mảng services vào
+    'id' => $id
+]);
+
 $connect->close();
 ?>

@@ -191,10 +191,10 @@
 .product-grid {
     min-height: calc(100vh - 200px);
     padding: 20px;
-    display: flex;            /* Thêm dòng này */
-    flex-wrap: wrap;          /* Thêm dòng này */
-    gap: 20px;                /* Thêm khoảng cách giữa các card */
-    justify-content: flex-start; /* Canh trái các card, có thể dùng center nếu muốn căn giữa */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
 }
 
 
@@ -251,7 +251,7 @@
 
 .product-grid .product-card .btn-detail {
     margin: 0 6px 10px;
-    margin-top: auto;   /* Thêm dòng này */
+    margin-top: auto;
     margin-bottom: 10px;
     padding: 8px;
     background: #d10024;
@@ -357,6 +357,144 @@
     flex-direction: row;
     align-items: center;
     gap: 6px;
+}
+/* ================================== */
+/* CSS CHO DỊCH VỤ ĐI KÈM (TRANG DETAILS) */
+/* ================================== */
+.related-services {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.related-services h3 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.service-item {
+    display: flex;
+    align-items: center; 
+    gap: 8px;
+    background: #f9f9f9;
+    padding: 5px 10px; 
+    border-radius: 5px;
+    margin-bottom: 5px; 
+    border: 1px solid #eee;
+
+    /* == Cái này là click vào gói bảo hành == */
+    position: relative; /* Cần thiết để định vị dấu tích */
+    cursor: pointer; /* Biến con trỏ thành hình bàn tay */
+    transition: all 0.2s ease; /* Thêm hiệu ứng chuyển động mượt */
+}
+
+/* Thêm hiệu ứng hover nhẹ */
+.service-item:hover {
+    background: #f0f0f0;
+}
+
+/* == CSS KHI GÓI DỊCH VỤ ĐƯỢC CHỌN == */
+.service-item.selected {
+    background: #f9fff8;
+    border-color: #0300d1;
+}
+
+/* Dấu tích (ẩn mặc định) */
+.service-item::after {
+    font-family: "Font Awesome 6 Free", Arial, sans-serif; 
+    font-weight: 900;
+    content: '\f00c';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    color: #4200d1;
+    font-size: 40px;
+    opacity: 0; 
+    transform: translateY(-50%) scale(0.8);
+    transition: all 0.2s ease;
+}
+
+/* Hiển thị dấu tích khi .selected */
+.service-item.selected::after {
+    opacity: 1;
+    transform: translateY(-50%) scale(1); /* Hiện ra */
+}
+
+/* ================================== */
+/* Nút Mua ngay với Add vào giỏ */
+/* ================================== */
+.product-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    padding: 0 5px;
+}
+
+.product-actions button {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.buy-now-btn {
+    background-color: #ffffff;
+    color: #d10024;
+    border: 2px solid #d10024;
+}
+
+.buy-now-btn:hover {
+    background-color: #d10024;
+    color: #ffffff;
+}
+
+.add-to-cart-btn {
+    background-color: #ffffff;
+    color: #007bff;
+    border: 2px solid #007bff;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+/* == css của details ạ == */
+.service-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #eee;
+    flex-shrink: 0;
+}
+
+.service-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.service-item h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #d10024;
+}
+
+.service-item .price {
+    font-size: 15px;
+    font-weight: bold;
+    color: #555;
 }
 /* ===================================================== */
 /* KẾT THÚC – ĐỒNG BỘ, ĐẸP, NHIỀU CỘT */
