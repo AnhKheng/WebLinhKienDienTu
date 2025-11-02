@@ -52,6 +52,7 @@ function renderTable(products) {
         <td><span class="${statusClass}">${statusText}</span></td>
         <td><img class="img-thumbnail rounded-circle" src="${imgPath}" alt="${p.TenSP}" width="60" height="60"></td>
         <td>
+          <button class="btn-detail" onclick="viewProduct('${p.MaSP}')">Xem</button>
           <button class="btn-edit" onclick="editProduct('${p.MaSP}')">Sửa</button>
           <button class="btn-delete" onclick="deleteProduct('${p.MaSP}')">Xóa</button>
         </td>

@@ -20,6 +20,13 @@
             </div>
 
             <button type="submit" class="btn-login">ĐĂNG NHẬP</button>
+            <div class="google-login">
+                <a href="../../API/client/User/login-google.php">
+                    <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png"
+                        alt="Đăng nhập bằng Google"
+                        style="width: 220px; margin-top: 10px;">
+                </a>
+            </div>
 
             <div class="links">
                 <a href="#" onclick="closeLoginForm(); openRegisterForm(); return false;">Đăng ký</a>

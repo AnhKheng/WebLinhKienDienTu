@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include_once '../../API/Config/db_config.php';
 session_start();
 $khachhang = null;
@@ -31,7 +32,7 @@ if (isset($_GET['id'])) {
   <!-- JS -->
   <script src="https://unpkg.com/alpinejs" defer></script>
   <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/Style_main.css?v=9">
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=5">
   <link rel="stylesheet" href="assets/css/product_style.css">
   <link rel="icon" type="image/ico" href="../img/favicon.ico">
 </head>
@@ -45,7 +46,8 @@ if (isset($_GET['id'])) {
     </div>
 
     <div class="search-bar">
-      <select id="categorySelect" onchange="loadProducts()">
+      <select id="categorySelect">
+        <option value="featured">--- Danh mục nổi bật ---</option>
         <option value="">Tất cả danh mục</option>
         <?php
           $sql = "SELECT MaDM, TenDM FROM tbl_danhmuc";
@@ -95,7 +97,7 @@ if (isset($_GET['id'])) {
         Thông tin tài khoản
       </div>
       <div class="submenu-item">
-        <a href="Index.php?do=Logout_action">Đăng xuất</a>
+        <a href="WebsiteShop/Logout_action.php">Đăng xuất</a>
       </div>
     </div>
 
@@ -186,5 +188,6 @@ if (isset($_GET['id'])) {
 
   <script src="assets/js/loginOverlay.js"></script>
   <script src="assets/js/loadProducts.js"></script>
+  <script src="assets/js/loadDetails.js"></script>
 </body>
 </html>

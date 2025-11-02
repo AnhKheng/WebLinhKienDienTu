@@ -1,4 +1,6 @@
-/* ==== Toàn trang ==== */
+/* =========================================================
+   🌐 1️⃣ HIỂN THỊ & BỐ CỤC CƠ BẢN
+========================================================= */
 body {
   font-family: "Segoe UI", sans-serif;
   background-color: #f8f9fc;
@@ -6,13 +8,6 @@ body {
   color: #333;
 }
 
-/* ===== HIỆU ỨNG HIỆN POPUP ===== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* ==== Tiêu đề ==== */
 h2 {
   color: #4e73df;
   font-size: 24px;
@@ -20,407 +15,339 @@ h2 {
   margin-bottom: 20px;
   text-align: center;
 }
+h3{
+  text-align: center;
+  color: #4e73df;
+  margin-bottom: 20px;
+}
 
-/* ===== OVERLAY THÔNG BÁO ===== */
-#notifyOverlay {
-  display: none; /* Ẩn mặc định */
+/* Hiệu ứng xuất hiện */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Scrollbar */
+select::-webkit-scrollbar { width: 8px; }
+select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  table { font-size: 13px; }
+  td img { width: 45px; height: 45px; }
+  select, button { font-size: 13px; }
+  .btn-edit, .btn-delete { padding: 5px 8px; }
+}
+
+/* =========================================================
+   🪄 2️⃣ HIỆU ỨNG HIỂN THỊ & TƯƠNG TÁC
+========================================================= */
+.smooth-shadow { box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+
+/* Overlay mờ (popup/modal/notify) */
+#notifyOverlay,
+.popup,
+.modal-overlay,
+.modal {
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: rgba(0,0,0,0.5);
   justify-content: center;
   align-items: center;
   z-index: 2000;
 }
 
-.notify-box {
+/* Hiệu ứng hộp nội dung */
+.popup-content, .modal-box, .notify-box, .modal-content {
   background: #fff;
-  padding: 20px 30px;
   border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+  animation: fadeIn 0.3s ease;
+}
+
+/* =========================================================
+   💬 3️⃣ HIỂN THỊ THÔNG BÁO / POPUP / MODAL
+========================================================= */
+
+/* Hộp thông báo */
+.notify-box {
+  padding: 20px 30px;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   min-width: 300px;
 }
 
-.btn-confirm {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-.btn-confirm:hover {
-  background: #0056b3;
-}
 
-/* ===== NỀN POPUP (mờ toàn màn hình) ===== */
-.popup {
-  display: none; /* Ẩn mặc định */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Nền mờ */
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* ===== KHUNG NỘI DUNG POPUP ===== */
-.popup-content {
-  background: #ffffff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  width: 380px;
-  max-width: 90%;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
-  position: relative;
-  animation: fadeIn 0.3s ease;
-  font-family: "Segoe UI", sans-serif;
-}
-
-/* ===== TIÊU ĐỀ POPUP ===== */
-.popup-content h3 {
-  text-align: center;
-  color: #4e73df;
-  margin-bottom: 20px;
-}
-
-/* ===== NÚT ĐÓNG (X) ===== */
-.close {
+/* Nút đóng */
+.close, .modal-close {
   position: absolute;
-  top: 8px;
-  right: 12px;
+  top: 8px; right: 12px;
   font-size: 26px;
   font-weight: bold;
   color: #888;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.2s;
 }
-.close:hover {
-  color: #e74a3b;
+.close:hover, .modal-close:hover { color: #e74a3b; }
+
+/* Cấu trúc modal */
+#addModal .modal-content {
+  width: 550px;
+  padding: 25px;
+}
+#updateModal .popup-content {
+  width: 400px;
+  padding: 20px 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modal-content {
+  margin: auto;
+  padding: 20px 30px;
+  width: 400px;
 }
 
-/* ===== NỀN POPUP (Modal) ===== */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
+/* =========================================================
+   ✍️ 4️⃣ HÀNH ĐỘNG NHẬP LIỆU (FORM & INPUT)
+========================================================= */
+.modal-box input[type="text"],
+.product-table input,
+.form-group input,
+.customPriceInputs input {
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* ===== KHUNG NỘI DUNG POPUP (Modal) ===== */
-.modal-box {
-  background: #ffffff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  width: 380px;
-  max-width: 90%;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
-  position: relative;
-  animation: fadeIn 0.3s ease;
-  font-family: "Segoe UI", sans-serif;
-}
-
-/* ===== TIÊU ĐỀ POPUP (Modal) ===== */
-.modal-box h3 {
-  text-align: center;
-  color: #4e73df;
-  margin-bottom: 20px;
-}
-
-/* ===== NÚT ĐÓNG (X) ===== */
-.modal-close {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 26px;
-  font-weight: bold;
-  color: #888;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-.modal-close:hover {
-  color: #e74a3b;
-}
-
-/* ===== INPUT FORM ===== */
-.modal-box input[type="text"] {
-  width: 100%;
-  padding: 10px 12px;
+  padding: 8px 10px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
   outline: none;
-  transition: 0.2s ease;
+  transition: 0.2s;
 }
-.modal-box input[type="text"]:focus {
+.customPriceInputs input {
+  width: 100px;
+    padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+.modal-box input[type="text"]:focus,
+.product-table input:focus,
+.form-group input:focus {
   border-color: #4e73df;
   box-shadow: 0 0 4px rgba(78,115,223,0.3);
 }
-
-/* ===== NÚT SUBMIT ===== */
-.modal-box button[type="submit"] {
+.qty-input{
   width: 100%;
-  padding: 10px 0;
-  margin-top: 10px;
-  border: none;
-  border-radius: 8px;
-  background-color: #04AA6D;
-  color: white;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-.modal-box button[type="submit"]:hover {
-  background-color: #038e5c;
-  transform: translateY(-1px);
-}
-
-/* ==== Thanh lọc danh mục ==== */
-.filter-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.filter-bar label {
-  font-weight: 500;
-  color: #5a5c69;
-}
-
-/* Ô select (dropdown) */
-#categoryFilter {
-  padding: 8px 14px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   font-size: 14px;
-  border-radius: 8px;
-  border: 1px solid #d1d3e2;
-  background-color: #fff;
-  color: #333;
   outline: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: all 0.25s ease;
+  transition: 0.2s;
+}
+
+/* Select (lọc, chọn) */
+.select-filter, .product-table select {
+  padding: 8px 14px;
+  border: 1px solid #d1d3e2;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  transition: 0.25s;
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, #4e73df 50%), 
-                    linear-gradient(135deg, #4e73df 50%, transparent 50%);
-  background-position: calc(100% - 18px) calc(50% - 4px), calc(100% - 13px) calc(50% - 4px);
+  width: 200px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #4e73df 50%), 
+    linear-gradient(135deg, #4e73df 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 4px),
+                       calc(100% - 13px) calc(50% - 4px);
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
 }
-#categoryFilter:hover,
-#categoryFilter:focus {
+.select-filter:hover, .select-filter:focus {
   border-color: #4e73df;
-  box-shadow: 0 0 5px rgba(78, 115, 223, 0.4);
+  box-shadow: 0 0 5px rgba(78,115,223,0.4);
 }
 
-/* Nút lọc */
-.filter-bar button {
-  padding: 8px 18px;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 8px;
-  background-color: #4e73df;
+/* Form group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+.form-group label { font-weight: 600; margin-bottom: 6px; color: #444; }
+
+/* Tổng tiền */
+.total-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.total-section label { font-weight: 600; color: #333; }
+.total-section input {
+  width: 150px;
+  font-weight: 700;
+  text-align: right;
+  background-color: #e9ecef;
   border: none;
-  color: #fff;
-  cursor: pointer;
-  transition: 0.25s ease;
-  box-shadow: 0 2px 5px rgba(78, 115, 223, 0.3);
+  pointer-events: none;
 }
-.filter-bar button:hover {
-  background-color: #2e59d9;
-  box-shadow: 0 3px 7px rgba(46, 89, 217, 0.4);
-  transform: translateY(-1px);
+.filter-container, .table-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-block: 20px 25px; 
+  flex-basis: 100%;
+  width: 100%;    
 }
-.filter-container {
-  margin-bottom: 15px;
-}
-.filter-container label {
-  margin-right: 10px;
-}
-.filter-container input {
-  width: 100px;
-  margin-right: 10px;
-}
+
+/* =========================================================
+   🔘 5️⃣ NÚT & HÀNH ĐỘNG NGƯỜI DÙNG
+========================================================= */
+.btn-add,
+.btn-edit,
+.btn-delete,
+.btn-detail,
+.btn-save,
+.btn-remove,
+.btn-add-row,
+.btn-cancel,
+.btn-confirm,
 .sort-btn {
-  background-color: #007bff;
-  color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+  height: 35px;
+  padding: 6px 12px;
+  min-width: 60px;
+  margin: 4px
 }
-.sort-btn:hover {
-  background-color: #0056b3;
+
+/* Các nhóm nút hành động */
+.btn-add       { background: #4e73df; color: #fff; border-radius: 15px; width: 200px; height: 35px; margin: 20px auto; }
+.btn-add:hover { background: #2e59d9; transform: translateY(-1px); }
+
+.btn-edit       { background: #36b9cc; color: #fff; }
+.btn-edit:hover { background: #2c9faf; }
+
+.btn-delete       { background: #e74a3b; color: #fff; }
+.btn-delete:hover { background: #c0392b; }
+
+.btn-detail       { background: #f6c23e; color: #fff; }
+.btn-detail:hover { background: #d4a017; }
+
+.btn-save       { background: #2ecc71; color: #fff; }
+.btn-save:hover { background: #27ae60; }
+
+.btn-remove       { background-color: #e74c3c; color: #fff; }
+.btn-remove:hover { background-color: #c0392b; }
+
+.btn-add-row {
+  width: 60px;
+  background-color: #3D63D2; 
+  color: #fff; 
 }
+.btn-add-row:hover { background-color: #2e52b3; }
 
+.btn-cancel       { background: #6c757d; color: white; }
+.btn-cancel:hover { background: #5a6268; transform: translateY(-1px); }
 
+.btn-confirm       { background: #007bff; color: white; }
+.btn-confirm:hover { background: #0056b3; }
 
-/* ==== Bảng sản phẩm ==== */
-table {
+.sort-btn          { background-color: #007bff; color: white; }
+.sort-btn:hover    { background-color: #0056b3; }
+
+/* =========================================================
+   📊 6️⃣ HIỂN THỊ DỮ LIỆU (TABLE & CHI TIẾT)
+========================================================= */
+table, .product-table,.styled-table #chiTietTable {
   width: 100%;
-  text-align: center;
   border-collapse: collapse;
-  margin-top: 20px;
-  margin-bottom: 40px;
+  text-align: center;
   background-color: #fff;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  gap: 6px;
 }
+
 th {
   background-color: #4e73df;
   color: #fff;
+  padding: 12px;
   text-transform: uppercase;
   font-size: 13px;
-  font-weight: 600;
-  padding: 12px;
 }
+
 td {
   padding: 12px;
   border-bottom: 1px solid #e3e6f0;
-  font-size: 14px;
   color: #5a5c69;
 }
-tbody tr:nth-child(even) {
-  background-color: #f8f9fc;
-}
-tbody tr:hover {
-  background-color: #eef3ff;
-  transition: background 0.2s;
-}
+tbody tr:nth-child(even) { background-color: #f8f9fc; }
+tbody tr:hover { background-color: #eef3ff; }
 
-/* ==== Ảnh sản phẩm ==== */
+/* Bảng chi tiết trong popup */
+#chiTietTable th, #chiTietTable td { border: 1px solid #ccc; padding: 8px; }
+.product-table th { background-color: #3D63D2; color: #fff; }
+.product-table td { background-color: #fafafa; }
+.product-table tr:hover td { background-color: #f0f4ff; }
+
+/* Ảnh */
 td img {
-  width: 60px;
-  height: 60px;
+  width: 60px; height: 60px;
   object-fit: cover;
   border-radius: 6px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-/* ==== Trạng thái ==== */
-.status-active, .status-inactive {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #fff;
-  text-align: center;
+/* =========================================================
+   🧱 7️⃣ BỐ CỤC HÀNH ĐỘNG TRANG / LAYOUT TƯƠNG TÁC
+========================================================= */
+.invoice-add-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 10px 10px;
 }
-.status-active { background-color: #1cc88a; }
-.status-inactive { background-color: #e74a3b; }
+.top-row { display: grid; grid-template-columns: 50% 49%; gap: 10px; }
+.card { background: #fff; border-radius: 12px; padding: 20px; }
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 
-/* ==== Nút hành động ==== */
-.btn-filter {
-  background-color: #04AA6D;
-  border-radius: 5px;
-  color: white;
-  padding: 6px 10px;
-  font-size: 13px;
-  text-align: center;
+.form-actions,
+.table-actions,
+.modal-footer,
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+  gap: 10px;
 }
+.form-actions { justify-content: flex-end; gap: 8px; }
 
-.btn-add {
-  background-color: #4e73df;
-  border-radius: 15px;
-  color: white;
-  padding: 6px 10px;
-  text-align: center;
-  display: block;
-  font-size: 14px;
-  margin: 20px auto; 
-  border: none;
-  cursor: pointer;
-  transition: 0.3s ease;
-  width: 200px;
-  height: 35px;
-}
-.btn-add:hover {
-  background-color: #2e59d9;
-  transform: translateY(-1px);
-}
-.btn-edit,
-.btn-delete {
-  padding: 6px 10px;
-  border-radius: 5px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-.btn-edit {
-  background-color: #36b9cc;
-  color: #fff;
-  border: none;
-  margin-right: 5px;
-}
-.btn-edit:hover { background-color: #2c9faf; }
-.btn-delete {
-  background-color: #e74a3b;
-  color: #fff;
-  border: none;
-}
-.btn-delete:hover { background-color: #c0392b; }
-
-.btn-cancel {
-  background: #6c757d;          /* Màu xám trung tính */
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  margin-left: 10px;
-  transition: 0.3s ease;
-}
-
-.btn-cancel:hover {
-  background: #5a6268;          /* Tối hơn khi hover */
-  transform: translateY(-1px);  /* Hiệu ứng nổi nhẹ */
-}
-
-/* ==== Scrollbar cho dropdown ==== */
-select::-webkit-scrollbar { width: 8px; }
-select::-webkit-scrollbar-thumb {
-  background-color: #c1c1c1;
-  border-radius: 10px;
-}
-
-/* ==== Responsive ==== */
-@media (max-width: 768px) {
-  table { font-size: 13px; }
-  td img { width: 45px; height: 45px; }
-  select, button { font-size: 13px; }
-  .btn-edit, .btn-delete { padding: 5px 8px; }
-  .filter-bar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-/* ==== Cột mô tả sản phẩm ==== */
-.description-col {
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-/* ==== Cột hành động ==== */
+.bottom-row { width: 100%; }
+.table-wrapper { overflow-x: auto; margin-top: 5px; }
+ 
+/* ------------------------------định dạng cột-------------------------------- */
 .action-col {
-  min-width: 150px;
   justify-content: center;
+  width: 120px;
 }
-.price-col {
-  min-width: 120px;
+.add-col {
+  justify-content: center;
+  width: 80px;
+}
+.qty-col {
+  width: 100px;
 }
