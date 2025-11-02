@@ -243,6 +243,29 @@ h2 {
   box-shadow: 0 3px 7px rgba(46, 89, 217, 0.4);
   transform: translateY(-1px);
 }
+.filter-container {
+  margin-bottom: 15px;
+}
+.filter-container label {
+  margin-right: 10px;
+}
+.filter-container input {
+  width: 100px;
+  margin-right: 10px;
+}
+.sort-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.sort-btn:hover {
+  background-color: #0056b3;
+}
+
+
 
 /* ==== Bảng sản phẩm ==== */
 table {
@@ -309,6 +332,7 @@ td img {
   font-size: 13px;
   text-align: center;
 }
+
 .btn-add {
   background-color: #4e73df;
   border-radius: 15px;
@@ -317,8 +341,7 @@ td img {
   text-align: center;
   display: block;
   font-size: 14px;
-  margin: 10px 20px 20px 0;
-  float: right;
+  margin: 20px auto; 
   border: none;
   cursor: pointer;
   transition: 0.3s ease;
@@ -385,4 +408,19 @@ select::-webkit-scrollbar-thumb {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* ==== Cột mô tả sản phẩm ==== */
+.description-col {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* ==== Cột hành động ==== */
+.action-col {
+  min-width: 150px;
+  justify-content: center;
+}
+.price-col {
+  min-width: 120px;
 }

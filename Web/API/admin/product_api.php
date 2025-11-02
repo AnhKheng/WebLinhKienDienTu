@@ -6,8 +6,8 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Content-Type: application/json; charset=UTF-8");
 
-require_once "../../Config/db_config.php";
-require_once "../../../Includes/Products.php";
+require_once "../Config/db_config.php";
+require_once "../../Includes/Products.php";
 
 $product = new Product($connect);
 
@@ -17,13 +17,12 @@ $action = $_GET["action"] ?? "";
 // 🧩 Xử lý các hành động
 switch ($action) {
 
-    // ===== 1️⃣ Thêm sản phẩm =====
+    // ===== 1️ Thêm sản phẩm =====
     case "add":
         $data = json_decode(file_get_contents("php://input"), true);
         if (
-            isset($data["MaSP"], $data["TenSP"], $data["MaDM"], $data["DonGia"], $data["MoTa"], $data["TrangThai"])
+            isset($data["TenSP"], $data["MaDM"], $data["DonGia"], $data["MoTa"], $data["TrangThai"])
         ) {
-            $MaSP = $data["MaSP"];
             $TenSP = $data["TenSP"];
             $MaDM = $data["MaDM"];
             $DonGia = floatval($data["DonGia"]);
@@ -31,22 +30,27 @@ switch ($action) {
             $TrangThai = $data["TrangThai"];
             $HinhAnh = $data["HinhAnh"] ?? null;
 
-            if ($product->exists($MaSP)) {
-                echo json_encode(["status" => "error", "message" => "Mã sản phẩm đã tồn tại."]);
-                exit;
-            }
+            // Tự sinh mã sản phẩm bên class
+            $MaSP = $product->add($TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh);
 
-            $result = $product->add($MaSP, $TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh);
-            echo json_encode([
-                "status" => $result ? "success" : "error",
-                "message" => $result ? "Thêm sản phẩm thành công." : "Không thể thêm sản phẩm."
-            ]);
+            if ($MaSP) {
+                echo json_encode([
+                    "status" => "success",
+                    "message" => "Thêm sản phẩm thành công.",
+                    "MaSP" => $MaSP
+                ]);
+            } else {
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Không thể thêm sản phẩm."
+                ]);
+            }
         } else {
             echo json_encode(["status" => "error", "message" => "Thiếu dữ liệu đầu vào."]);
         }
         break;
 
-    // ===== 2️⃣ Cập nhật sản phẩm =====
+    // ===== 2️ Cập nhật sản phẩm =====
     case "update":
         $data = json_decode(file_get_contents("php://input"), true);
         if (
@@ -70,7 +74,7 @@ switch ($action) {
         }
         break;
 
-    // ===== 3️⃣ Xóa sản phẩm =====
+    // ===== 3️ Xóa sản phẩm =====
     case "delete":
         $data = json_decode(file_get_contents("php://input"), true);
         if (!isset($data["MaSP"])) {
@@ -92,7 +96,7 @@ switch ($action) {
         ]);
         break;
 
-    // ===== 4️⃣ Xem chi tiết 1 sản phẩm =====
+    // ===== 4️ Xem chi tiết 1 sản phẩm =====
     case "getOne":
         if (isset($_GET["MaSP"])) {
             $MaSP = $_GET["MaSP"];
@@ -103,7 +107,7 @@ switch ($action) {
         }
         break;
 
-    // ===== 5️⃣ Lấy tất cả sản phẩm =====
+    // ===== 5️ Lấy tất cả sản phẩm =====
     case "getAll":
         $data = $product->getAll();
         if (!empty($data)) {
@@ -117,7 +121,7 @@ switch ($action) {
         }
         break;
 
-    // ===== 6️⃣ Phân trang =====
+    // ===== 6️ Phân trang =====
     case "paginate":
         $limit = isset($_GET["limit"]) ? intval($_GET["limit"]) : 10;
         $page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
@@ -134,8 +138,31 @@ switch ($action) {
             "data" => $data
         ]);
         break;
+    case "filter":
+        $MaDM = $_GET["MaDM"] ?? null;
+        $min  = $_GET["min"] ?? null;
+        $max  = $_GET["max"] ?? null;
 
-    // ===== 7️⃣ Mặc định =====
+        $data = $product->filter($MaDM, $min, $max);
+        echo json_encode([
+            "status" => "success",
+            "count"  => count($data),
+            "data"   => $data
+        ]);
+        break;
+
+    // ===== 8️ Sắp xếp theo giá =====
+    case "sort":
+        $order = $_GET["order"] ?? "asc"; // asc | desc
+        $data = $product->sortByPrice($order);
+        echo json_encode([
+            "status" => "success",
+            "order"  => $order,
+            "data"   => $data
+        ]);
+        break;
+
+    // ===== 0 Mặc định =====
     default:
         echo json_encode([
             "status" => "error",

@@ -1,25 +1,59 @@
 <?php
 include_once '../../Config/db_config.php';
 
+header('Content-Type: application/json; charset=utf-8');
+
 if (!isset($connect) || $connect->connect_error) {
-    http_response_code(500);
-    echo "<p style='color:red;'>Lỗi hệ thống.</p>";
+    echo json_encode(['error' => 'Lỗi hệ thống']);
     exit;
 }
 
-$category = isset($_GET['category']) ? trim($_GET['category']) : '';
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$category = $_GET['category'] ?? '';
+$search = $_GET['search'] ?? '';
+$page = max(1, (int)($_GET['page'] ?? 1));
 $featured = isset($_GET['featured']) && $_GET['featured'] == '1';
+$limit_per_page = 4; // mỗi trang 4 sản phẩm
 
-// XÁC ĐỊNH LÀ DANH MỤC NỔI BẬT
 $isFeatured = $featured 
               && in_array($category, ['DM01', 'DM05', 'DM12', 'DM03']) 
               && empty($search);
 
-$limit = $isFeatured ? 4 : 100; // 100 = hiển thị hết
+$limit = $isFeatured ? $limit_per_page : 100;
 $offset = ($page - 1) * $limit;
 
+// === ĐẾM TỔNG SẢN PHẨM ===
+$count_sql = "SELECT COUNT(*) as total FROM tbl_sanpham WHERE 1=1";
+$count_params = [];
+$count_types = '';
+
+if (!empty($category)) {
+    $count_sql .= " AND MaDM = ?";
+    $count_params[] = $category;
+    $count_types .= 's';
+}
+if (!empty($search)) {
+    $count_sql .= " AND TenSP LIKE ?";
+    $count_params[] = '%' . $search . '%';
+    $count_types .= 's';
+}
+
+$count_stmt = $connect->prepare($count_sql);
+if ($count_stmt && !empty($count_types)) {
+    $count_stmt->bind_param($count_types, ...$count_params);
+}
+if ($count_stmt) $count_stmt->execute();
+$count_result = $count_stmt ? $count_stmt->get_result() : null;
+$total_products = $count_result ? $count_result->fetch_assoc()['total'] : 0;
+
+// Tính tổng số trang
+if ($isFeatured) {
+    $total_pages = ceil($total_products / $limit_per_page);
+    $total_pages = max(1, $total_pages);
+} else {
+    $total_pages = 1;
+}
+
+// === LẤY SẢN PHẨM ===
 $sql = "SELECT MaSP, TenSP, DonGia, HinhAnh FROM tbl_sanpham WHERE 1=1";
 $params = [];
 $types = '';
@@ -42,7 +76,7 @@ $types .= 'ii';
 
 $stmt = $connect->prepare($sql);
 if ($stmt === false) {
-    echo "<p style='color:red;'>Lỗi truy vấn.</p>";
+    echo json_encode(['error' => 'Lỗi truy vấn']);
     exit;
 }
 
@@ -50,7 +84,8 @@ $stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// === DANH MỤC NỔI BẬT: 4 SẢN PHẨM NGANG ===
+// === TẠO HTML ===
+ob_start();
 if ($isFeatured) {
     echo '<div class="product-slider">';
     if ($result->num_rows > 0) {
@@ -72,8 +107,6 @@ if ($isFeatured) {
         }
     }
     echo '</div>';
-
-// === TÌM KIẾM HOẶC DANH MỤC THƯỜNG: GRID ===
 } else {
     echo '<div class="product-grid">';
     if ($result->num_rows > 0) {
@@ -98,7 +131,17 @@ if ($isFeatured) {
     }
     echo '</div>';
 }
+$html = ob_get_clean();
+
+// === TRẢ VỀ JSON ===
+echo json_encode([
+    'html' => $html,
+    'currentPage' => $page,
+    'totalPages' => $total_pages,
+    'totalProducts' => $total_products
+]);
 
 $stmt->close();
+if (isset($count_stmt)) $count_stmt->close();
 $connect->close();
 ?>

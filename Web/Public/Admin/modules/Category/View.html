@@ -25,16 +25,13 @@
     </div>
   </div>
       <h2>Danh mục sản phẩm</h2>
-      <button class="btn-add" id="btnOpenForm">Thêm danh mục</button>
+
     <!-- POPUP THÊM (đặt trực tiếp dưới body, không nằm trong container khác) -->
     <div id="categoryAddModal" class="modal-overlay" aria-hidden="true">
       <div class="modal-box">
         <span id="closeAddModal" class="modal-close" role="button" aria-label="Close">&times;</span>
         <h3>Thêm danh mục sản phẩm</h3>
         <form id="formAddCategory" action="../../API/admin/Category/Add.php" method="post" enctype="multipart/form-data">
-          <label>Mã danh mục:</label><br>
-          <input type="text" name="idDM" required><br><br>
-
           <label>Tên danh mục:</label><br>
           <input type="text" name="nameDM" required><br><br>
 
@@ -52,7 +49,7 @@
       <input type="hidden" name="idDM_old" id="edit_idDM_old">
 
       <label>Mã danh mục:</label><br>
-      <input type="text" name="idDM" id="edit_idDM" required><br><br>
+      <input type="text" name="idDM" id="edit_idDM" required readonly><br><br>
 
       <label>Tên danh mục:</label><br>
       <input type="text" name="nameDM" id="edit_nameDM" required><br><br>
@@ -74,5 +71,6 @@
 
         </tbody>
     </table>
+    <button class="btn-add" id="btnOpenForm">Thêm danh mục</button>
     <script src="assets/js/category.js"></script>
 </body>
