@@ -30,10 +30,22 @@ switch ($action) {
   case 'update':
     $input = json_decode(file_get_contents("php://input"), true);
     $updated = $hoadon->update($input);
+
     if ($updated) {
-      echo json_encode(["status" => "success", "message" => "Cập nhật thành công"]);
+        echo json_encode(["status" => "success", "message" => "Cập nhật thành công"]);
     } else {
-      echo json_encode(["status" => "error", "message" => "Cập nhật thất bại"]);
+        echo json_encode(["status" => "error", "message" => "Cập nhật thất bại"]);
+    }
+    break;
+// them
+  case 'add':
+    $input = json_decode(file_get_contents("php://input"), true);
+    $added = $hoadon->add($input);
+
+    if ($added) {
+        echo json_encode(["status" => "success", "message" => "Thêm hóa đơn thành công"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Thêm hóa đơn thất bại"]);
     }
     break;
 
@@ -46,8 +58,8 @@ switch ($action) {
       echo json_encode(["status" => "error", "message" => "Xóa thất bại"]);
     }
     break;
-    //xem chi tiet hoa don
-    // ✅ Xem chi tiết các sản phẩm trong hóa đơn
+    
+    //Xem chi tiết các sản phẩm trong hóa đơn
 case 'viewDetail':
   $maHD = $_GET['MaHD'] ?? '';
   if (empty($maHD)) {

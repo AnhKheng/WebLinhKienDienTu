@@ -20,6 +20,7 @@ $stmt = $connect->prepare($sql);
 $mota = '';
 
 if ($stmt === false) {
+    // Fallback: try without MoTa if column doesn't exist
     $sql2 = "SELECT MaSP, TenSP, DonGia, HinhAnh FROM tbl_sanpham WHERE MaSP = ? LIMIT 1";
     $stmt = $connect->prepare($sql2);
     if ($stmt === false) {

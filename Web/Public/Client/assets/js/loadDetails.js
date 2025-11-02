@@ -61,7 +61,7 @@
                             <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
                         </button>
                     </div>
-                    </div>
+                </div>
                 <div style="flex:1;min-width:280px;">
                     <h2 style="margin-top:0;">${ten}</h2>
                     <p class="price" style="font-size:20px;color:#d10024;font-weight:700;">${gia}</p>
@@ -116,7 +116,6 @@
                 // ==============================================
                 // == THÊM MỚI: XỬ LÝ CLICK CHO NÚT MUA HÀNG ==
                 // ==============================================
-                // Vì các nút được thêm DYNAMICALLY, ta cần lắng nghe SAU KHI HTML đã được chèn.
                 const buyNowBtn = container.querySelector('.buy-now-btn');
                 const addToCartBtn = container.querySelector('.add-to-cart-btn');
 

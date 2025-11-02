@@ -30,8 +30,8 @@
           <span>Hóa đơn</span>
         </button>
         <ul class="submenu">
-          <li><a href="#"><i class="fas fa-list"></i> Danh sách hóa đơn</a></li>
-          <li><a href="#"><i class="fas fa-plus"></i> Thêm hóa đơn</a></li>
+          <li><a href="index.php?module=invoice&page=invoice"><i class="fas fa-list"></i> Danh sách hóa đơn</a></li>
+          <li><a href="index.php?module=invoice&page=invoice_add"><i class="fas fa-plus"></i> Thêm hóa đơn</a></li>
         </ul>
       </li>
 
