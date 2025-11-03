@@ -28,17 +28,13 @@ if (isset($_GET['id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AguTech - Shop Linh Kiện Điện Tử</title>
 
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- JS -->
   <script src="https://unpkg.com/alpinejs" defer></script>
-  <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/Style_main.css?v=5">
-  <link rel="stylesheet" href="assets/css/product_style.css">
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=18">
+  <link rel="stylesheet" href="assets/css/product_style.css?v=18">
   <link rel="icon" type="image/ico" href="../img/favicon.ico">
 </head>
 <body>
-  <!-- ======= Header ======= -->
   <header class="main-header">
     <div class="logo">
       <a href="Index.php?do=Home">
@@ -85,7 +81,6 @@ if (isset($_GET['id'])) {
       $tenKH = $khachhang ? $khachhang['TenKH'] : 'Khách hàng';
     ?>
 
-    <!-- Avatar + menu dropdown -->
     <div id="taskbar" @click="openTieuDe = !openTieuDe" class="menu-item-flex">
       <img src="assets/img/user.png" class="menu-icon" alt="Avatar">
     </div>
@@ -103,7 +98,6 @@ if (isset($_GET['id'])) {
     </div>
 
     <?php else: ?>
-      <!-- Nếu chưa đăng nhập -->
       <div class="login-btn">
         <a href="#" onclick="openLoginForm()"><i class="fa-regular fa-user fa-bounce"></i></a>
       </div>
@@ -111,7 +105,6 @@ if (isset($_GET['id'])) {
   </div>
 </header>
 
-  <!-- ======= Menu ======= -->
   <nav class="main-nav">
     <ul>
       <li><a href="Index.php?do=Home">Trang chủ</a></li>
@@ -123,7 +116,6 @@ if (isset($_GET['id'])) {
     </ul>
   </nav>
 
-  <!-- ======= Main Layout ======= -->
   <div class="main">
     <aside class="sidebar">
       <div class="sidebar-header">
@@ -149,8 +141,8 @@ if (isset($_GET['id'])) {
     </aside>
 
     <div class="main-content">
-      <?php			
-        $do = isset($_GET['do']) ? $_GET['do'] : "Home";			
+      <?php     
+        $do = isset($_GET['do']) ? $_GET['do'] : "Home";     
         include "WebsiteShop/" . $do . ".php";
       ?>
     </div>
@@ -175,7 +167,6 @@ if (isset($_GET['id'])) {
     </div>
   </div>
 
-  <!-- ======= Footer ======= -->
   <footer class="site-footer">
     <div class="footer-info">
       <p>────────────────────────────</p>
@@ -187,8 +178,8 @@ if (isset($_GET['id'])) {
     </div>
   </footer>
 
-  <script src="assets/js/loginOverlay.js"></script>
-  <script src="assets/js/loadProducts.js"></script>
-  <script src="assets/js/loadDetails.js"></script>
+  <script src="assets/js/loginOverlay.js?v=20"></script>
+  <script src="assets/js/loadProducts.js?v=20"></script>
+  <script src="assets/js/loadDetails.js?v=20"></script>
 </body>
 </html>

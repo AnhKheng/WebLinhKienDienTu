@@ -38,12 +38,16 @@
 
           <div class="form-group">
             <label>Mã khách hàng</label>
-            <input type="text" id="maKH" placeholder="VD: KH01">
+            <select id="maKH" class="select-filter">
+              <option value="">-- Chọn khách hàng --</option>
+            </select>
           </div>
 
           <div class="form-group">
             <label>Mã cửa hàng</label>
-            <input type="text" id="maCH" placeholder="VD: CH01">
+            <select id="maCH" class="select-filter" onchange="filterByStore()">
+              <option value="">-- Chọn cửa hàng --</option>
+            </select>
           </div>
         </div>
 
@@ -106,7 +110,5 @@
 </div>
 
 <script src="assets/js/invoice_add.js"></script>
-
-
 </body>
 </html>
