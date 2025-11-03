@@ -1,31 +1,10 @@
 let currentPages = {};
 let currentSearchPage = 1;
 
-function formatCurrency(number) {
-    if (isNaN(number)) return '0₫';
-    return new Intl.NumberFormat('vi-VN').format(number) + '₫';
-}
+// ĐÃ XÓA hàm formatCurrency()
+// ĐÃ XÓA hàm createProductCardHTML()
 
-
-function createProductCardHTML(product) {
-    const hinh = product.HinhAnh 
-        ? `../img/${product.HinhAnh}` 
-        : '../img/default_product.png';
-        
-    return `
-    <div class="product-card">
-        <img src="${hinh}" 
-             alt="${product.TenSP}" 
-             loading="lazy"
-             onerror="this.src='../img/default_product.png'">
-        <h3>${product.TenSP}</h3>
-        <p class="price">${formatCurrency(product.DonGia)}</p>
-        <a href="Index.php?do=Details&id=${product.MaSP}" class="btn-detail">
-            Chi tiết sản phẩm
-        </a>
-    </div>`;
-}
-
+// Load sản phẩm nổi bật
 function loadFeaturedProducts(category, page = 1) {
     const slider = document.querySelector(`.product-slider[data-category="${category}"]`);
     const pagination = document.querySelector(`.pagination-mini[data-category="${category}"]`);
@@ -44,6 +23,8 @@ function loadFeaturedProducts(category, page = 1) {
             if (data.products && data.products.length > 0) {
                 let html = '';
                 data.products.forEach(product => {
+                    // Hàm createProductCardHTML() này bây giờ là hàm global
+                    // do file Home.php cung cấp
                     html += createProductCardHTML(product);
                 });
                 slider.innerHTML = html;
@@ -158,6 +139,8 @@ function displaySearchResults(category, search, page = 1) {
             if (data.products && data.products.length > 0) {
                 let html = '';
                 data.products.forEach(product => {
+                    // Hàm createProductCardHTML() này bây giờ là hàm global
+                    // do file Home.php cung cấp
                     html += createProductCardHTML(product);
                 });
                 container.innerHTML = html;
