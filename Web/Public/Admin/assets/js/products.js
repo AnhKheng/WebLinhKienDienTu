@@ -1,7 +1,11 @@
 let allProducts = [];
 let filteredProducts = [];
 
-// 🧩 Tải dữ liệu
+// ====== CẤU HÌNH PHÂN TRANG ======
+let currentPage = 1;
+const rowsPerPage = 10; // số sản phẩm mỗi trang
+
+// 🧩 Tải dữ liệu từ API
 async function loadProducts() {
   try {
     const response = await fetch("../../API/admin/product_api.php?action=getAll");
@@ -26,17 +30,26 @@ async function loadProducts() {
   }
 }
 
-// 🧩 Hiển thị bảng
+// 🧩 Hiển thị bảng (có phân trang)
 function renderTable(products) {
   const tbody = document.querySelector("#productTable tbody");
   tbody.innerHTML = "";
 
   if (!products.length) {
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Không có sản phẩm phù hợp.</td></tr>`;
+    const pagination = document.getElementById("pagination");
+    if (pagination) pagination.innerHTML = "";
     return;
   }
 
-  products.forEach(p => {
+ 
+  setupPagination(products);
+
+  const start = (currentPage - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const pageProducts = products.slice(start, end);
+
+  pageProducts.forEach(p => {
     const isActive = p.TrangThai == 1;
     const statusText = isActive ? "Còn hàng" : "Hết hàng";
     const statusClass = isActive ? "status-active" : "status-inactive";
@@ -109,6 +122,7 @@ function applyFilter() {
     return matchCat && matchPrice;
   });
 
+  currentPage = 1; // về trang đầu
   renderTable(filteredProducts);
 }
 
@@ -124,18 +138,95 @@ function filterByPrice() {
     return matchCat && matchPrice;
   });
 
+  currentPage = 1;
   renderTable(filteredProducts);
 }
 
-// 🧩 Sắp xếp theo giá (trên danh sách đang lọc)
+// 🧩 Sắp xếp theo giá
 function sortByPrice(order) {
-  const sorted = [...filteredProducts].sort((a, b) =>
+  filteredProducts.sort((a, b) =>
     order === "asc" ? a.DonGia - b.DonGia : b.DonGia - a.DonGia
   );
-  renderTable(sorted);
+  renderTable(filteredProducts);
 }
 
-// 🧩 Thông báo popup
+// 🧩 Phân trang
+function setupPagination(products) {
+  const pagination = document.getElementById("pagination");
+  if (!pagination) return;
+
+  const totalPages = Math.ceil(products.length / rowsPerPage);
+  pagination.innerHTML = "";
+
+  if (totalPages <= 1) return;
+
+  const maxButtons = 5; // tối đa nút hiển thị cùng lúc
+  let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+  let endPage = startPage + maxButtons - 1;
+
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(1, endPage - maxButtons + 1);
+  }
+  const firstBtn = document.createElement("button");
+  firstBtn.textContent = "« Trang đầu";
+  firstBtn.disabled = currentPage === 1;
+  firstBtn.addEventListener("click", () => {
+    if (currentPage !== 1) {
+      currentPage = 1;
+      renderTable(filteredProducts);
+    }
+  });
+  pagination.appendChild(firstBtn);
+  // Nút "Trước"
+  const prevBtn = document.createElement("button");
+  prevBtn.textContent = "« Trước";
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderTable(filteredProducts);
+    }
+  });
+  pagination.appendChild(prevBtn);
+
+  // Nút số trang
+  for (let i = startPage; i <= endPage; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    if (i === currentPage) btn.classList.add("active");
+    btn.addEventListener("click", () => {
+      currentPage = i;
+      renderTable(filteredProducts);
+    });
+    pagination.appendChild(btn);
+  }
+
+  // Nút "Sau"
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = "Sau »";
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.addEventListener("click", () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderTable(filteredProducts);
+    }
+  });
+  pagination.appendChild(nextBtn);
+  
+  const lastBtn = document.createElement("button");
+  lastBtn.textContent = "Trang cuối »";
+  lastBtn.disabled = currentPage === totalPages;
+  lastBtn.addEventListener("click", () => {
+    if (currentPage !== totalPages) {
+      currentPage = totalPages;
+      renderTable(filteredProducts);
+    }
+  });
+  pagination.appendChild(lastBtn);
+}
+
+// 🧩 Hiển thị thông báo popup
 function showNotify(message) {
   const notifyOverlay = document.getElementById("notifyOverlay");
   const notifyMessage = document.getElementById("notifyMessage");
