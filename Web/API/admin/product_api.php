@@ -198,8 +198,53 @@ switch ($action) {
     }
     break;
 
+        // ===== 10️ Tìm kiếm sản phẩm theo tên (có điều kiện cửa hàng) =====
+    case "search":
+        $keyword = $_GET["keyword"] ?? "";
+        $MaCH = $_GET["MaCH"] ?? ""; // có thể rỗng nếu không chọn cửa hàng
 
+        if (empty($keyword)) {
+            echo json_encode(["status" => "error", "message" => "Thiếu từ khóa tìm kiếm"]);
+            exit;
+        }
 
+        // Nếu có mã cửa hàng => chỉ lấy sản phẩm thuộc cửa hàng đó
+        if (!empty($MaCH)) {
+            $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh,
+                           k.SoLuongTon AS TonKho
+                    FROM tbl_sanpham sp
+                    JOIN tbl_danhmuc dm ON sp.MaDM = dm.MaDM
+                    JOIN tbl_kho k ON sp.MaSP = k.MaSP
+                    WHERE k.MaCH = ? AND sp.TenSP LIKE ? AND k.SoLuongTon > 0";
+            $stmt = $connect->prepare($sql);
+            $likeKeyword = "%$keyword%";
+            $stmt->bind_param("ss", $MaCH, $likeKeyword);
+        } else {
+            // Không chọn cửa hàng => tìm trên toàn hệ thống
+            $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh
+                    FROM tbl_sanpham sp
+                    JOIN tbl_danhmuc dm ON sp.MaDM = dm.MaDM
+                    WHERE sp.TenSP LIKE ?";
+            $stmt = $connect->prepare($sql);
+            $likeKeyword = "%$keyword%";
+            $stmt->bind_param("s", $likeKeyword);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            $data = [];
+            while ($row = $result->fetch_assoc()) {
+                $row["DonGia"] = floatval($row["DonGia"]);
+                if (isset($row["TonKho"])) $row["TonKho"] = intval($row["TonKho"]);
+                $data[] = $row;
+            }
+            echo json_encode(["status" => "success", "count" => count($data), "data" => $data]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Không tìm thấy sản phẩm nào."]);
+        }
+        break;
 
     // ===== 0 Mặc định =====
     default:
