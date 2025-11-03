@@ -3,12 +3,13 @@
 </head>
 <body>
     <div class="account-container">
-        <div class="logo">
-            <a href = "#"><img src="../img/logo.png" alt="Logo" /></a>
-        </div>
-        <h2 class="title">ĐĂNG NHẬP</h2>
-
         <form action="Index.php?do=Login_action" method="post" class="login-form">
+            <!-- <div class="logo">
+                <a href = "#"><img src="../img/logo.png" alt="Logo" /></a>
+            </div> -->
+
+            <h2 class="title">ĐĂNG NHẬP</h2>
+
             <div class="form-group">
                 <label for="username">Tên tài khoản</label>
                 <input type="text" name="Username" placeholder="Số điện thoại / Email" required>

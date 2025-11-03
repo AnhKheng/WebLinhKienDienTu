@@ -1,6 +1,7 @@
 <?php
 ob_start();
 include_once '../../API/Config/db_config.php';
+include_once 'WebsiteShop/ThuVien.php';
 session_start();
 $khachhang = null;
 $loi = null;
