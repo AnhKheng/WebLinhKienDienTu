@@ -158,3 +158,28 @@ CREATE TABLE IF NOT EXISTS `tbl_taikhoankhachhang` (
   CONSTRAINT `fk_taikhoankhachhang_khachhang`
     FOREIGN KEY (`MaKH`) REFERENCES `tbl_khachhang` (`MaKH`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `tbl_giohang` (
+  `MaGH` INT AUTO_INCREMENT PRIMARY KEY,
+  `MaTKKH` INT NOT NULL,  -- Khóa ngoại đến tài khoản khách hàng
+  `NgayTao` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `TrangThai` ENUM('active', 'checked_out', 'cancelled') DEFAULT 'active',
+  CONSTRAINT `fk_giohang_taikhoan`
+    FOREIGN KEY (`MaTKKH`) REFERENCES `tbl_taikhoankhachhang` (`MaTKKH`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `tbl_chitietgiohang` (
+  `MaGH` INT NOT NULL,
+  `MaSP` VARCHAR(10) CHARACTER SET utf8 NOT NULL,
+  `SoLuong` INT DEFAULT 1,
+  PRIMARY KEY (`MaGH`, `MaSP`),
+  CONSTRAINT `fk_ctgh_giohang`
+    FOREIGN KEY (`MaGH`) REFERENCES `tbl_giohang` (`MaGH`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_ctgh_sanpham`
+    FOREIGN KEY (`MaSP`) REFERENCES `tbl_sanpham` (`MaSP`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
