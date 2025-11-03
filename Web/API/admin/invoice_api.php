@@ -42,10 +42,14 @@ switch ($action) {
     $input = json_decode(file_get_contents("php://input"), true);
     $added = $hoadon->add($input);
 
-    if ($added) {
-        echo json_encode(["status" => "success", "message" => "Thêm hóa đơn thành công"]);
+    if ($added === true) {
+    echo json_encode(["status" => "success", "message" => "Thêm hóa đơn thành công"]);
     } else {
-        echo json_encode(["status" => "error", "message" => "Thêm hóa đơn thất bại"]);
+        echo json_encode([
+            "status" => "error",
+            "message" => "Thêm hóa đơn thất bại",
+            "error_detail" => $hoadon->lastError ?? "Không rõ nguyên nhân"
+        ]);
     }
     break;
 

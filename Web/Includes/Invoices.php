@@ -1,11 +1,13 @@
 
 <?php
+
 ob_clean();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 class HoaDon {
+    public $lastError = "";
     private $conn;
     private $table = "tbl_hoadonban";
 
@@ -20,10 +22,7 @@ class HoaDon {
                        hd.MaCH, 
                        hd.TongTien
                 FROM tbl_hoadonban hd ";
-                // -- LEFT JOIN tbl_nhanvien nv ON hd.MaNV = nv.MaNV
-                // -- LEFT JOIN tbl_khachhang kh ON hd.MaKH = kh.MaKH
-                // -- LEFT JOIN tbl_cuahang ch ON hd.MaCH = ch.MaCH
-                // -- ORDER BY hd.NgayBan DESC";
+                
                 
         $result = $this->conn->query($sql);
         return $result;
@@ -145,12 +144,13 @@ public function delete($maHD) {
     }
 }
 
-// --------------------------them hóa đon----------------------
+// --------------------------thêm hóa đơn----------------------
+// --------------------------thêm hóa đơn----------------------
 public function add($data) {
     $this->conn->begin_transaction();
 
     try {
-        // 1️⃣ Thêm hóa đơn
+        // 1️⃣ Thêm hóa đơn mới
         $sql = "INSERT INTO tbl_hoadonban (MaHD, NgayBan, MaNV, MaKH, MaCH, TongTien)
                 VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
@@ -165,48 +165,75 @@ public function add($data) {
         );
 
         if (!$stmt->execute()) {
-            throw new Exception("Không thể thêm hóa đơn: " . $stmt->error);
+            throw new Exception("❌ Không thể thêm hóa đơn: " . $stmt->error);
         }
 
-        // 2️⃣ Thêm chi tiết hóa đơn (nếu có)
-if (!empty($data['ChiTiet']) && is_array($data['ChiTiet'])) {
-    $insert = $this->conn->prepare(
-        "INSERT INTO tbl_chitiethoadon (MaHD, MaSP, SoLuong, DonGia)
-         VALUES (?, ?, ?, ?)"
-    );
+        // 2️⃣ Thêm chi tiết hóa đơn + trừ tồn kho
+        if (!empty($data['ChiTiet']) && is_array($data['ChiTiet'])) {
+            // Chuẩn bị câu lệnh thêm chi tiết
+            $insert = $this->conn->prepare(
+                "INSERT INTO tbl_chitiethoadon (MaHD, MaSP, SoLuong, DonGia)
+                 VALUES (?, ?, ?, ?)"
+            );
 
-    // ⚠️ Thêm đoạn kiểm tra lỗi prepare ở đây
-    if (!$insert) {
-        die("❌ Lỗi SQL (prepare chi tiết): " . $this->conn->error);
-    }
+            // Chuẩn bị câu lệnh kiểm tra và cập nhật tồn kho
+            $checkTon = $this->conn->prepare(
+                "SELECT SoLuongTon FROM tbl_kho WHERE MaSP = ? AND MaCH = ?"
+            );
 
-    foreach ($data['ChiTiet'] as $ct) {
-        $maSP = $ct['MaSP'];
-        $soLuong = (int)$ct['SoLuong'];
-        $donGia = (float)$ct['DonGia'];
-        
-        
-        $insert->bind_param("ssid", $data['MaHD'], $maSP, $soLuong, $donGia);
+            $updateTon = $this->conn->prepare(
+                "UPDATE tbl_kho 
+                 SET SoLuongTon = SoLuongTon - ? 
+                 WHERE MaSP = ? AND MaCH = ? AND SoLuongTon >= ?"
+            );
 
-        if (!$insert->execute()) {
-            throw new Exception("Không thể thêm chi tiết hóa đơn: " . $insert->error);
+            if (!$insert || !$checkTon || !$updateTon) {
+                throw new Exception("❌ Lỗi prepare SQL: " . $this->conn->error);
+            }
+
+            // Duyệt từng sản phẩm trong hóa đơn
+            foreach ($data['ChiTiet'] as $ct) {
+                $maSP = $ct['MaSP'];
+                $soLuong = (int)$ct['SoLuong'];
+                $donGia = (float)$ct['DonGia'];
+
+                // 2.1️⃣ Kiểm tra tồn kho
+                $checkTon->bind_param("ss", $maSP, $data['MaCH']);
+                $checkTon->execute();
+                $res = $checkTon->get_result();
+                $row = $res->fetch_assoc();
+                $ton = $row['SoLuongTon'] ?? 0;
+
+                if ($ton < $soLuong) {
+                    throw new Exception("⚠️ Sản phẩm $maSP không đủ tồn kho (còn $ton, cần $soLuong).");
+                }
+
+                // 2.2️⃣ Thêm chi tiết hóa đơn
+                $insert->bind_param("ssid", $data['MaHD'], $maSP, $soLuong, $donGia);
+                if (!$insert->execute()) {
+                    throw new Exception("❌ Không thể thêm chi tiết hóa đơn: " . $insert->error);
+                }
+
+                // 2.3️⃣ Trừ tồn kho
+                $updateTon->bind_param("issi", $soLuong, $maSP, $data['MaCH'], $soLuong);
+                if (!$updateTon->execute() || $updateTon->affected_rows === 0) {
+                    throw new Exception("❌ Không thể cập nhật tồn kho cho sản phẩm $maSP.");
+                }
+            }
         }
-    }
-}
 
-
+        // ✅ Commit nếu mọi thứ OK
         $this->conn->commit();
         return true;
 
     } catch (Exception $e) {
+        // ❌ Rollback nếu có lỗi
         $this->conn->rollback();
+        $this->lastError = $e->getMessage();
         error_log("❌ Add hóa đơn lỗi: " . $e->getMessage());
         return false;
     }
 }
-
-
-
 
 }
 ?>

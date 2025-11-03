@@ -5,11 +5,67 @@ const API_PRODUCT = "../../API/admin/product_api.php?action=getAll";
 const API_INVOICE = "../../API/admin/invoice_api.php?action=add";
 
 let productList = [];
+let allProducts = [];
+let storeProducts = [];
 let invoiceDetails = [];
 
-// ===============================
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Mặc định ngày hôm nay
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("ngayBan").value = today;
+
+  // 2. Load danh sách khách hàng + cửa hàng
+  loadCustomers();
+  loadStores();
+});
+
+// ======== LOAD KHÁCH HÀNG ========
+
+async function loadCustomers() {
+  try {
+    const res = await fetch("../../API/admin/customer_api.php?action=getAll");
+    const data = await res.json();
+
+    if (data.status === "success" && Array.isArray(data.data)) {
+      const select = document.getElementById("maKH");
+      select.innerHTML = `<option value="">-- Chọn khách hàng --</option>`;
+      data.data.forEach(kh => {
+        select.innerHTML += `<option value="${kh.MaKH}">${kh.TenKH} (${kh.MaKH})</option>`;
+      });
+    } else {
+      console.error("Không tải được danh sách khách hàng");
+    }
+  } catch (error) {
+    console.error("Lỗi loadCustomers:", error);
+  }
+}
+
+
+// ======== LOAD CỬA HÀNG ========
+
+async function loadStores() {
+  try {
+    const res = await fetch("../../API/admin/stores_api.php?action=getAll");
+    const data = await res.json();
+
+    if (data.status === "success" && Array.isArray(data.data)) {
+      const select = document.getElementById("maCH");
+      select.innerHTML = `<option value="">-- Chọn cửa hàng --</option>`;
+      data.data.forEach(ch => {
+        select.innerHTML += `<option value="${ch.MaCH}">${ch.TenCH} (${ch.MaCH})</option>`;
+      });
+    } else {
+      console.error("Không tải được danh sách cửa hàng");
+    }
+  } catch (error) {
+    console.error("Lỗi loadStores:", error);
+  }
+}
+
 // 1️⃣ Tải danh mục sản phẩm
-// ===============================
+
 async function loadCategories() {
   try {
     const res = await fetch(API_CATEGORY);
@@ -37,10 +93,11 @@ async function loadProducts() {
     const res = await fetch(API_PRODUCT);
     const data = await res.json();
 
-    // Kiểm tra đúng định dạng mà API trả về
     if (data.status === "success" && Array.isArray(data.data)) {
       productList = data.data;
+      allProducts = data.data; // ✅ thêm dòng này để lọc danh mục hoạt động
       renderProducts(productList);
+    
     } else {
       console.error("Không có dữ liệu sản phẩm.");
     }
@@ -48,6 +105,7 @@ async function loadProducts() {
     console.error("Lỗi loadProducts:", error);
   }
 }
+
 
 
 // ===============================
@@ -60,7 +118,7 @@ function renderProducts(list) {
   list.forEach(sp => {
     tbody.innerHTML += `
       <tr>
-        <td><img src="../../uploads/${sp.HinhAnh || 'no_image.png'}" class="thumb"></td>
+        <td><img src="../img/${sp.HinhAnh || 'no_image.png'}" class="thumb"></td>
         <td>${sp.TenSP}</td>
         <td>${sp.TenDM}</td>
         <td>${sp.DonGia.toLocaleString()}₫</td>
@@ -76,12 +134,45 @@ function renderProducts(list) {
 // 4 Lọc sản phẩm theo danh mục
 
 function filterByCategory() {
-  const selected = document.getElementById("categoryFilter").value;
-  if (!selected) return renderProducts(productList);
-  const filtered = productList.filter(sp => sp.MaDM === selected);
-  renderProducts(filtered);
-}
+  const select = document.getElementById("categoryFilter");
+  const storeSelect = document.getElementById("maCH");
+  if (!select) {
+    console.warn("Không tìm thấy #categoryFilter");
+    return;
+  }
 
+  const selectedCategory = select.value;                      // ví dụ "DM01" hoặc ""
+  const selectedStore = storeSelect ? storeSelect.value : ""; // ví dụ "CH01" hoặc ""
+
+  // chọn nguồn để lọc: nếu đã chọn cửa hàng dùng storeProducts (chứa TonKho), ngược lại dùng allProducts (hoặc productList)
+  const sourceList = (selectedStore && storeProducts && storeProducts.length>0) ? storeProducts : (allProducts && allProducts.length>0 ? allProducts : productList);
+
+  if (!selectedCategory || selectedCategory === "all") {
+    renderProducts(sourceList);
+    return;
+  }
+
+  // so khớp linh hoạt: so sánh string, đồng thời thử so với TenDM nếu MaDM không khớp
+  const filtered = sourceList.filter(sp => {
+    const maMatch = String(sp.MaDM).trim() === String(selectedCategory).trim();
+    const tenMatch = String(sp.TenDM || "").trim().toLowerCase() === String(select.options[select.selectedIndex].text || "").trim().toLowerCase();
+    return maMatch || tenMatch;
+  });
+
+  // DEBUG: kết quả lọc
+  console.log("filtered.length:", filtered.length);
+  console.table(filtered.slice(0,12).map(p=>({MaSP:p.MaSP,MaDM:p.MaDM,TenDM:p.TenDM,TonKho:p.TonKho})));
+
+  renderProducts(filtered);
+
+  console.log("📦 sourceList sample:", sourceList.map(sp => ({
+  MaSP: sp.MaSP,
+  MaDM: sp.MaDM,
+  TenDM: sp.TenDM
+})));
+console.log("🎯 selectedCategory:", selectedCategory);
+
+}
 
 // 5 Thêm sản phẩm vào chi tiết hóa đơn
 
@@ -105,6 +196,7 @@ function addToInvoice(maSP) {
 
   renderInvoiceDetail();
 }
+
 
 
 // 6 Hiển thị bảng chi tiết hóa đơn
@@ -188,6 +280,50 @@ async function saveInvoice() {
     console.error("Lỗi khi lưu hóa đơn:", error);
   }
 }
+
+// 10 ======== LỌC SẢN PHẨM THEO CỬA HÀNG ========
+
+async function filterByStore() {
+  const maCH = document.getElementById("maCH").value;
+  if (!maCH) {
+    storeProducts = [];
+    renderProducts(allProducts);
+    return;
+  }
+
+  try {
+    const res = await fetch(`../../API/admin/product_api.php?action=getByStore&MaCH=${maCH}`);
+    const text = await res.text(); // 👈 đọc thô để debug lỗi PHP
+    let data;
+
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error("❌ Lỗi JSON parse, server trả về:", text);
+      alert("⚠️ Server trả về HTML (có thể PHP bị lỗi). Kiểm tra lại file product_api.php!");
+      return;
+    }
+
+    if (data.status === "success" && Array.isArray(data.data)) {
+      storeProducts = data.data;
+      console.log(`✅ Đã tải ${storeProducts.length} sản phẩm của cửa hàng ${maCH}`);
+      renderProducts(storeProducts);
+
+      // ✅ Nếu người dùng đã chọn danh mục, lọc lại ngay
+      const selectedCategory = document.getElementById("categoryFilter").value;
+      if (selectedCategory) filterByCategory();
+
+    } else {
+      console.warn("⚠️ API trả về rỗng hoặc sai định dạng", data);
+      storeProducts = [];
+      renderProducts([]);
+    }
+
+  } catch (err) {
+    console.error("❌ Lỗi khi gọi filterByStore:", err);
+  }
+}
+
 
 
 //Gọi khi trang load
