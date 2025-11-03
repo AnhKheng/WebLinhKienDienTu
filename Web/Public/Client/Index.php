@@ -164,8 +164,8 @@ if (isset($_GET['id'])) {
     </div>
   </footer>
 
-  <script src="assets/js/loginOverlay.js?v=18"></script>
-  <script src="assets/js/loadProducts.js?v=18"></script>
-  <script src="assets/js/loadDetails.js?v=18"></script>
+  <script src="assets/js/loginOverlay.js?v=20"></script>
+  <script src="assets/js/loadProducts.js?v=20"></script>
+  <script src="assets/js/loadDetails.js?v=20"></script>
 </body>
 </html>
