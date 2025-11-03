@@ -162,6 +162,45 @@ switch ($action) {
         ]);
         break;
 
+    //=======9 Lấy theo mã CH=========
+    case "getByStore":
+    $MaCH = $_GET["MaCH"] ?? '';
+
+    if (empty($MaCH)) {
+        echo json_encode(["status" => "error", "message" => "Thiếu mã cửa hàng"]);
+        exit;
+    }
+
+    // ✅ Dùng prepared statement đúng cách, KHÔNG có dấu ' ' bao quanh ?
+    $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh, 
+                   k.SoLuongTon AS TonKho
+            FROM tbl_sanpham sp
+            JOIN tbl_danhmuc dm ON sp.MaDM = dm.MaDM
+            JOIN tbl_kho k ON sp.MaSP = k.MaSP
+            WHERE k.MaCH = ? AND k.SoLuongTon > 0";
+
+    $stmt = $connect->prepare($sql);
+    $stmt->bind_param("s", $MaCH);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if ($result && $result->num_rows > 0) {
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $row["DonGia"] = floatval($row["DonGia"]);
+            $row["TonKho"] = intval($row["TonKho"]);
+            $data[] = $row;
+        }
+        echo json_encode(["status" => "success", "data" => $data]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Không có sản phẩm tồn trong cửa hàng này."]);
+    }
+    break;
+
+
+
+
     // ===== 0 Mặc định =====
     default:
         echo json_encode([

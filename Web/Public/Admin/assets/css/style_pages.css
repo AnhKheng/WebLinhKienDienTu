@@ -61,10 +61,15 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
 
 /* Hiệu ứng hộp nội dung */
 .popup-content, .modal-box, .notify-box, .modal-content {
-  background: #fff;
+  background: #ffffff;
+  padding: 25px 30px;
   border-radius: 12px;
+  width: 380px;
+  max-width: 90%;
   box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+  position: relative;
   animation: fadeIn 0.3s ease;
+  font-family: "Segoe UI", sans-serif;
 }
 
 /* =========================================================
@@ -123,6 +128,7 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
   font-size: 14px;
   outline: none;
   transition: 0.2s;
+  gap: 5px;
 }
 .customPriceInputs input {
   width: 100px;
@@ -207,6 +213,15 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
   flex-basis: 100%;
   width: 100%;    
 }
+.pagination-container {
+  margin-top: 15px;
+  text-align: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  display: flex;
+  justify-content: center;
+}
+
 
 /* =========================================================
    🔘 5️⃣ NÚT & HÀNH ĐỘNG NGƯỜI DÙNG
@@ -220,7 +235,8 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
 .btn-add-row,
 .btn-cancel,
 .btn-confirm,
-.sort-btn {
+.sort-btn,
+.modal-box button{
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -233,7 +249,7 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
 }
 
 /* Các nhóm nút hành động */
-.btn-add       { background: #4e73df; color: #fff; border-radius: 15px; width: 200px; height: 35px; margin: 20px auto; }
+.btn-add       { display: block;   background: #4e73df; color: #fff; border-radius: 15px; width: 200px; height: 35px; margin: 20px auto; }
 .btn-add:hover { background: #2e59d9; transform: translateY(-1px); }
 
 .btn-edit       { background: #36b9cc; color: #fff; }
@@ -266,6 +282,32 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
 
 .sort-btn          { background-color: #007bff; color: white; }
 .sort-btn:hover    { background-color: #0056b3; }
+.pagination-container button {
+  border: none;
+  border-radius: 8px;
+  background-color: #4e73df;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+  height: 35px;
+  padding: 6px 12px;
+  min-width: 60px;
+  margin: 4px
+}
+.pagination-container button:hover {
+  background-color: #2e59d9;
+}
+
+.pagination-container button.active { 
+  background-color: #1cc88a;
+}
+.modal-box button {
+  display: block;   background: #4e73df; color: #fff; border-radius: 15px; width: 200px; height: 35px; margin: 20px auto; 
+}
+.modal-box button:hover {
+  background-color: #224abe;
+}
+
 
 /* =========================================================
    📊 6️⃣ HIỂN THỊ DỮ LIỆU (TABLE & CHI TIẾT)
@@ -351,3 +393,7 @@ td img {
 .qty-col {
   width: 100px;
 }
+
+
+
+
