@@ -1,55 +1,58 @@
-(function() {
+function initDetailPage(id) {
+    
+    const container = document.getElementById('product-detail-container');
+    const productNameEl = document.getElementById('product-name');
+    const productPriceEl = document.getElementById('product-price');
+    const productImageEl = document.getElementById('product-image');
+    const productDescEl = document.getElementById('product-description');
+    
+    const btnAddToCart = document.getElementById('btn-add-to-cart');
+    const btnBuyNow = document.getElementById('btn-buy-now');
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('product-detail-container');
-        
-        if (!container) {
-            return; 
-        }
+    if (!container) return;
 
-        container.addEventListener('click', function(e) {
-            const serviceItem = e.target.closest('.service-item');
-            if (!serviceItem) {
+    if (!id) {
+        container.innerHTML = '<p style="color:red; text-align:center;">Không tìm thấy mã sản phẩm.</p>';
+        return;
+    }
+
+    fetch(`../../API/client/Product/Detail.php?id=${encodeURIComponent(id)}`)
+        .then(r => r.json())
+        .then(data => {
+            if (data.error || !data.product) {
+                container.innerHTML = '<p style="color:red;">' + (data.error || 'Lỗi tải sản phẩm') + '</p>';
                 return;
             }
-            serviceItem.classList.toggle('selected');
+
+            const product = data.product;
+            const price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.DonGia);
+
+            if (productNameEl) productNameEl.textContent = product.TenSP;
+            if (productPriceEl) productPriceEl.textContent = price;
+            if (productDescEl) productDescEl.innerHTML = product.MoTa;
+            
+            if (productImageEl) {
+                productImageEl.src = product.HinhAnh ? `../img/${product.HinhAnh}` : '../img/placeholder.png';
+                productImageEl.alt = product.TenSP;
+                productImageEl.onerror = () => { productImageEl.src = '../img/placeholder.png'; };
+            }
+            
+            // ĐÃ XÓA LOGIC .classList
+            if (btnAddToCart) {
+                btnAddToCart.addEventListener('click', function() {
+                    alert('Sản phẩm "' + product.TenSP + '" đã được thêm vào giỏ hàng.');
+                });
+            }
+
+            // ĐÃ XÓA LOGIC .classList
+            if (btnBuyNow) {
+                btnBuyNow.addEventListener('click', function() {
+                    alert('Chức năng "Mua ngay" sẽ được triển khai sau. Sản phẩm: ' + product.TenSP);
+                });
+            }
+        })
+        .catch(err => {
+            container.innerHTML = '<p style="color:red;">Lỗi kết nối khi tải chi tiết.</p>';
+            console.error(err);
         });
-
-        const id = container.dataset.id;
-        if (!id) {
-            container.innerHTML = '<p style="color:red;">Lỗi: Không có ID sản phẩm.</p>';
-            return;
-        }
-        
-        fetch(`../../API/client/Product/Detail.php?id=${encodeURIComponent(id)}`)
-            .then(r => r.json())
-            .then(data => {
-                if (data.error || !data.product) {
-                    container.innerHTML = '<p style="color:red;">' + (data.error || 'Lỗi tải sản phẩm') + '</p>';
-                    return;
-                }
-                
-                container.innerHTML = createDetailHTML(data.product, data.services); 
-
-                const buyNowBtn = container.querySelector('.buy-now-btn');
-                const addToCartBtn = container.querySelector('.add-to-cart-btn');
-
-                if (buyNowBtn) {
-                    buyNowBtn.addEventListener('click', function() {
-                        alert('Chức năng "Mua ngay" sẽ được triển khai sau. Sản phẩm: ' + data.product.TenSP);
-                    });
-                }
-
-                if (addToCartBtn) {
-                    addToCartBtn.addEventListener('click', function() {
-                        alert('Sản phẩm "' + data.product.TenSP + '" đã được thêm vào giỏ hàng.');
-                    });
-                }
-            })
-            .catch(err => {
-                container.innerHTML = '<p style="color:red;">Lỗi kết nối khi tải chi tiết.</p>';
-                console.error(err);
-            });
-    });
-
-})();
+}
