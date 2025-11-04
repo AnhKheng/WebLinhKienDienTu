@@ -37,12 +37,6 @@ function initDetailPage(id) {
                 productImageEl.onerror = () => { productImageEl.src = '../img/placeholder.png'; };
             }
             
-            // ĐÃ XÓA LOGIC .classList
-            if (btnAddToCart) {
-                btnAddToCart.addEventListener('click', function() {
-                    alert('Sản phẩm "' + product.TenSP + '" đã được thêm vào giỏ hàng.');
-                });
-            }
 
             // ĐÃ XÓA LOGIC .classList
             if (btnBuyNow) {
