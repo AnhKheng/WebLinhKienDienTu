@@ -8,7 +8,7 @@
     </div>
     
 
-    <form action="Index.php?do=Register_action" method="post" class="register-form">
+    <form action="../../API/client/User/Register_action.php" method="post" class="register-form">
         <h2 class="title">ĐĂNG KÝ</h2>
 
         <div class="form-group">

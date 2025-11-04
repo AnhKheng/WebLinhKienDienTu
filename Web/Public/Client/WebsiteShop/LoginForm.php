@@ -3,7 +3,7 @@
 </head>
 <body>
     <div class="account-container">
-        <form action="Index.php?do=Login_action" method="post" class="login-form">
+        <form action="../../API/client/User/Login_action.php" method="post" class="login-form">
             <!-- <div class="logo">
                 <a href = "#"><img src="../img/logo.png" alt="Logo" /></a>
             </div> -->

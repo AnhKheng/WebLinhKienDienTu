@@ -1,4 +1,7 @@
 <?php
+	require_once '../../Config/db_config.php';
+	session_start();
+	include_once '../../../Public/Client/WebsiteShop/ThuVien.php';
 	// Lấy thông tin từ FORM
 	$TenDangNhap = $_POST['Username'];
 	$MatKhau = $_POST['Password'];
@@ -34,7 +37,7 @@
 
 			
 			// Chuyển hướng về trang index.php
-			echo "<script>window.location.href = 'Index.php';</script>";
+			echo "<script>window.location.href = '../../../Public/Client/Index.php';</script>";
 
 		
 		}

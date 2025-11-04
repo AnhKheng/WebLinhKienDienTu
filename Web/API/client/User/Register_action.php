@@ -1,4 +1,7 @@
 <?php
+	require_once '../../Config/db_config.php';
+	session_start();
+	include_once '../../../Public/Client/WebsiteShop/ThuVien.php';
 	// Lấy thông tin từ FORM
 	$HoVaTen = $_POST['name'];
 	$TenDangNhap = $_POST['username'];
@@ -62,7 +65,7 @@
             $themtkkh = $connect->query($sql_themtkkh);
 
             if($themtkkh)
-				ThongBao("Thêm tài khoản thành công!");
+				ThongBao("Thêm tài khoản khách hàng thành công!");
 			else
 				ThongBaoLoi($connect->error);
 		}
