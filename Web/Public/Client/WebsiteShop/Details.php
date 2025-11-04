@@ -17,9 +17,10 @@ $product_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
         </div>
 
         <div class="action-buttons">
-            <button id="btn-add-to-cart" class="btn-primary">
+            <button id="btn-add-to-cart" class="btn-primary" data-id="<?php echo htmlspecialchars($product_id); ?>">
                 <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
             </button>
+
             <button id="btn-buy-now" class="btn-secondary">
                 <i class="fa fa-bolt"></i> Mua ngay
             </button>

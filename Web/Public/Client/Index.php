@@ -167,5 +167,6 @@ if (isset($_GET['id'])) {
   <script src="assets/js/loginOverlay.js?v=19"></script>
   <script src="assets/js/loadProducts.js?v=22"></script>
   <script src="assets/js/loadDetails.js?v=22"></script>
+  <script src="assets/js/addCart.js?v=22"></script>
 </body>
 </html>
