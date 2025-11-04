@@ -1,11 +1,58 @@
+// ==========================
+// ⚙️ CẤU HÌNH BIẾN TOÀN CỤC
+// ==========================
 let allProducts = [];
 let filteredProducts = [];
 
-// ====== CẤU HÌNH PHÂN TRANG ======
 let currentPage = 1;
-const rowsPerPage = 10; // số sản phẩm mỗi trang
+const rowsPerPage = 10;
 
-// 🧩 Tải dữ liệu từ API
+// ==========================
+// 🧩 HÀM DÙNG CHUNG
+// ==========================
+
+// Hiển thị thông báo popup
+function showNotify(message) {
+  const notifyOverlay = document.getElementById("notifyOverlay");
+  const notifyMessage = document.getElementById("notifyMessage");
+  if (!notifyOverlay || !notifyMessage) return;
+  notifyMessage.textContent = message;
+  notifyOverlay.style.display = "flex";
+}
+
+// Ẩn popup thông báo
+function hideNotify() {
+  const notifyOverlay = document.getElementById("notifyOverlay");
+  if (notifyOverlay) notifyOverlay.style.display = "none";
+}
+
+// ======== 🔹 HÀM DÙNG CHUNG MỞ/ĐÓNG POPUP (MODAL) =========
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.style.display = "flex";
+    modal.setAttribute("aria-hidden", "false");
+  }
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+// Đóng popup khi click ra ngoài
+window.addEventListener("click", (e) => {
+  document.querySelectorAll(".modal-overlay").forEach((modal) => {
+    if (e.target === modal) closeModal(modal.id);
+  });
+});
+
+// ==========================
+// 🧩 LOAD SẢN PHẨM TỪ API
+// ==========================
 async function loadProducts() {
   try {
     const response = await fetch("../../API/admin/product_api.php?action=getAll");
@@ -30,19 +77,20 @@ async function loadProducts() {
   }
 }
 
-// 🧩 Hiển thị bảng (có phân trang)
+// ==========================
+// 🧩 HIỂN THỊ BẢNG + PHÂN TRANG
+// ==========================
 function renderTable(products) {
   const tbody = document.querySelector("#productTable tbody");
+  const pagination = document.getElementById("pagination");
   tbody.innerHTML = "";
 
   if (!products.length) {
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Không có sản phẩm phù hợp.</td></tr>`;
-    const pagination = document.getElementById("pagination");
     if (pagination) pagination.innerHTML = "";
     return;
   }
 
- 
   setupPagination(products);
 
   const start = (currentPage - 1) * rowsPerPage;
@@ -75,7 +123,9 @@ function renderTable(products) {
   });
 }
 
-// 🧩 Sinh danh mục
+// ==========================
+// 🧩 TẠO DANH MỤC
+// ==========================
 function renderCategoryOptions(products) {
   const select = document.getElementById("categoryFilter");
   select.innerHTML = '<option value="all">Tất cả</option>';
@@ -88,7 +138,9 @@ function renderCategoryOptions(products) {
   });
 }
 
-// 🧩 Khi người dùng chọn loại khoảng giá
+// ==========================
+// 🧩 LỌC THEO GIÁ + DANH MỤC
+// ==========================
 function onPriceRangeChange() {
   const value = document.getElementById("priceRange").value;
   const customInputs = document.getElementById("customPriceInputs");
@@ -96,11 +148,10 @@ function onPriceRangeChange() {
     customInputs.style.display = "inline";
   } else {
     customInputs.style.display = "none";
-    applyFilter(); // lọc ngay khi chọn khoảng giá có sẵn
+    applyFilter();
   }
 }
 
-// 🧩 Lọc theo danh mục + khoảng giá
 function applyFilter() {
   const selectedCat = document.getElementById("categoryFilter").value;
   const priceRange = document.getElementById("priceRange").value;
@@ -122,11 +173,10 @@ function applyFilter() {
     return matchCat && matchPrice;
   });
 
-  currentPage = 1; // về trang đầu
+  currentPage = 1;
   renderTable(filteredProducts);
 }
 
-// 🧩 Lọc tùy chỉnh (từ input)
 function filterByPrice() {
   const min = parseFloat(document.getElementById("minPrice").value) || 0;
   const max = parseFloat(document.getElementById("maxPrice").value) || Infinity;
@@ -142,7 +192,9 @@ function filterByPrice() {
   renderTable(filteredProducts);
 }
 
-// 🧩 Sắp xếp theo giá
+// ==========================
+// 🧩 SẮP XẾP THEO GIÁ
+// ==========================
 function sortByPrice(order) {
   filteredProducts.sort((a, b) =>
     order === "asc" ? a.DonGia - b.DonGia : b.DonGia - a.DonGia
@@ -150,7 +202,9 @@ function sortByPrice(order) {
   renderTable(filteredProducts);
 }
 
-// 🧩 Phân trang
+// ==========================
+// 🧩 PHÂN TRANG
+// ==========================
 function setupPagination(products) {
   const pagination = document.getElementById("pagination");
   if (!pagination) return;
@@ -160,7 +214,7 @@ function setupPagination(products) {
 
   if (totalPages <= 1) return;
 
-  const maxButtons = 5; // tối đa nút hiển thị cùng lúc
+  const maxButtons = 5;
   let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
   let endPage = startPage + maxButtons - 1;
 
@@ -168,29 +222,25 @@ function setupPagination(products) {
     endPage = totalPages;
     startPage = Math.max(1, endPage - maxButtons + 1);
   }
-  const firstBtn = document.createElement("button");
-  firstBtn.textContent = "« Trang đầu";
-  firstBtn.disabled = currentPage === 1;
-  firstBtn.addEventListener("click", () => {
-    if (currentPage !== 1) {
-      currentPage = 1;
-      renderTable(filteredProducts);
-    }
-  });
-  pagination.appendChild(firstBtn);
-  // Nút "Trước"
-  const prevBtn = document.createElement("button");
-  prevBtn.textContent = "« Trước";
-  prevBtn.disabled = currentPage === 1;
-  prevBtn.addEventListener("click", () => {
-    if (currentPage > 1) {
-      currentPage--;
-      renderTable(filteredProducts);
-    }
-  });
-  pagination.appendChild(prevBtn);
 
-  // Nút số trang
+  const makeButton = (text, disabled, handler) => {
+    const btn = document.createElement("button");
+    btn.textContent = text;
+    btn.disabled = disabled;
+    btn.addEventListener("click", handler);
+    pagination.appendChild(btn);
+  };
+
+  makeButton("« Trang đầu", currentPage === 1, () => {
+    currentPage = 1;
+    renderTable(filteredProducts);
+  });
+
+  makeButton("« Trước", currentPage === 1, () => {
+    if (currentPage > 1) currentPage--;
+    renderTable(filteredProducts);
+  });
+
   for (let i = startPage; i <= endPage; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
@@ -202,40 +252,135 @@ function setupPagination(products) {
     pagination.appendChild(btn);
   }
 
-  // Nút "Sau"
-  const nextBtn = document.createElement("button");
-  nextBtn.textContent = "Sau »";
-  nextBtn.disabled = currentPage === totalPages;
-  nextBtn.addEventListener("click", () => {
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderTable(filteredProducts);
-    }
+  makeButton("Sau »", currentPage === totalPages, () => {
+    if (currentPage < totalPages) currentPage++;
+    renderTable(filteredProducts);
   });
-  pagination.appendChild(nextBtn);
-  
-  const lastBtn = document.createElement("button");
-  lastBtn.textContent = "Trang cuối »";
-  lastBtn.disabled = currentPage === totalPages;
-  lastBtn.addEventListener("click", () => {
-    if (currentPage !== totalPages) {
-      currentPage = totalPages;
-      renderTable(filteredProducts);
-    }
+
+  makeButton("Trang cuối »", currentPage === totalPages, () => {
+    currentPage = totalPages;
+    renderTable(filteredProducts);
   });
-  pagination.appendChild(lastBtn);
 }
 
-// 🧩 Hiển thị thông báo popup
-function showNotify(message) {
-  const notifyOverlay = document.getElementById("notifyOverlay");
-  const notifyMessage = document.getElementById("notifyMessage");
-  if (!notifyOverlay || !notifyMessage) return;
-  notifyMessage.textContent = message;
-  notifyOverlay.style.display = "flex";
+// ==========================
+// 🧩 XEM CHI TIẾT SẢN PHẨM
+// ==========================
+async function viewProduct(maSP) {
+  try {
+    const response = await fetch(`../../API/admin/product_api.php?action=getOne&MaSP=${encodeURIComponent(maSP)}`);
+    const result = await response.json();
+
+    if (result.status === "success" && result.data) {
+      const p = result.data;
+
+      document.getElementById("detail_idSP").value = p.MaSP || "";
+      document.getElementById("detail_nameSP").value = p.TenSP || "";
+      document.getElementById("detail_category").value = p.TenDM || p.MaDM || "";
+      document.getElementById("detail_price").value = `${Number(p.DonGia).toLocaleString("vi-VN")} ₫` || "";
+      document.getElementById("detail_description").value = p.MoTa || "";
+      document.getElementById("detail_status").value =
+        p.TrangThai == 1 || p.TrangThai === "Hoạt động" ? "Còn hàng" : "Hết hàng";
+
+      const img = document.getElementById("detail_image");
+      img.src = p.HinhAnh ? `../img/${p.HinhAnh}` : "../img/no-image.png";
+      img.alt = p.TenSP || "Hình sản phẩm";
+
+      openModal("productDetailModal");
+    } else {
+      showNotify(result.message || "Không thể tải chi tiết sản phẩm.");
+    }
+  } catch (error) {
+    console.error("Lỗi khi tải chi tiết sản phẩm:", error);
+    showNotify("Không thể kết nối đến API.");
+  }
 }
 
-// 🧩 Load khi khởi động
+// ==========================
+// 🧩 SỬA SẢN PHẨM
+// ==========================
+async function editProduct(maSP) {
+  try {
+    const response = await fetch(`../../API/admin/product_api.php?action=getOne&MaSP=${encodeURIComponent(maSP)}`);
+    const result = await response.json();
+
+    if (result.status === "success" && result.data) {
+      const p = result.data;
+
+      document.getElementById("edit_idSP").value = p.MaSP || "";
+      document.getElementById("edit_nameSP").value = p.TenSP || "";
+      document.getElementById("edit_price").value = p.DonGia || "";
+      document.getElementById("edit_description").value = p.MoTa || "";
+      document.getElementById("edit_status").value =
+        p.TrangThai == 1 || p.TrangThai === "Hoạt động" ? "Còn hàng" : "Hết hàng";
+
+      const categorySelect = document.getElementById("edit_category");
+      categorySelect.innerHTML = "";
+      const cats = [...new Set(allProducts.map(p => p.TenDM || p.MaDM))];
+      cats.forEach(cat => {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = cat;
+        if (cat === (p.TenDM || p.MaDM)) opt.selected = true;
+        categorySelect.appendChild(opt);
+      });
+
+      openModal("productEditModal");
+    } else {
+      showNotify(result.message || "Không thể tải thông tin sản phẩm.");
+    }
+  } catch (error) {
+    console.error("Lỗi khi tải sản phẩm để sửa:", error);
+    showNotify("Không thể kết nối đến API.");
+  }
+}
+
+// ==========================
+// 🧩 GỬI FORM UPDATE
+// ==========================
+const formEdit = document.getElementById("formEditProduct");
+if (formEdit) {
+  formEdit.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(formEdit);
+    formData.append("action", "update");
+
+    try {
+      const response = await fetch("../../API/admin/product_api.php", {
+        method: "POST",
+        body: formData
+      });
+      const result = await response.json();
+
+      if (result.status === "success") {
+        showNotify("Cập nhật sản phẩm thành công!");
+        closeModal("productEditModal");
+        loadProducts();
+      } else {
+        showNotify(result.message || "Không thể cập nhật sản phẩm.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi cập nhật sản phẩm:", error);
+      showNotify("Không thể kết nối đến API.");
+    }
+  });
+}
+
+// Gắn sự kiện cho tất cả nút close (nút X)
+document.querySelectorAll(".modal-close").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const modalId = btn.dataset.closeModal; // lấy id modal cần đóng
+    if (modalId) closeModal(modalId);
+    else btn.closest(".modal-overlay").style.display = "none";
+  });
+});
+
+// Gắn cho popup thông báo riêng
+const closeNotify = document.getElementById("closeNotify");
+if (closeNotify) {
+  closeNotify.addEventListener("click", hideNotify);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   loadProducts();
 });

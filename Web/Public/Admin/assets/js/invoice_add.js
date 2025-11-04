@@ -8,9 +8,6 @@ let productList = [];
 let allProducts = [];
 let storeProducts = [];
 let invoiceDetails = [];
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Mặc định ngày hôm nay
   const today = new Date().toISOString().split("T")[0];
