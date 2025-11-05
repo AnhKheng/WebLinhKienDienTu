@@ -195,24 +195,20 @@ function closeUpdateModal() {
 // 🟢 Lưu cập nhật
 async function saveUpdate() {
   const maHD = document.getElementById("txtMaHD").value;
-
-  // ✅ Chuyển định dạng datetime-local -> MySQL
   const rawNgayBan = document.getElementById("txtNgayBan").value;
   const ngayBan = rawNgayBan ? rawNgayBan.replace("T", " ") + ":00" : null;
-
   const maNV = document.getElementById("txtMaNV").value;
   const maKH = document.getElementById("txtMaKH").value;
-  const maCH = document.getElementById("txtMaCH").value;
+  let maCH = document.getElementById("txtMaCH").value; // 👈 dùng let
   const tongTien = parseFloat(document.getElementById("txtTongTien").value);
 
-  const data = {
-    MaHD: maHD,
-    NgayBan: ngayBan,  // ✅ định dạng MySQL hợp lệ
-    MaNV: maNV,
-    MaKH: maKH,
-    MaCH: maCH,
-    TongTien: tongTien
-  };
+  // ✅ Nếu MaCH rỗng, lấy lại từ dữ liệu cũ
+  if (!maCH) {
+    const oldInvoice = allHoaDon.find(item => item.MaHD === maHD);
+    if (oldInvoice) maCH = oldInvoice.MaCH;
+  }
+
+  const data = { MaHD: maHD, NgayBan: ngayBan, MaNV: maNV, MaKH: maKH, MaCH: maCH, TongTien: tongTien };
 
   try {
     const res = await fetch("../../API/admin/invoice_api.php?action=update", {
@@ -220,7 +216,6 @@ async function saveUpdate() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
-
     const result = await res.json();
 
     if (result.status === "success") {
@@ -234,6 +229,7 @@ async function saveUpdate() {
     alert("⚠️ Lỗi khi cập nhật: " + err.message);
   }
 }
+
 //---------------------------add---------------------------
 
 

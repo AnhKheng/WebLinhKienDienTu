@@ -59,63 +59,125 @@ public function getChiTiet($maHD) {
 
 //----------------------------update---------------
 public function update($data) {
-  // Bắt đầu transaction để đảm bảo an toàn dữ liệu
   $this->conn->begin_transaction();
 
   try {
-    // 1️⃣ Cập nhật thông tin hóa đơn
+    // ---------- LOG incoming data (useful for debug) ----------
+    error_log("DEBUG update payload: " . json_encode($data));
+
+    // 0) Kiểm tra MaHD có hợp lệ
+    if (empty($data['MaHD'])) {
+      throw new Exception("MaHD không được để trống.");
+    }
+
+    $maHD = $data['MaHD'];
+
+    // 1) Nếu MaCH không được gửi hoặc rỗng, lấy lại MaCH hiện tại của hóa đơn
+    if (empty($data['MaCH'])) {
+      $stmtOld = $this->conn->prepare("SELECT MaCH FROM tbl_hoadonban WHERE MaHD = ?");
+      if (!$stmtOld) throw new Exception("Prepare lỗi (stmtOld): " . $this->conn->error);
+      $stmtOld->bind_param("s", $maHD);
+      $stmtOld->execute();
+      $resOld = $stmtOld->get_result();
+      if ($rowOld = $resOld->fetch_assoc()) {
+        $data['MaCH'] = $rowOld['MaCH'];
+      } else {
+        throw new Exception("Không tìm thấy hóa đơn với MaHD = $maHD");
+      }
+    }
+
+    // 2) Kiểm tra MaCH tồn tại trong tbl_cuahang
+    $checkStore = $this->conn->prepare("SELECT MaCH FROM tbl_cuahang WHERE MaCH = ?");
+    if (!$checkStore) throw new Exception("Prepare lỗi (checkStore): " . $this->conn->error);
+    $checkStore->bind_param("s", $data['MaCH']);
+    $checkStore->execute();
+    $resStore = $checkStore->get_result();
+    if ($resStore->num_rows == 0) {
+      throw new Exception("Mã cửa hàng không tồn tại: " . $data['MaCH']);
+    }
+
+    // 3) (Tùy chọn) Kiểm tra MaNV và MaKH nếu bạn muốn đảm bảo tồn tại
+    if (!empty($data['MaNV'])) {
+      $checkNV = $this->conn->prepare("SELECT MaNV FROM tbl_nhanvien WHERE MaNV = ?");
+      $checkNV->bind_param("s", $data['MaNV']);
+      $checkNV->execute();
+      if ($checkNV->get_result()->num_rows == 0) {
+        throw new Exception("Mã nhân viên không tồn tại: " . $data['MaNV']);
+      }
+    }
+
+    if (!empty($data['MaKH'])) {
+      $checkKH = $this->conn->prepare("SELECT MaKH FROM tbl_khachhang WHERE MaKH = ?");
+      $checkKH->bind_param("s", $data['MaKH']);
+      $checkKH->execute();
+      if ($checkKH->get_result()->num_rows == 0) {
+        throw new Exception("Mã khách hàng không tồn tại: " . $data['MaKH']);
+      }
+    }
+
+    // 4) Thực hiện UPDATE — **khai báo kiểu bind_param chính xác**
+    // Nếu bạn KHÔNG muốn cho phép thay đổi MaCH, bạn có thể bỏ MaCH ra khỏi câu lệnh (như comment ở dưới)
     $sql = "UPDATE tbl_hoadonban 
-            SET NgayBan=?, MaNV=?, MaKH=?, MaCH=?, TongTien=? 
-            WHERE MaHD=?";
+            SET NgayBan = ?, MaNV = ?, MaKH = ?, MaCH = ?, TongTien = ? 
+            WHERE MaHD = ?";
     $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("sssdds",
-      $data['NgayBan'],
-      $data['MaNV'],
-      $data['MaKH'],
-      $data['MaCH'],
-      $data['TongTien'],
-      $data['MaHD']
+    if (!$stmt) throw new Exception("Prepare lỗi (update): " . $this->conn->error);
+
+    // CHÚ Ý: kiểu phải là "ssssds" => s,s,s,s,d,s
+    $ngayBan = $data['NgayBan'] ?? null;
+    $maNV = $data['MaNV'] ?? null;
+    $maKH = $data['MaKH'] ?? null;
+    $maCH = $data['MaCH'] ?? null;
+    $tongTien = isset($data['TongTien']) ? (float)$data['TongTien'] : 0.0;
+
+    $stmt->bind_param("ssssds",
+      $ngayBan,
+      $maNV,
+      $maKH,
+      $maCH,
+      $tongTien,
+      $maHD
     );
 
     if (!$stmt->execute()) {
-      throw new Exception("Không thể cập nhật hóa đơn");
+      throw new Exception("Không thể cập nhật hóa đơn: " . $stmt->error);
     }
 
-    // 2️⃣ Nếu có mảng chi tiết thì cập nhật lại
+    // 5) Cập nhật chi tiết nếu có — giống logic bạn đang dùng (xóa rồi insert)
     if (isset($data['ChiTiet']) && is_array($data['ChiTiet'])) {
-      // Xóa chi tiết cũ
-      $del = $this->conn->prepare("DELETE FROM tbl_chitiethoadon WHERE MaHD=?");
-      $del->bind_param("s", $data['MaHD']);
+      $del = $this->conn->prepare("DELETE FROM tbl_chitiethoadon WHERE MaHD = ?");
+      if (!$del) throw new Exception("Prepare lỗi (del): " . $this->conn->error);
+      $del->bind_param("s", $maHD);
       if (!$del->execute()) {
-        throw new Exception("Không thể xóa chi tiết cũ");
+        throw new Exception("Không thể xóa chi tiết cũ: " . $del->error);
       }
 
-      // Thêm chi tiết mới
-      $insert = $this->conn->prepare("INSERT INTO tbl_chitiethoadon (MaHD, MaSP, SoLuong, DonGia)
-                                      VALUES (?, ?, ?, ?)");
+      $insert = $this->conn->prepare("INSERT INTO tbl_chitiethoadon (MaHD, MaSP, SoLuong, DonGia) VALUES (?, ?, ?, ?)");
+      if (!$insert) throw new Exception("Prepare lỗi (insert ct): " . $this->conn->error);
+
       foreach ($data['ChiTiet'] as $ct) {
-        $insert->bind_param("ssid",
-          $data['MaHD'],
-          $ct['MaSP'],
-          $ct['SoLuong'],
-          $ct['DonGia']
-        );
+        $maSP = $ct['MaSP'];
+        $soLuong = (int)$ct['SoLuong'];
+        $donGia = (float)$ct['DonGia'];
+
+        $insert->bind_param("ssid", $maHD, $maSP, $soLuong, $donGia);
         if (!$insert->execute()) {
-          throw new Exception("Lỗi khi thêm chi tiết hóa đơn");
+          throw new Exception("Lỗi thêm chi tiết: " . $insert->error);
         }
       }
     }
 
-    // 3️⃣ Commit nếu mọi thứ thành công
     $this->conn->commit();
     return true;
 
   } catch (Exception $e) {
     $this->conn->rollback();
+    $this->lastError = $e->getMessage();
     error_log("❌ Update hóa đơn lỗi: " . $e->getMessage());
     return false;
   }
 }
+
 
 //------------------------------delete--------------------------
 public function delete($maHD) {

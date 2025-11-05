@@ -12,21 +12,9 @@ let selectedStore = "";
 
 
 
-document.addEventListener("DOMContentLoaded", () => {
-  // 1. Mặc định ngày hôm nay
-  const today = new Date().toISOString().split("T")[0];
-  document.getElementById("ngayBan").value = today;
-
-  // 2. Load danh sách khách hàng + cửa hàng
-  loadCustomers();
-  loadStores();
-  loadNewInvoiceCode();   // 🔹 Lấy mã hóa đơn tự động
-  loadCurrentEmployee();  // 🔹 Lấy mã nhân viên tự động
-});
-
 async function searchProduct() {
   const keyword = document.getElementById("searchBox").value.trim();
-  const MaCH = selectedStore || ""; // nếu chưa chọn cửa hàng thì tìm tất cả
+  const MaCH = document.getElementById("maCH").value;
 
   const url = `../../API/admin/product_api.php?action=search&keyword=${encodeURIComponent(keyword)}&MaCH=${MaCH}`;
 
@@ -43,7 +31,6 @@ async function searchProduct() {
     console.error("❌ Lỗi khi tìm kiếm sản phẩm:", err);
   }
 }
-
 
 
 // 🔹 Lấy mã hóa đơn tự động
@@ -100,29 +87,24 @@ async function loadCustomers() {
   }
 }
 
-
 // ======== LOAD CỬA HÀNG ========
 
-async function loadStores() {
+async function loadCurrentStore() {
   try {
-    const res = await fetch("../../API/admin/stores_api.php?action=getAll");
+    const res = await fetch("../../API/admin/invoice_api.php?action=getCurrentCH");
     const data = await res.json();
-
-    if (data.status === "success" && Array.isArray(data.data)) {
-      const select = document.getElementById("maCH");
-      select.innerHTML = `<option value="">-- Chọn cửa hàng --</option>`;
-      data.data.forEach(ch => {
-        select.innerHTML += `<option value="${ch.MaCH}">${ch.TenCH} (${ch.MaCH})</option>`;
-      });
+    if (data.status === "success") {
+      document.getElementById("maCH").value = data.MaCH;
+      document.getElementById("maCH").readOnly = true;
     } else {
-      console.error("Không tải được danh sách cửa hàng");
+      console.warn("Chưa đăng nhập hoặc chưa có mã NV trong session");
     }
-  } catch (error) {
-    console.error("Lỗi loadStores:", error);
+  } catch (err) {
+    console.error("Lỗi loadCurrentEmployee:", err);
   }
 }
 
-// 1️⃣ Tải danh mục sản phẩm
+// 1️ Tải danh mục sản phẩm
 
 async function loadCategories() {
   try {
@@ -143,19 +125,24 @@ async function loadCategories() {
   }
 }
 
-// ===============================
-// 2️⃣ Tải danh sách sản phẩm
-// ===============================
-async function loadProducts() {
+
+//2 Tải danh sách sản phẩm
+
+async function loadProducts(MaCH) {
   try {
-    const res = await fetch(API_PRODUCT);
+    if (!MaCH) {
+      console.warn("Không có mã cửa hàng để tải sản phẩm.");
+      return;
+    }
+
+    const link = `../../API/admin/product_api.php?action=getByStore&MaCH=${MaCH}`;
+    const res = await fetch(link);
     const data = await res.json();
 
     if (data.status === "success" && Array.isArray(data.data)) {
       productList = data.data;
-      allProducts = data.data; // ✅ thêm dòng này để lọc danh mục hoạt động
+      allProducts = data.data;
       renderProducts(productList);
-    
     } else {
       console.error("Không có dữ liệu sản phẩm.");
     }
@@ -166,9 +153,10 @@ async function loadProducts() {
 
 
 
-// ===============================
-// 3️⃣ Hiển thị danh sách sản phẩm
-// ===============================
+
+
+//3 Hiển thị danh sách sản phẩm
+
 function renderProducts(list) {
   const tbody = document.getElementById("productList");
   tbody.innerHTML = "";
@@ -193,7 +181,7 @@ function renderProducts(list) {
 
 function filterByCategory() {
   const select = document.getElementById("categoryFilter");
-  const storeSelect = document.getElementById("maCH");
+  const storeSelect = document.getElementById("maCH").value;
   if (!select) {
     console.warn("Không tìm thấy #categoryFilter");
     return;
@@ -339,55 +327,29 @@ async function saveInvoice() {
   }
 }
 
-// 10 ======== LỌC SẢN PHẨM THEO CỬA HÀNG ========
-
-async function filterByStore() {
-  const maCH = document.getElementById("maCH").value;
-  selectedStore = maCH;
-  if (!maCH) {
-    storeProducts = [];
-    renderProducts(allProducts);
-    return;
-  }
-
+//---------load trang---------
+document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const res = await fetch(`../../API/admin/product_api.php?action=getByStore&MaCH=${maCH}`);
-    const text = await res.text(); // 👈 đọc thô để debug lỗi PHP
-    let data;
+    
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("ngayBan").value = today;
+ 
+    await loadCustomers();        
+    await loadNewInvoiceCode();    
+    await loadCurrentEmployee(); 
+    await loadCurrentStore();      
+    
+    await loadCategories();
 
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      console.error("❌ Lỗi JSON parse, server trả về:", text);
-      alert("⚠️ Server trả về HTML (có thể PHP bị lỗi). Kiểm tra lại file product_api.php!");
-      return;
-    }
-
-    if (data.status === "success" && Array.isArray(data.data)) {
-      storeProducts = data.data;
-      console.log(`✅ Đã tải ${storeProducts.length} sản phẩm của cửa hàng ${maCH}`);
-      renderProducts(storeProducts);
-
-      // ✅ Nếu người dùng đã chọn danh mục, lọc lại ngay
-      const selectedCategory = document.getElementById("categoryFilter").value;
-      if (selectedCategory) filterByCategory();
-
+    const MaCH = document.getElementById("maCH").value;
+    if (MaCH) {
+      await loadProducts(MaCH);
     } else {
-      console.warn("⚠️ API trả về rỗng hoặc sai định dạng", data);
-      storeProducts = [];
-      renderProducts([]);
+      console.warn("⚠️ Không có mã cửa hàng, không thể tải sản phẩm.");
     }
 
   } catch (err) {
-    console.error("❌ Lỗi khi gọi filterByStore:", err);
+    console.error("❌ Lỗi khi khởi tạo trang:", err);
   }
-}
+});
 
-
-
-//Gọi khi trang load
-
-window.onload = function () {
-  loadCategories();
-  loadProducts();
-};

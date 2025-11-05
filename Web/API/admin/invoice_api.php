@@ -29,15 +29,24 @@ if ($action == 'getNewCode') {
     exit;
 }
 
-// ==========================
-// ✅ LẤY MÃ NHÂN VIÊN ĐĂNG NHẬP
-// ==========================
+
+// LẤY MÃ NHÂN VIÊN ĐĂNG NHẬP
 if ($action == 'getCurrentNV') {
     session_start();
     if (isset($_SESSION['ma_nv'])) {
         echo json_encode(["status" => "success", "MaNV" => $_SESSION['ma_nv']]);
     } else {
         echo json_encode(["status" => "error", "message" => "Chưa đăng nhập hoặc chưa có session ma_nv"]);
+    }
+    exit;
+}
+
+if ($action == 'getCurrentCH') {
+    session_start();
+    if (isset($_SESSION['ma_ch'])) {
+        echo json_encode(["status" => "success", "MaCH" => $_SESSION['ma_ch']]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Chưa đăng nhập hoặc chưa có session ma_ch"]);
     }
     exit;
 }
@@ -60,47 +69,25 @@ switch ($action) {
     break;
 
   // ✅ Sửa hóa đơn
-  case 'update':
+    case 'update':
     header('Content-Type: application/json; charset=utf-8');
 
+    
     $data = json_decode(file_get_contents("php://input"), true);
     if (!$data) {
         echo json_encode(["status" => "error", "message" => "Dữ liệu JSON không hợp lệ"]);
         exit;
     }
 
-    $MaHD = $data['MaHD'] ?? '';
-    $NgayBan = $data['NgayBan'] ?? '';
-    $MaNV = $data['MaNV'] ?? '';
-    $MaKH = $data['MaKH'] ?? '';
-    $MaCH = $data['MaCH'] ?? '';
-    $TongTien = $data['TongTien'] ?? 0;
+    // ✅ Gọi hàm update() trong class HoaDon
+    $result = $hoadon->update($data);
 
-    if ($MaHD === '') {
-        echo json_encode(["status" => "error", "message" => "Thiếu mã hóa đơn"]);
-        exit;
-    }
-
-    // ✅ Sử dụng $conn từ file database
-    $sql = "UPDATE tbl_hoadonban 
-            SET NgayBan = ?, MaNV = ?, MaKH = ?, MaCH = ?, TongTien = ? 
-            WHERE MaHD = ?";
-    $stmt = $connect->prepare($sql);
-
-    if (!$stmt) {
-        echo json_encode(["status" => "error", "message" => "Lỗi prepare: " . $connect->error]);
-        exit;
-    }
-
-    $stmt->bind_param("sssids", $NgayBan, $MaNV, $MaKH, $MaCH, $TongTien, $MaHD);
-
-    if ($stmt->execute()) {
+    if ($result) {
         echo json_encode(["status" => "success", "message" => "Cập nhật hóa đơn thành công!"]);
     } else {
-        echo json_encode(["status" => "error", "message" => "Lỗi khi cập nhật: " . $stmt->error]);
+        echo json_encode(["status" => "error", "message" => $hoadon->lastError]);
     }
 
-    $stmt->close();
     break;
 
 

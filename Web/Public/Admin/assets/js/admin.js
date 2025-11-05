@@ -15,6 +15,7 @@ async function checkLogin() {
     const id = data.data.MaNV;
     const username = data.data.TenNV;
     const role = data.data.VaiTro;
+    const IdCH = data.data.MaCH;
 
     // Gắn vào giao diện
     document.getElementById("userId").textContent = id;
