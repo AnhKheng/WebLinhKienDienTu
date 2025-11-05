@@ -8,6 +8,7 @@ let productList = [];
 let allProducts = [];
 let storeProducts = [];
 let invoiceDetails = [];
+let selectedStore = "";
 
 
 
@@ -19,7 +20,64 @@ document.addEventListener("DOMContentLoaded", () => {
   // 2. Load danh sách khách hàng + cửa hàng
   loadCustomers();
   loadStores();
+  loadNewInvoiceCode();   // 🔹 Lấy mã hóa đơn tự động
+  loadCurrentEmployee();  // 🔹 Lấy mã nhân viên tự động
 });
+
+async function searchProduct() {
+  const keyword = document.getElementById("searchBox").value.trim();
+  const MaCH = selectedStore || ""; // nếu chưa chọn cửa hàng thì tìm tất cả
+
+  const url = `../../API/admin/product_api.php?action=search&keyword=${encodeURIComponent(keyword)}&MaCH=${MaCH}`;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.status === "success" && Array.isArray(data.data)) {
+      renderProducts(data.data);
+    } else {
+      renderProducts([]);
+    }
+  } catch (err) {
+    console.error("❌ Lỗi khi tìm kiếm sản phẩm:", err);
+  }
+}
+
+
+
+// 🔹 Lấy mã hóa đơn tự động
+async function loadNewInvoiceCode() {
+  try {
+    const res = await fetch("../../API/admin/invoice_api.php?action=getNewCode");
+    const data = await res.json();
+    if (data.status === "success") {
+      document.getElementById("maHD").value = data.newCode;
+      document.getElementById("maHD").readOnly = true;
+    } else {
+      console.error("Không lấy được mã hóa đơn mới");
+    }
+  } catch (err) {
+    console.error("Lỗi loadNewInvoiceCode:", err);
+  }
+}
+
+// 🔹 Lấy mã nhân viên tự động
+async function loadCurrentEmployee() {
+  try {
+    const res = await fetch("../../API/admin/invoice_api.php?action=getCurrentNV");
+    const data = await res.json();
+    if (data.status === "success") {
+      document.getElementById("maNV").value = data.MaNV;
+      document.getElementById("maNV").readOnly = true;
+    } else {
+      console.warn("Chưa đăng nhập hoặc chưa có mã NV trong session");
+    }
+  } catch (err) {
+    console.error("Lỗi loadCurrentEmployee:", err);
+  }
+}
+
 
 // ======== LOAD KHÁCH HÀNG ========
 
@@ -285,6 +343,7 @@ async function saveInvoice() {
 
 async function filterByStore() {
   const maCH = document.getElementById("maCH").value;
+  selectedStore = maCH;
   if (!maCH) {
     storeProducts = [];
     renderProducts(allProducts);

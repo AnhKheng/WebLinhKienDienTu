@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>  
+  <meta charset="UTF-8" />
+  <title>Danh sách sản phẩm - Admin</title>
+  <link rel="stylesheet" href="assets/css/style_pages.css" />
+</head>
+<body>
+  <div id="notifyOverlay" class="modal-overlay" aria-hidden="true" style="display:none;">
+    <div class="notify-box popup-content" role="dialog" aria-live="polite">
+      <span id="closeNotify" class="modal-close" role="button" aria-label="Đóng">&times;</span>
+      <div id="notifyMessage"></div>
+    </div>
+  </div>
+
+  <div id="productDetailModal" class="modal-overlay" aria-hidden="true" style="display:none;">
+    <div class="modal-box">
+      <span id="closeDetailModal" class="modal-close" data-close-modal="productDetailModal" role="button" aria-label="Close">&times;</span>
+      <h3>Xem chi tiết sản phẩm</h3>
+      <form id="formEditCategory" method="post" enctype="multipart/form-data">
+        <label>Mã sản phẩm:</label><br>
+        <input type="text" name="idSP" id="detail_idSP" readonly><br><br>
+
+        <label>Tên sản phẩm:</label><br>
+        <input type="text" name="nameSP" id="detail_nameSP" readonly><br><br>
+
+        <label>Danh mục:</label><br>
+        <input type="text" name="category" id="detail_category" readonly><br><br>
+
+        <label>Đơn giá:</label><br>
+        <input type="text" name="price" id="detail_price" readonly><br><br>
+
+        <label>Mô tả:</label><br>
+        <input type="text" name="description" id="detail_description" readonly></input><br><br>
+
+        <label>Trạng thái:</label><br>
+        <input type="text" name="status" id="detail_status" readonly><br><br>
+
+        <label>Hình ảnh:</label><br>
+        <img id="detail_image" src="" alt="Hình ảnh sản phẩm" style="max-width: 200px; max-height: 200px;"><br><br>
+      </form>
+    </div>
+  </div>
+  
+  <div id="productEditModal" class="modal-overlay" aria-hidden="true" style="display:none;">
+    <div class="modal-box">
+      <span id="closeEditModal" class="modal-close" data-close-modal="productEditModal" role="button" aria-label="Close">&times;</span>
+      <h3>Chỉnh sửa sản phẩm</h3>
+      <form id="formEditProduct" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="idSP" id="edit_idSP">
+
+        <label>Tên sản phẩm:</label><br>
+        <input type="text" name="nameSP" id="edit_nameSP" required><br><br>
+
+        <label>Danh mục:</label><br>
+        <select name="category" id="edit_category" required></select><br><br>
+
+        <label>Đơn giá:</label><br>
+        <input type="number" name="price" id="edit_price" required><br><br>
+
+        <label>Mô tả:</label><br>
+        <textarea name="description" id="edit_description" required></textarea><br><br>
+
+        <label>Trạng thái:</label><br>
+        <select name="status" id="edit_status" required>
+          <option value="1">Còn hàng</option>
+          <option value="0">Hết hàng</option>
+        </select><br><br>
+
+        <label>Hình ảnh:</label><br>
+        <input type="file" name="image" id="edit_image"><br><br>
+
+        <button type="submit">Cập nhật</button>
+      </form>
+    </div>
+  </div>
+  <div id="confirmOverlay" class="modal-overlay" style="display: none;">
+    <div class="confirm-box popup-content" role="dialog" aria-modal="true">
+      <span id="closeConfirm" class="modal-close" role="button" aria-label="Đóng">&times;</span>
+      <div id="confirmMessage" class="confirm-message">
+        Bạn có chắc chắn muốn xóa mục này không?
+      </div>
+      <div class="confirm-actions">
+        <button id="confirmYes" class="btn-confirm">Đồng ý</button>
+        <button id="confirmNo" class="btn-cancel">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <h2>Danh sách sản phẩm</h2>
+  <div class="filter-container">
+    <label for="categoryFilter">Lọc theo danh mục:</label>
+    <select class="select-filter" id="categoryFilter" onchange="applyFilter()">
+      <option value="all">Tất cả</option>
+    </select>
+
+    <label for="priceRange">Khoảng giá:</label>
+    <select class="select-filter" id="priceRange" onchange="onPriceRangeChange()">
+      <option value="all">Tất cả</option>
+      <option value="1">Dưới 50.000₫</option>
+      <option value="2">50.000₫ - 100.000₫</option>
+      <option value="3">100.000₫ - 200.000₫</option>
+      <option value="4">200.000₫ - 500.000₫</option>
+      <option value="5">500.000₫ - 1.000.000₫</option>
+      <option value="6">1.000.000₫ - 2.000.000₫</option>
+      <option value="7">Trên 2.000.000₫</option>
+      <option value="custom">Tùy chỉnh...</option>
+    </select>
+
+    <!-- Ẩn theo mặc định, chỉ hiện khi chọn "Tùy chỉnh" -->
+    <span class="customPriceInputs" id="customPriceInputs" style="display:none;">
+      <label for="minPrice">Từ:</label>
+      <input type="number" id="minPrice" placeholder="Min" min="0">
+      <label for="maxPrice">Đến:</label>
+      <input type="number" id="maxPrice" placeholder="Max" min="0">
+      <button class="sort-btn" onclick="filterByPrice()">Lọc giá</button>
+    </span>
+
+    <button class="sort-btn" onclick="sortByPrice('asc')">Sắp xếp ↑</button>
+    <button class="sort-btn" onclick="sortByPrice('desc')">Sắp xếp ↓</button>
+  </div>
+
+  <table id="productTable">
+    <thead>
+      <tr>
+        <th>Mã SP</th>
+        <th>Tên SP</th>
+        <th>Danh mục</th>
+        <th class="price-col">Đơn giá</th>
+        <th class="description-col">Mô tả</th>
+        <th>Trạng thái</th>
+        <th>Hình ảnh</th>
+        <th class="action-col">Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+  <div id="pagination" class="pagination-container"></div>
+
+
+  <script src="assets/js/products.js"></script>
+</body>
+</html>
