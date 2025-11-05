@@ -115,29 +115,32 @@ if (isset($_GET['id'])) {
     </ul>
   </nav>
 
-  <div class="main">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <i class="fas fa-bars"></i> <span>Danh mục sản phẩm</span>
-      </div>
-      <ul class="sidebar-menu">
-        <li><a href="#"><i class="fas fa-laptop"></i> Laptop</a></li>
-        <li><a href="#"><i class="fas fa-gamepad"></i> Laptop Gaming</a></li>
-        <li><a href="#"><i class="fas fa-microchip"></i> Main, CPU, VGA</a></li>
-        <li><a href="#"><i class="fas fa-server"></i> Case, Nguồn, Tản</a></li>
-        <li><a href="#"><i class="fas fa-memory"></i> Ổ cứng, RAM, Thẻ nhớ</a></li>
-        <li><a href="#"><i class="fas fa-headphones"></i> Loa, Micro, Webcam</a></li>
-        <li><a href="#"><i class="fas fa-tv"></i> Màn hình</a></li>
-        <li><a href="#"><i class="fas fa-keyboard"></i> Bàn phím</a></li>
-        <li><a href="#"><i class="fas fa-mouse"></i> Chuột + Lót chuột</a></li>
-        <li><a href="#"><i class="fas fa-headset"></i> Tai nghe</a></li>
-        <li><a href="#"><i class="fas fa-chair"></i> Ghế - Bàn</a></li>
-        <li><a href="#"><i class="fas fa-network-wired"></i> Phần mềm, mạng</a></li>
-        <li><a href="#"><i class="fas fa-gamepad"></i> Handheld, Console</a></li>
-        <li><a href="#"><i class="fas fa-plug"></i> Phụ kiện (Hub, sạc...)</a></li>
-        <li><a href="#"><i class="fas fa-info-circle"></i> Dịch vụ & thông tin khác</a></li>
-      </ul>
-    </aside>
+<div class="main">
+  <div class="menu-box">
+    <div class="menu-header">
+      <i class="fas fa-filter"></i> Bộ lọc sản phẩm theo giá
+    </div>
+    <form class="menu-items">
+      <label class="menu-item">
+        <input type="radio" name="price" value="All">
+        <i class="fas fa-arrow-down"></i> Tất cả
+      </label>
+      <label class="menu-item">
+        <input type="radio" name="price" value="Max">
+        <i class="fas fa-arrow-down"></i> Từ cao đến thấp
+      </label>
+      <label class="menu-item">
+        <input type="radio" name="price" value="Min">
+        <i class="fas fa-arrow-up"></i> Từ thấp đến cao
+      </label>
+      <label class="menu-item">
+        <input type="radio" name="price" value="500k">
+        <i class="fas fa-money-bill-wave"></i> Dưới 500k
+      </label>
+
+      <button type="submit" class="btn-filter">Lọc sản phẩm</button>
+    </form>
+  </div>
 
     <div class="main-content">
       <?php     
@@ -145,13 +148,26 @@ if (isset($_GET['id'])) {
         include "WebsiteShop/" . $do . ".php";
       ?>
     </div>
-
     <div id="loginOverlay" class="overlay">
       <div class="overlay-content">
         <?php include "WebsiteShop/LoginForm.php"; ?>
       </div>
     </div>
+
+    <div id="registerOverlay" class="overlay">
+      <div class="overlay-content">
+        <?php include "WebsiteShop/RegisterForm.php"; ?>
+      </div>
+    </div>
+
+    <div id="passwordOverlay" class="overlay">
+      <div class="overlay-content">
+        <?php include "WebsiteShop/ForgetPassword.php"; ?>
+      </div>
+    </div>
+
   </div>
+</div>
 
   <footer class="site-footer">
     <div class="footer-info">
