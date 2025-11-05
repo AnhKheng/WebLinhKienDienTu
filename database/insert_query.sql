@@ -125,6 +125,9 @@ INSERT INTO `tbl_hoadonban` (`MaHD`, `NgayBan`, `MaNV`, `MaKH`, `MaCH`, `TongTie
 ('HD02', '2025-10-06 11:45:00', 'NV02', 'KH02', 'CH01', 1350000),
 ('HD03', '2025-10-07 16:15:00', 'NV03', 'KH03', 'CH02', 5200000);
 
+
+
+
 -- Bảng: tbl_chitiethoadon
 INSERT INTO `tbl_chitiethoadon` (`MaHD`, `MaSP`, `SoLuong`, `DonGia`) VALUES
 ('HD01', 'SP01', 1, 350000),

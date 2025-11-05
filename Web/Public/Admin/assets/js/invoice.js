@@ -62,7 +62,7 @@ function renderTable(hoadons) {
           <button type="button" class="btn-detail" onclick="viewDetail('${hd.MaHD}')">Chi tiết</button>
           <button type="button" class="btn-edit" onclick="openUpdateModal('${hd.MaHD}')">Cập nhật</button>        
           <button type="button" class="btn-delete" onclick="deleteHoaDon('${hd.MaHD}')">Xóa</button>
-
+          <button type="button" class="btn-detail" onclick="exportInvoiceExcel('${hd.MaHD}')">In HĐ</button>
       </tr>
     `;
     tbody.insertAdjacentHTML("beforeend", row);
@@ -387,6 +387,29 @@ function filterByCategory() {
   const filtered = allProducts.filter(sp => sp.MaDM === selectedCategory);
   renderProducts(filtered);
 }
+
+// 🟢 Xuất 1 hóa đơn ra file Excel
+async function exportInvoiceExcel(maHD) {
+  try {
+    const res = await fetch(`../../API/admin/excel.php?MaHD=${maHD}`);
+    
+    if (!res.ok) throw new Error("Không thể tạo file Excel.");
+
+    // Nhận dữ liệu dạng blob (file)
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `HoaDon_${maHD}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch (err) {
+    alert("Lỗi khi xuất hóa đơn: " + err.message);
+  }
+}
+
+
 
 window.addEventListener("DOMContentLoaded", () => {
   const path = window.location.pathname;

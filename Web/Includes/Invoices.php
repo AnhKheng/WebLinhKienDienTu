@@ -145,7 +145,6 @@ public function delete($maHD) {
 }
 
 // --------------------------thêm hóa đơn----------------------
-// --------------------------thêm hóa đơn----------------------
 public function add($data) {
     $this->conn->begin_transaction();
 
