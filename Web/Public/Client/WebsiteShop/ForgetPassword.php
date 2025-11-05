@@ -10,9 +10,15 @@
 
     <form action="/password-action" method="post" class="password-form">
         <div class="form-group">
+            <label for="username">Tên tài khoản</label>
+            <input type="text" name="username" placeholder="Tên tài khoản" required>
+        </div>
+
+        <div class="form-group">
             <label for="email">Email</label>
             <input type="text" name="email" placeholder="Email" required>
         </div>
+
         <div class="form-group">
             <label for="password">Mật khẩu</label>
             <input type="password" name="password1" placeholder="Mật khẩu" required>

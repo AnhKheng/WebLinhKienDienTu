@@ -1,10 +1,6 @@
 let currentPages = {};
 let currentSearchPage = 1;
 
-// ĐÃ XÓA hàm formatCurrency()
-// ĐÃ XÓA hàm createProductCardHTML()
-
-// Load sản phẩm nổi bật
 function loadFeaturedProducts(category, page = 1) {
     const slider = document.querySelector(`.product-slider[data-category="${category}"]`);
     const pagination = document.querySelector(`.pagination-mini[data-category="${category}"]`);
@@ -23,8 +19,6 @@ function loadFeaturedProducts(category, page = 1) {
             if (data.products && data.products.length > 0) {
                 let html = '';
                 data.products.forEach(product => {
-                    // Hàm createProductCardHTML() này bây giờ là hàm global
-                    // do file Home.php cung cấp
                     html += createProductCardHTML(product);
                 });
                 slider.innerHTML = html;
@@ -139,8 +133,6 @@ function displaySearchResults(category, search, page = 1) {
             if (data.products && data.products.length > 0) {
                 let html = '';
                 data.products.forEach(product => {
-                    // Hàm createProductCardHTML() này bây giờ là hàm global
-                    // do file Home.php cung cấp
                     html += createProductCardHTML(product);
                 });
                 container.innerHTML = html;
