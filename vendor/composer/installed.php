@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'a784e8d109ccfca5dd8d304ba364175524dd857d',
+        'reference' => '431219965e84ccbda05e4a6928911261fec96604',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'a784e8d109ccfca5dd8d304ba364175524dd857d',
+            'reference' => '431219965e84ccbda05e4a6928911261fec96604',
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
@@ -82,6 +82,15 @@
             'reference' => 'e4490cabc77465aaee90b20cfc9a770f8c04be6b',
             'dev_requirement' => false,
         ),
+        'markbaker/complex' => array(
+            'pretty_version' => '1.5.0',
+            'version' => '1.5.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../markbaker/complex',
+            'aliases' => array(),
+            'reference' => 'c3131244e29c08d44fefb49e0dd35021e9e39dd2',
+            'dev_requirement' => false,
+        ),
         'monolog/monolog' => array(
             'pretty_version' => '1.27.1',
             'version' => '1.27.1.0',
@@ -98,6 +107,15 @@
             'install_path' => __DIR__ . '/../phpmailer/phpmailer',
             'aliases' => array(),
             'reference' => 'c7111310c6116ba508a6a170a89eaaed2129bd42',
+            'dev_requirement' => false,
+        ),
+        'phpoffice/phpspreadsheet' => array(
+            'pretty_version' => '1.5.2',
+            'version' => '1.5.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpoffice/phpspreadsheet',
+            'aliases' => array(),
+            'reference' => 'cd60531c44f580fbdfbd55dfb935af791f09be5d',
             'dev_requirement' => false,
         ),
         'phpseclib/phpseclib' => array(
@@ -147,6 +165,15 @@
             'provided' => array(
                 0 => '1.0.0',
             ),
+        ),
+        'psr/simple-cache' => array(
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/simple-cache',
+            'aliases' => array(),
+            'reference' => '408d5eafb83c57f6365a3ca330ff23aa4a5fa39b',
+            'dev_requirement' => false,
         ),
         'ralouphie/getallheaders' => array(
             'pretty_version' => '3.0.3',
