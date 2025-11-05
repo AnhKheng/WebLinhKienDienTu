@@ -33,6 +33,7 @@
 		{
 			// Đăng ký SESSION
 			$_SESSION['MaKH'] = $dong['MaKH'];
+			$_SESSION['MaTKKH'] = $dong['MaTKKH'];
 			$_SESSION['TenDangNhap'] = $dong['TenDangNhap'];
 
 			
