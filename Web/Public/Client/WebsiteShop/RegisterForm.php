@@ -6,9 +6,16 @@
     <div class="logo">
         <a href = "#"><img src="assets/img/logo.png" alt="Logo" /></a>
     </div>
-    <h2 class="title">ĐĂNG KÝ</h2>
+    
 
-    <form action="/register-action" method="post" class="register-form">
+    <form action="../../API/client/User/Register_action.php" method="post" class="register-form">
+        <h2 class="title">ĐĂNG KÝ</h2>
+
+        <div class="form-group">
+            <label for="name">Họ và tên</label>
+            <input type="text" name="name" placeholder="Họ và tên" required>
+        </div>
+
         <div class="form-group">
             <label for="username">Tên tài khoản</label>
             <input type="text" name="username" placeholder="Số điện thoại / Tên tài khoản" required>
@@ -16,7 +23,7 @@
 
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" name="username" placeholder="Email" required>
+            <input type="text" name="email" placeholder="Email" required>
         </div>
 
         <div class="form-group">
