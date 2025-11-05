@@ -19,30 +19,36 @@ switch ($action) {
 
     // ===== 1️ Thêm sản phẩm =====
     case "add":
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (
-            isset($data["TenSP"], $data["MaDM"], $data["DonGia"], $data["MoTa"], $data["TrangThai"])
-        ) {
-            $TenSP = $data["TenSP"];
-            $MaDM = $data["MaDM"];
-            $DonGia = floatval($data["DonGia"]);
-            $MoTa = $data["MoTa"];
-            $TrangThai = $data["TrangThai"];
-            $HinhAnh = $data["HinhAnh"] ?? null;
+        if (isset($_POST["nameSP"], $_POST["category"], $_POST["price"], $_POST["description"])) {
+            $TenSP = trim($_POST["nameSP"]);
+            $MaDM = trim($_POST["category"]);
+            $DonGia = floatval($_POST["price"]);
+            $MoTa = trim($_POST["description"]);
+            $TrangThai = 1; // Mặc định đang hoạt động
 
-            // Tự sinh mã sản phẩm bên class
+            $HinhAnh = '';
+            if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
+                $uploadDir = __DIR__ . "/../../Public/img/";
+                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+                $fileName = uniqid() . "_" . basename($_FILES["image"]["name"]);
+                $targetPath = $uploadDir . $fileName;
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetPath)) {
+                    $HinhAnh = "img/" . $fileName; // đường dẫn client dùng hiển thị
+                }
+            }
+
             $MaSP = $product->add($TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh);
-
             if ($MaSP) {
                 echo json_encode([
                     "status" => "success",
-                    "message" => "Thêm sản phẩm thành công.",
+                    "message" => "Thêm sản phẩm thành công!",
                     "MaSP" => $MaSP
                 ]);
             } else {
                 echo json_encode([
                     "status" => "error",
-                    "message" => "Không thể thêm sản phẩm."
+                    "message" => "Không thể thêm sản phẩm.",
+                    "sql_error" => "Xem log file PHP để biết chi tiết."
                 ]);
             }
         } else {
@@ -52,27 +58,42 @@ switch ($action) {
 
     // ===== 2️ Cập nhật sản phẩm =====
     case "update":
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (
-            isset($data["MaSP"], $data["TenSP"], $data["MaDM"], $data["DonGia"], $data["MoTa"], $data["TrangThai"])
-        ) {
-            $MaSP = $data["MaSP"];
-            $TenSP = $data["TenSP"];
-            $MaDM = $data["MaDM"];
-            $DonGia = floatval($data["DonGia"]);
-            $MoTa = $data["MoTa"];
-            $TrangThai = $data["TrangThai"];
-            $HinhAnh = $data["HinhAnh"] ?? null;
+    if (
+        isset($_POST["idSP"], $_POST["nameSP"], $_POST["category"], $_POST["price"], $_POST["description"], $_POST["status"])
+    ) {
+        $MaSP = $_POST["idSP"];
+        $TenSP = $_POST["nameSP"];
+        $MaDM = $_POST["category"];
+        $DonGia = floatval($_POST["price"]);
+        $MoTa = $_POST["description"];
+        $TrangThai = $_POST["status"];
 
-            $result = $product->update($MaSP, $TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh);
-            echo json_encode([
-                "status" => $result ? "success" : "error",
-                "message" => $result ? "Cập nhật sản phẩm thành công." : "Không thể cập nhật sản phẩm."
-            ]);
-        } else {
-            echo json_encode(["status" => "error", "message" => "Thiếu dữ liệu đầu vào."]);
+        // Lấy ảnh cũ trước
+        $oldData = $product->getOne($MaSP);
+        $HinhAnh = $oldData["HinhAnh"] ?? null;
+
+        // Nếu có upload ảnh mới thì cập nhật
+        if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
+            $uploadDir = __DIR__ . "/../../Public/img/";
+            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+            $fileName = uniqid() . "_" . basename($_FILES["image"]["name"]);
+            $targetPath = $uploadDir . $fileName;
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetPath)) {
+                $HinhAnh = $fileName; // đường dẫn client dùng hiển thị
+            }
         }
-        break;
+
+        $result = $product->update($MaSP, $TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh);
+        echo json_encode([
+            "status" => $result ? "success" : "error",
+            "message" => $result ? "Cập nhật sản phẩm thành công." : "Không thể cập nhật sản phẩm.",
+            'error' => $result
+
+        ]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Thiếu dữ liệu đầu vào."]);
+    }
+    break;
 
     // ===== 3️ Xóa sản phẩm =====
     case "delete":

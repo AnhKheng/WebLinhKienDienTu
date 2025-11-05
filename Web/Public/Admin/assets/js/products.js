@@ -1,15 +1,8 @@
-// ==========================
-// ⚙️ CẤU HÌNH BIẾN TOÀN CỤC
-// ==========================
 let allProducts = [];
 let filteredProducts = [];
 
 let currentPage = 1;
 const rowsPerPage = 10;
-
-// ==========================
-// 🧩 HÀM DÙNG CHUNG
-// ==========================
 
 // Hiển thị thông báo popup
 function showNotify(message) {
@@ -50,9 +43,7 @@ window.addEventListener("click", (e) => {
   });
 });
 
-// ==========================
-// 🧩 LOAD SẢN PHẨM TỪ API
-// ==========================
+
 async function loadProducts() {
   try {
     const response = await fetch("../../API/admin/product_api.php?action=getAll");
@@ -77,9 +68,7 @@ async function loadProducts() {
   }
 }
 
-// ==========================
-// 🧩 HIỂN THỊ BẢNG + PHÂN TRANG
-// ==========================
+
 function renderTable(products) {
   const tbody = document.querySelector("#productTable tbody");
   const pagination = document.getElementById("pagination");
@@ -123,9 +112,7 @@ function renderTable(products) {
   });
 }
 
-// ==========================
-// 🧩 TẠO DANH MỤC
-// ==========================
+
 function renderCategoryOptions(products) {
   const select = document.getElementById("categoryFilter");
   select.innerHTML = '<option value="all">Tất cả</option>';
@@ -138,9 +125,6 @@ function renderCategoryOptions(products) {
   });
 }
 
-// ==========================
-// 🧩 LỌC THEO GIÁ + DANH MỤC
-// ==========================
 function onPriceRangeChange() {
   const value = document.getElementById("priceRange").value;
   const customInputs = document.getElementById("customPriceInputs");
@@ -192,9 +176,6 @@ function filterByPrice() {
   renderTable(filteredProducts);
 }
 
-// ==========================
-// 🧩 SẮP XẾP THEO GIÁ
-// ==========================
 function sortByPrice(order) {
   filteredProducts.sort((a, b) =>
     order === "asc" ? a.DonGia - b.DonGia : b.DonGia - a.DonGia
@@ -202,9 +183,7 @@ function sortByPrice(order) {
   renderTable(filteredProducts);
 }
 
-// ==========================
-// 🧩 PHÂN TRANG
-// ==========================
+
 function setupPagination(products) {
   const pagination = document.getElementById("pagination");
   if (!pagination) return;
@@ -263,12 +242,9 @@ function setupPagination(products) {
   });
 }
 
-// ==========================
-// 🧩 XEM CHI TIẾT SẢN PHẨM
-// ==========================
 async function viewProduct(maSP) {
   try {
-    const response = await fetch(`../../API/admin/product_api.php?action=getOne&MaSP=${encodeURIComponent(maSP)}`);
+    const response = await fetch(`../../API/admin/product_api.php?action=getOne&MaSP=${maSP}`);
     const result = await response.json();
 
     if (result.status === "success" && result.data) {
@@ -296,34 +272,51 @@ async function viewProduct(maSP) {
   }
 }
 
-// ==========================
-// 🧩 SỬA SẢN PHẨM
-// ==========================
 async function editProduct(maSP) {
   try {
-    const response = await fetch(`../../API/admin/product_api.php?action=getOne&MaSP=${encodeURIComponent(maSP)}`);
+    const response = await fetch(`../../API/admin/product_api.php?action=getOne&MaSP=${maSP}`);
     const result = await response.json();
 
     if (result.status === "success" && result.data) {
       const p = result.data;
 
+      // Gán dữ liệu vào form
       document.getElementById("edit_idSP").value = p.MaSP || "";
       document.getElementById("edit_nameSP").value = p.TenSP || "";
       document.getElementById("edit_price").value = p.DonGia || "";
       document.getElementById("edit_description").value = p.MoTa || "";
-      document.getElementById("edit_status").value =
-        p.TrangThai == 1 || p.TrangThai === "Hoạt động" ? "Còn hàng" : "Hết hàng";
 
+      document.getElementById("edit_status").value =
+        p.TrangThai == 1 || p.TrangThai === "Hoạt động" ? "1" : "0";
+
+      // 🧩 Load danh mục
       const categorySelect = document.getElementById("edit_category");
       categorySelect.innerHTML = "";
-      const cats = [...new Set(allProducts.map(p => p.TenDM || p.MaDM))];
-      cats.forEach(cat => {
-        const opt = document.createElement("option");
-        opt.value = cat;
-        opt.textContent = cat;
-        if (cat === (p.TenDM || p.MaDM)) opt.selected = true;
-        categorySelect.appendChild(opt);
+      const categoryMap = new Map();
+      allProducts.forEach(prod => {
+        if (prod.MaDM && prod.TenDM) categoryMap.set(prod.MaDM, prod.TenDM);
       });
+
+      // Render option
+      for (const [ma, ten] of categoryMap.entries()) {
+        const opt = document.createElement("option");
+        opt.value = ma;      
+        opt.textContent = ten; 
+        if (ma === p.MaDM) opt.selected = true;
+        categorySelect.appendChild(opt);
+      }
+      // 🧩 Hiển thị ảnh cũ (nếu có)
+      let imgPreview = document.getElementById("edit_preview");
+      if (!imgPreview) {
+        imgPreview = document.createElement("img");
+        imgPreview.id = "edit_preview";
+        imgPreview.style.width = "120px";
+        imgPreview.style.marginTop = "10px";
+        imgPreview.style.borderRadius = "8px";
+        document.getElementById("edit_image").insertAdjacentElement("afterend", imgPreview);
+      }
+      imgPreview.src = p.HinhAnh ? `../img/${p.HinhAnh}` : "../img/no-image.png";
+      imgPreview.alt = p.TenSP || "Hình sản phẩm";
 
       openModal("productEditModal");
     } else {
@@ -334,10 +327,71 @@ async function editProduct(maSP) {
     showNotify("Không thể kết nối đến API.");
   }
 }
+// 🖼️ Hiển thị ảnh xem trước khi chọn file mới trong form sửa
+document.getElementById("edit_image").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  const preview = document.getElementById("edit_preview");
+  if (file) {
+    preview.src = URL.createObjectURL(file);
+  }
+});
 
-// ==========================
-// 🧩 GỬI FORM UPDATE
-// ==========================
+// 🧩 HÀM HIỂN THỊ HỘP XÁC NHẬN TUỲ CHỈNH
+function showConfirm(message = "Bạn có chắc chắn muốn xóa mục này không?") {
+  return new Promise((resolve) => {
+    const overlay = document.getElementById("confirmOverlay");
+    const msg = document.getElementById("confirmMessage");
+    const btnYes = document.getElementById("confirmYes");
+    const btnNo = document.getElementById("confirmNo");
+    const btnClose = document.getElementById("closeConfirm");
+
+    msg.textContent = message;
+    overlay.style.display = "flex";
+
+    // Gỡ các sự kiện cũ nếu có
+    btnYes.onclick = btnNo.onclick = btnClose.onclick = null;
+
+    // Khi người dùng chọn "Đồng ý"
+    btnYes.onclick = () => {
+      overlay.style.display = "none";
+      resolve(true);
+    };
+
+    // Khi người dùng chọn "Hủy" hoặc đóng
+    const cancel = () => {
+      overlay.style.display = "none";
+      resolve(false);
+    };
+    btnNo.onclick = btnClose.onclick = cancel;
+  });
+}
+
+// 🧩 HÀM XOÁ SẢN PHẨM
+async function deleteProduct(maSP) {
+  const isConfirmed = await showConfirm(`Bạn có chắc chắn muốn xóa sản phẩm [${maSP}] này không?`);
+  if (!isConfirmed) return;
+
+  try {
+    const response = await fetch("../../API/admin/product_api.php?action=delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ MaSP: maSP }),
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      showNotify("Đã xóa sản phẩm thành công!");
+      loadProducts();
+    } else {
+      showNotify(result.message || "Không thể xóa sản phẩm.");
+    }
+  } catch (error) {
+    console.error("Lỗi khi xóa sản phẩm:", error);
+    showNotify("Không thể kết nối đến API.");
+  }
+}
+
 const formEdit = document.getElementById("formEditProduct");
 if (formEdit) {
   formEdit.addEventListener("submit", async (e) => {
@@ -346,7 +400,7 @@ if (formEdit) {
     formData.append("action", "update");
 
     try {
-      const response = await fetch("../../API/admin/product_api.php", {
+      const response = await fetch("../../API/admin/product_api.php?action=update", {
         method: "POST",
         body: formData
       });
@@ -365,7 +419,6 @@ if (formEdit) {
     }
   });
 }
-
 // Gắn sự kiện cho tất cả nút close (nút X)
 document.querySelectorAll(".modal-close").forEach(btn => {
   btn.addEventListener("click", () => {
