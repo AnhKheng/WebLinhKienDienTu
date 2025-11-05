@@ -17,8 +17,25 @@ INSERT INTO `tbl_danhmuc` (`MaDM`, `TenDM`) VALUES
 ('DM12', 'Chuột + Lót chuột'),
 ('DM13', 'Bàn ghế'),
 ('DM14', 'Handheld, Console'),
-('DM15', 'Phụ kiện (Hub, Sạc, Cáp,...)'),
-SET FOREIGN_KEY_CHECKS = 1; -- Bật lại kiểm tra khóa ngoại
+('DM15', 'Phụ kiện (Hub, Sạc, Cáp,...)');
+
+-- Bảng: tbl_nhacungcap
+INSERT INTO `tbl_nhacungcap` (`MaNCC`, `TenNCC`, `DiaChi`, `SoDienThoai`) VALUES
+('NCC01', 'Công ty Phân Phối Logitech VN', 'TP Hồ Chí Minh', '0281234567'),
+('NCC02', 'Công ty DareU Việt Nam', 'Hà Nội', '0249876543'),
+('NCC03', 'Samsung Display VN', 'Bình Dương', '0274123123'),
+('NCC04', 'Asus Việt Nam', 'TP Hồ Chí Minh', '0282223333'),
+('NCC05', 'Gigabyte Technology VN', 'Đà Nẵng', '0236745123'),
+('NCC06', 'Corsair Southeast Asia', 'Hải Phòng', '0225389741'),
+('NCC07', 'Intel Việt Nam', 'Bắc Ninh', '0222388111'),
+('NCC08', 'AMD Global', 'TP Hồ Chí Minh', '0289998877'),
+('NCC09', 'Western Digital VN', 'Biên Hòa', '0251388222'),
+('NCC10', 'Kingston Technology VN', 'Cần Thơ', '0292377666');
+
+-- Bảng: tbl_cuahang
+INSERT INTO `tbl_cuahang` (`MaCH`, `TenCH`, `DiaChi`, `SoDienThoai`) VALUES
+('CH01', 'Cửa hàng Linh Kiện Khang Store', 'Bình Đức, Long Xuyên, An Giang', '0385227825'),
+('CH02', 'Chi nhánh Cần Thơ', 'Ninh Kiều, Cần Thơ', '0905123456');
 
 -- Bảng: tbl_sanpham
 INSERT INTO `tbl_sanpham` (`MaSP`, `TenSP`, `MaDM`, `DonGia`, `MoTa`, `TrangThai`, `HinhAnh`) VALUES
@@ -364,25 +381,6 @@ INSERT INTO `tbl_sanpham` (`MaSP`, `TenSP`, `MaDM`, `DonGia`, `MoTa`, `TrangThai
 ('SP340', 'Console GameBox 4K', 'DM14', 6990000, 'Chơi game 4K, tay cầm đôi.', b'1', 'cs20.png'),
 ('SP341', 'Cáp sạc nhanh USB-C 60W', 'DM15', 290000, 'Tương thích laptop, điện thoại.', b'1', 'pk22.png');
 
-
--- Bảng: tbl_nhacungcap
-INSERT INTO `tbl_nhacungcap` (`MaNCC`, `TenNCC`, `DiaChi`, `SoDienThoai`) VALUES
-('NCC01', 'Công ty Phân Phối Logitech VN', 'TP Hồ Chí Minh', '0281234567'),
-('NCC02', 'Công ty DareU Việt Nam', 'Hà Nội', '0249876543'),
-('NCC03', 'Samsung Display VN', 'Bình Dương', '0274123123'),
-('NCC04', 'Asus Việt Nam', 'TP Hồ Chí Minh', '0282223333'),
-('NCC05', 'Gigabyte Technology VN', 'Đà Nẵng', '0236745123'),
-('NCC06', 'Corsair Southeast Asia', 'Hải Phòng', '0225389741'),
-('NCC07', 'Intel Việt Nam', 'Bắc Ninh', '0222388111'),
-('NCC08', 'AMD Global', 'TP Hồ Chí Minh', '0289998877'),
-('NCC09', 'Western Digital VN', 'Biên Hòa', '0251388222'),
-('NCC10', 'Kingston Technology VN', 'Cần Thơ', '0292377666');
-
--- Bảng: tbl_cuahang
-INSERT INTO `tbl_cuahang` (`MaCH`, `TenCH`, `DiaChi`, `SoDienThoai`) VALUES
-('CH01', 'Cửa hàng Linh Kiện Khang Store', 'Bình Đức, Long Xuyên, An Giang', '0385227825'),
-('CH02', 'Chi nhánh Cần Thơ', 'Ninh Kiều, Cần Thơ', '0905123456');
-
 -- Bảng: tbl_nhanvien
 INSERT INTO `tbl_nhanvien` (`MaNV`, `TenNV`, `GioiTinh`, `NgaySinh`, `SoDienThoai`, `MaCH`) VALUES
 ('NV01', 'Trần Vĩ Khang', 'Nam', '2004-04-10', '0385227825', 'CH01'),
@@ -394,6 +392,73 @@ INSERT INTO `tbl_taikhoan` (`TenDangNhap`, `MatKhau`, `MaNV`, `VaiTro`) VALUES
 ('admin', '123456', 'NV01', 'QuanTri'),
 ('nv_binh', '123456', 'NV02', 'NhanVien'),
 ('nv_hoa', '123456', 'NV03', 'NhanVien');
+
+-- Bảng: tbl_khachhang
+INSERT INTO `tbl_khachhang` (`MaKH`,`TenKH`,`SoDienThoai`,`DiaChi`) VALUES
+('KH01','Nguyễn Minh','0911222333','An Giang'),
+('KH02','Trần Hậu','0988777666','Cần Thơ'),
+('KH03','Phạm Lan','0909888777','Đồng Tháp'),
+('KH04','Lê Hoàng','0933111222','Long An'),
+('KH05','Vũ Thị Mai','0977444555','Tiền Giang'),
+('KH06','Đỗ Văn Nam','0919555666','Vĩnh Long'),
+('KH07','Huỳnh Kim','0944777888','Bến Tre'),
+('KH08','Trương Anh Tuấn','0908111222','Kiên Giang'),
+('KH09','Bùi Ngọc','0922333444','Sóc Trăng'),
+('KH10','Hà Văn Hùng','0966888999','Bạc Liêu'),
+('KH11','Dương Thị Linh','0912345678','Cà Mau'),
+('KH12','Phan Quốc Bảo','0987654321','Hậu Giang'),
+('KH13','Mai Văn Khôi','0934567890','Tây Ninh'),
+('KH14','Tô Thị Hồng','0976543210','Bình Phước'),
+('KH15','Lý Minh Tuấn','0901234567','Đắk Lắk'),
+('KH16','Ngô Bảo Châu','0919876543','Gia Lai'),
+('KH17','Đinh Văn Long','0943210987','Kon Tum'),
+('KH18','Võ Thị Thảo','0965432109','Đà Nẵng'),
+('KH19','Trần Đức','0998765432','Quảng Nam'),
+('KH20','Hồ Văn Huy','0911122334','Quảng Ngãi'),
+('KH21','Cao Thị Ngọc','0934455667','Bình Định'),
+('KH22','Lương Văn Đạt','0955777888','Phú Yên'),
+('KH23','Kiều Anh Dũng','0977999000','Khánh Hòa'),
+('KH24','Mạc Văn Hiếu','0900011122','Ninh Thuận'),
+('KH25','Tăng Thị Yến','0922233445','Bình Thuận'),
+('KH26','Quách Văn Khoa','0944455667','Lâm Đồng'),
+('KH27','Uông Thị Lan','0966677889','Đồng Nai'),
+('KH28','Hứa Văn Minh','0988899001','Bà Rịa-Vũng Tàu'),
+('KH29','Từ Thị Na','0911133445','TP Hồ Chí Minh'),
+('KH30','Sầm Văn Phú','0933355777','Hà Nội');
+
+-- Bảng: tbl_taikhoankhachhang
+INSERT INTO `tbl_taikhoankhachhang` 
+(`MaKH`,`LoaiDangNhap`,`TenDangNhap`,`Email`,`MatKhau`) VALUES
+('KH01','local','nguyenminh01','nguyenminh@gmail.com','minh123'),
+('KH02','local','tranhau02','tranhau@gmail.com','hau456'),
+('KH03','local','phamlan03','phamlan@yahoo.com','lan789'),
+('KH04','local','lehoang04','lehoang04@outlook.com','hoang2025'),
+('KH05','local','vumai05','vumai@gmail.com','mai567'),
+('KH06','local','namdo06','namdo@gmail.com','nam2023'),
+('KH07','local','kimhuynh07','kimhuynh@yahoo.com','kim999'),
+('KH08','local','tuantruong08','tuantruong@gmail.com','tuan111'),
+('KH09','local','ngocbui09','ngocbui@gmail.com','ngoc222'),
+('KH10','local','hungha10','hungha10@icloud.com','hung333'),
+('KH11','local','linhduong11','linhduong@gmail.com','linh444'),
+('KH12','local','baophan12','baophan@gmail.com','bao555'),
+('KH13','local','khoimai13','khoimai@yahoo.com','khoi666'),
+('KH14','local','hongto14','hongto14@gmail.com','hong777'),
+('KH15','local','tuanly15','tuanly@gmail.com','tuan888'),
+('KH16','local','chaungo16','chaungo@gmail.com','chau999'),
+('KH17','local','longdinh17','longdinh@outlook.com','long000'),
+('KH18','local','thaovo18','thaovo@gmail.com','thao111'),
+('KH19','local','ductran19','ductran19@gmail.com','duc222'),
+('KH20','local','huyho20','huyho@yahoo.com','huy333'),
+('KH21','local','ngoccaothi21','ngoccaothi@gmail.com','ngoc444'),
+('KH22','local','datluong22','datluong@gmail.com','dat555'),
+('KH23','local','dungkieu23','dungkieu@icloud.com','dung666'),
+('KH24','local','hieumac24','hieumac@gmail.com','hieu777'),
+('KH25','local','yentang25','yentang@gmail.com','yen888'),
+('KH26','local','khoaquach26','khoaquach@yahoo.com','khoa999'),
+('KH27','local','lanuong27','lanuong@gmail.com','lan000'),
+('KH28','local','minhhua28','minhhua@gmail.com','minh111'),
+('KH29','local','natuthi29','natuthi@gmail.com','na222'),
+('KH30','local','phusam30','phusam@outlook.com','phu333');
 
 -- Bảng: tbl_kho
 INSERT INTO `tbl_kho` (`MaCH`, `MaSP`, `SoLuongTon`) VALUES
@@ -427,7 +492,7 @@ INSERT INTO `tbl_kho` (`MaCH`, `MaSP`, `SoLuongTon`) VALUES
 ('CH01', 'SP28', 13), ('CH02', 'SP28', 10),
 ('CH01', 'SP29', 37), ('CH02', 'SP29', 35),
 ('CH01', 'SP30', 74), ('CH02', 'SP30', 78),
-('CH01', 'SP31', 13), ('CH022', 'SP31', 16),
+('CH01', 'SP31', 13), ('CH02', 'SP31', 16),
 ('CH01', 'SP32', 35), ('CH02', 'SP32', 40),
 ('CH01', 'SP33', 99), ('CH02', 'SP33', 102),
 ('CH01', 'SP34', 63), ('CH02', 'SP34', 61),
@@ -851,70 +916,3 @@ INSERT INTO `tbl_chitiethoadon` (`MaHD`, `MaSP`, `SoLuong`, `DonGia`) VALUES
 ('HD53','SP267',2,1220000),('HD53','SP270',1,1210000),
 ('HD54','SP273',1,480000),('HD54','SP276',2,1320000),
 ('HD55','SP279',3,600000),('HD55','SP282',1,1040000);
-
--- Bảng: tbl_khachhang
-INSERT INTO `tbl_khachhang` (`MaKH`,`TenKH`,`SoDienThoai`,`DiaChi`) VALUES
-('KH01','Nguyễn Minh','0911222333','An Giang'),
-('KH02','Trần Hậu','0988777666','Cần Thơ'),
-('KH03','Phạm Lan','0909888777','Đồng Tháp'),
-('KH04','Lê Hoàng','0933111222','Long An'),
-('KH05','Vũ Thị Mai','0977444555','Tiền Giang'),
-('KH06','Đỗ Văn Nam','0919555666','Vĩnh Long'),
-('KH07','Huỳnh Kim','0944777888','Bến Tre'),
-('KH08','Trương Anh Tuấn','0908111222','Kiên Giang'),
-('KH09','Bùi Ngọc','0922333444','Sóc Trăng'),
-('KH10','Hà Văn Hùng','0966888999','Bạc Liêu'),
-('KH11','Dương Thị Linh','0912345678','Cà Mau'),
-('KH12','Phan Quốc Bảo','0987654321','Hậu Giang'),
-('KH13','Mai Văn Khôi','0934567890','Tây Ninh'),
-('KH14','Tô Thị Hồng','0976543210','Bình Phước'),
-('KH15','Lý Minh Tuấn','0901234567','Đắk Lắk'),
-('KH16','Ngô Bảo Châu','0919876543','Gia Lai'),
-('KH17','Đinh Văn Long','0943210987','Kon Tum'),
-('KH18','Võ Thị Thảo','0965432109','Đà Nẵng'),
-('KH19','Trần Đức','0998765432','Quảng Nam'),
-('KH20','Hồ Văn Huy','0911122334','Quảng Ngãi'),
-('KH21','Cao Thị Ngọc','0934455667','Bình Định'),
-('KH22','Lương Văn Đạt','0955777888','Phú Yên'),
-('KH23','Kiều Anh Dũng','0977999000','Khánh Hòa'),
-('KH24','Mạc Văn Hiếu','0900011122','Ninh Thuận'),
-('KH25','Tăng Thị Yến','0922233445','Bình Thuận'),
-('KH26','Quách Văn Khoa','0944455667','Lâm Đồng'),
-('KH27','Uông Thị Lan','0966677889','Đồng Nai'),
-('KH28','Hứa Văn Minh','0988899001','Bà Rịa-Vũng Tàu'),
-('KH29','Từ Thị Na','0911133445','TP Hồ Chí Minh'),
-('KH30','Sầm Văn Phú','0933355777','Hà Nội');
-
--- Bảng: tbl_taikhoankhachhang
-INSERT INTO `tbl_taikhoankhachhang` 
-(`MaKH`,`LoaiDangNhap`,`TenDangNhap`,`Email`,`MatKhau`) VALUES
-('KH01','local','nguyenminh01','nguyenminh@gmail.com','minh123'),
-('KH02','local','tranhau02','tranhau@gmail.com','hau456'),
-('KH03','local','phamlan03','phamlan@yahoo.com','lan789'),
-('KH04','local','lehoang04','lehoang04@outlook.com','hoang2025'),
-('KH05','local','vumai05','vumai@gmail.com','mai567'),
-('KH06','local','namdo06','namdo@gmail.com','nam2023'),
-('KH07','local','kimhuynh07','kimhuynh@yahoo.com','kim999'),
-('KH08','local','tuantruong08','tuantruong@gmail.com','tuan111'),
-('KH09','local','ngocbui09','ngocbui@gmail.com','ngoc222'),
-('KH10','local','hungha10','hungha10@icloud.com','hung333'),
-('KH11','local','linhduong11','linhduong@gmail.com','linh444'),
-('KH12','local','baophan12','baophan@gmail.com','bao555'),
-('KH13','local','khoimai13','khoimai@yahoo.com','khoi666'),
-('KH14','local','hongto14','hongto14@gmail.com','hong777'),
-('KH15','local','tuanly15','tuanly@gmail.com','tuan888'),
-('KH16','local','chaungo16','chaungo@gmail.com','chau999'),
-('KH17','local','longdinh17','longdinh@outlook.com','long000'),
-('KH18','local','thaovo18','thaovo@gmail.com','thao111'),
-('KH19','local','ductran19','ductran19@gmail.com','duc222'),
-('KH20','local','huyho20','huyho@yahoo.com','huy333'),
-('KH21','local','ngoccaothi21','ngoccaothi@gmail.com','ngoc444'),
-('KH22','local','datluong22','datluong@gmail.com','dat555'),
-('KH23','local','dungkieu23','dungkieu@icloud.com','dung666'),
-('KH24','local','hieumac24','hieumac@gmail.com','hieu777'),
-('KH25','local','yentang25','yentang@gmail.com','yen888'),
-('KH26','local','khoaquach26','khoaquach@yahoo.com','khoa999'),
-('KH27','local','lanuong27','lanuong@gmail.com','lan000'),
-('KH28','local','minhhua28','minhhua@gmail.com','minh111'),
-('KH29','local','natuthi29','natuthi@gmail.com','na222'),
-('KH30','local','phusam30','phusam@outlook.com','phu333');
