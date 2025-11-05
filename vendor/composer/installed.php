@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'f8ba3aad37906fb5098834d0b23ecd774fd0bab5',
+        'reference' => '431219965e84ccbda05e4a6928911261fec96604',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'f8ba3aad37906fb5098834d0b23ecd774fd0bab5',
+            'reference' => '431219965e84ccbda05e4a6928911261fec96604',
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
@@ -98,6 +98,15 @@
             'install_path' => __DIR__ . '/../monolog/monolog',
             'aliases' => array(),
             'reference' => '904713c5929655dc9b97288b69cfeedad610c9a1',
+            'dev_requirement' => false,
+        ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v7.0.0',
+            'version' => '7.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'reference' => 'c7111310c6116ba508a6a170a89eaaed2129bd42',
             'dev_requirement' => false,
         ),
         'phpoffice/phpspreadsheet' => array(

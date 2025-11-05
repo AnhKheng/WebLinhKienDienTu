@@ -117,27 +117,35 @@ if (isset($_GET['id'])) {
 
   <div class="main">
   <div class="menu-box">
-    <div class="menu-header">
-      <i class="fas fa-filter"></i> Bộ lọc sản phẩm theo giá
-    </div>
-    <form class="menu-items">
-      <label class="menu-item">
-        <input type="radio" name="price" value="Max">
-        <i class="fas fa-arrow-down"></i> Từ cao đến thấp
-      </label>
-      <label class="menu-item">
-        <input type="radio" name="price" value="Min">
-        <i class="fas fa-arrow-up"></i> Từ thấp đến cao
-      </label>
-      <label class="menu-item">
-        <input type="radio" name="price" value="500k">
-        <i class="fas fa-money-bill-wave"></i> Dưới 500k
-      </label>
-
-      <button type="submit" class="btn-filter">Lọc sản phẩm</button>
-    </form>
+  <div class="menu-header">
+    <i class="fas fa-filter"></i> Bộ lọc sản phẩm theo giá
   </div>
 
+  <form id="filterForm" class="menu-items">
+    <label class="menu-item">
+      <input type="radio" name="price" value="all" checked>
+      Tất cả
+    </label>
+    <label class="menu-item">
+      <input type="radio" name="price" value="under500">
+      Dưới 500k
+    </label>
+    <label class="menu-item">
+      <input type="radio" name="price" value="500-1000">
+      500k – 1 triệu
+    </label>
+    <label class="menu-item">
+      <input type="radio" name="price" value="1000-2000">
+      1 – 2 triệu
+    </label>
+    <label class="menu-item">
+      <input type="radio" name="price" value="over2000">
+      Trên 2 triệu
+    </label>
+
+    <button type="submit" class="btn-filter">Lọc sản phẩm</button>
+  </form>
+</div>
 
     <div class="main-content">
       <?php     
@@ -165,8 +173,6 @@ if (isset($_GET['id'])) {
       </div>
     </div>
   </div>
-
-  
 
   <footer class="site-footer">
     <div class="footer-info">
