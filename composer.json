@@ -1,5 +1,6 @@
 {
     "require": {
-        "google/apiclient": "2.4"
+        "google/apiclient": "2.4",
+        "phpmailer/phpmailer": "^7.0"
     }
 }

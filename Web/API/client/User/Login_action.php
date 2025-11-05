@@ -34,6 +34,7 @@
 			// Đăng ký SESSION
 			$_SESSION['MaKH'] = $dong['MaKH'];
 			$_SESSION['TenDangNhap'] = $dong['TenDangNhap'];
+			$_SESSION['Email'] = $dong['Email'];
 
 			
 			// Chuyển hướng về trang index.php
