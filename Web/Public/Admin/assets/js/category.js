@@ -76,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.status === "success") {
         const c = data.data;
-        document.getElementById("edit_idDM_old").value = c.MaDM;
         document.getElementById("edit_idDM").value = c.MaDM;
         document.getElementById("edit_nameDM").value = c.TenDM;
         editModal.style.display = "flex";
