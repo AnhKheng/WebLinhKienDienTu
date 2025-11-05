@@ -150,6 +150,16 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
   transition: 0.2s;
   gap: 5px;
 }
+.filter-container input {
+  width: 300px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+  gap: 5px;
+}
 .customPriceInputs input {
   width: 100px;
     padding: 8px 10px;

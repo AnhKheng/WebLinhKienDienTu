@@ -16,7 +16,6 @@
     <div class="confirm-box popup-content" role="dialog" aria-modal="true">
       <span id="closeConfirm" class="modal-close" role="button" aria-label="Đóng">&times;</span>
       <div id="confirmMessage" class="confirm-message">
-        Bạn có chắc chắn muốn xóa mục này không?
       </div>
       <div class="confirm-actions">
         <button id="confirmYes" class="btn-confirm">Đồng ý</button>
@@ -24,14 +23,11 @@
       </div>
     </div>
   </div>
-      <h2>Danh mục sản phẩm</h2>
-
-    <!-- POPUP THÊM (đặt trực tiếp dưới body, không nằm trong container khác) -->
     <div id="categoryAddModal" class="modal-overlay" aria-hidden="true">
       <div class="modal-box">
         <span id="closeAddModal" class="modal-close" role="button" aria-label="Close">&times;</span>
         <h3>Thêm danh mục sản phẩm</h3>
-        <form id="formAddCategory" action="../../API/admin/Category/Add.php" method="post" enctype="multipart/form-data">
+        <form id="formAddCategory" method="post" enctype="multipart/form-data">
           <label>Tên danh mục:</label><br>
           <input type="text" name="nameDM" required><br><br>
 
@@ -40,25 +36,21 @@
       </div>
     </div>
 
-<!-- POPUP SỬA (cũng là phần tử con trực tiếp của body) -->
-<div id="categoryEditModal" class="modal-overlay" aria-hidden="true">
-  <div class="modal-box">
-    <span id="closeEditModal" class="modal-close" role="button" aria-label="Close">&times;</span>
-    <h3>Sửa danh mục sản phẩm</h3>
-    <form id="formEditCategory" method="post" enctype="multipart/form-data">
-      <input type="hidden" name="idDM_old" id="edit_idDM_old">
 
-      <label>Mã danh mục:</label><br>
-      <input type="text" name="idDM" id="edit_idDM" required readonly><br><br>
-
-      <label>Tên danh mục:</label><br>
-      <input type="text" name="nameDM" id="edit_nameDM" required><br><br>
-
-      <button type="submit">Cập nhật</button>
-    </form>
-  </div>
-</div>
-
+    <div id="categoryEditModal" class="modal-overlay" aria-hidden="true">
+      <div class="modal-box">
+        <span id="closeEditModal" class="modal-close" role="button" aria-label="Close">&times;</span>
+        <h3>Sửa danh mục sản phẩm</h3>
+        <form id="formEditCategory" method="post" enctype="multipart/form-data">
+          <label>Mã danh mục:</label><br>
+          <input type="text" name="idDM" id="edit_idDM" readonly><br><br>
+          <label>Tên danh mục:</label><br>
+          <input type="text" name="nameDM" id="edit_nameDM" required><br><br>
+          <button type="submit">Cập nhật</button>
+        </form>
+      </div>
+    </div>
+      <h2>Danh mục sản phẩm</h2>
     <table id="categoryTable">
         <thead>
         <tr>

@@ -34,6 +34,18 @@
           <li><a href="index.php?module=invoice&page=invoice_add"><i class="fas fa-plus"></i> Thêm hóa đơn</a></li>
         </ul>
       </li>
+      <li class="menu-item has-sub">
+        <button class="menu-toggle">
+          <i class="fas fa-file-invoice-dollar"></i>  
+          <span>Nhập Hàng</span>
+        </button>
+        <ul class="submenu">
+          <li><a href="index.php?module=Supplier&page=View"><i class="fa-solid fa-building"></i> Nhà cung cấp</a></li>
+          <li><a href="index.php?module=Import&page=View"><i class="fa-solid fa-boxes-packing"></i> Hóa đơn nhập</a></li>
+          <li><a href="index.php?module=Import&page=Add"><i class="fa-solid fa-file-pen"></i> Thêm phiếu nhập</a></li>
+        </ul>
+      </li>
+      
 
       <li>
         <a href="#" class="menu-link">
