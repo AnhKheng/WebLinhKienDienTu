@@ -30,8 +30,8 @@ if (isset($_GET['id'])) {
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://unpkg.com/alpinejs" defer></script>
-  <link rel="stylesheet" href="assets/css/Style_main.css?v=19">
-  <link rel="stylesheet" href="assets/css/product_style.css?v=19">
+  <link rel="stylesheet" href="assets/css/Style_main.css?v=22">
+  <link rel="stylesheet" href="assets/css/product_style.css?v=22">
   <link rel="icon" type="image/ico" href="../img/favicon.ico">
 </head>
 <body>
@@ -179,8 +179,8 @@ if (isset($_GET['id'])) {
   </footer>
 
   <script src="assets/js/loginOverlay.js?v=19"></script>
-  <script src="assets/js/templates.js?v=19"></script> 
-  <script src="assets/js/loadProducts.js?v=19"></script>
-  <script src="assets/js/loadDetails.js?v=19"></script>
+  <script src="assets/js/loadProducts.js?v=22"></script>
+  <script src="assets/js/loadDetails.js?v=22"></script>
+  <script src="assets/js/addCart.js?v=22"></script>
 </body>
 </html>

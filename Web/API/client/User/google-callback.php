@@ -23,8 +23,11 @@ if (isset($_GET['code'])) {
 
         $email = $google_user->email;
         $name = $google_user->name;
+        
+        $maTKKH = null; // Khai báo biến MaTKKH
+        $maKH = null;
 
-        // ✅ Sử dụng đúng biến kết nối ($connect)
+        // ✅ Lấy MaTKKH và MaKH từ database
         $sql = "SELECT MaTKKH, MaKH FROM tbl_taikhoankhachhang WHERE Email = '$email'";
         $result = mysqli_query($connect, $sql);
 
@@ -35,6 +38,7 @@ if (isset($_GET['code'])) {
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $maKH = $row['MaKH'];
+            $maTKKH = $row['MaTKKH']; // <<< LẤY MaTKKH KHI TÌM THẤY
         } else {
             // Tạo mã KH ngẫu nhiên, đảm bảo không trùng
             $maKH = 'KH' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
@@ -51,10 +55,14 @@ if (isset($_GET['code'])) {
             if (!mysqli_query($connect, $sql_tkkh)) {
                 die("❌ Lỗi thêm tài khoản KH: " . mysqli_error($connect));
             }
+            
+            // <<< LẤY MaTKKH VỪA TẠO
+            $maTKKH = mysqli_insert_id($connect); 
         }
 
-        // Lưu session
+        // === LƯU SESSION MỚI ===
         $_SESSION['MaKH'] = $maKH;
+        $_SESSION['MaTKKH'] = $maTKKH; // <<< THÊM SESSION CHO MaTKKH
         $_SESSION['TenKH'] = $name;
         $_SESSION['Email'] = $email;
         $_SESSION['LoaiDangNhap'] = 'google';

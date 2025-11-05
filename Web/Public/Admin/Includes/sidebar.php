@@ -18,7 +18,7 @@
           <span>Sản phẩm</span>
         </button>
         <ul class="submenu">
-          <li><a href="index.php?module=Products&page=Products"><i class="fas fa-list"></i> Danh sách sản phẩm</a></li>
+          <li><a href="index.php?module=Products&page=View"><i class="fas fa-list"></i> Danh sách sản phẩm</a></li>
           <li><a href="index.php?module=Products&page=Add"><i class="fas fa-plus"></i> Thêm sản phẩm</a></li>
           <li><a href="index.php?module=Category&page=View"><i class="fas fa-tags"></i> Quản lý danh mục</a></li>
         </ul>

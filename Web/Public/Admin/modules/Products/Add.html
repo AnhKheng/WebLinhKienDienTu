@@ -4,51 +4,34 @@
   <meta charset="UTF-8">
   <title>Sửa sản phẩm</title>
 
-  <link rel="stylesheet" href="assets/css/add-product.css">
+  <link rel="stylesheet" href="assets/css/style_pages.css">
 </head>
 <body>
+    <div id="notifyOverlay" class="modal-overlay" aria-hidden="true" style="display:none;">
+        <div class="notify-box popup-content" role="dialog" aria-live="polite">
+        <span id="closeNotify" class="modal-close" role="button" aria-label="Đóng">&times;</span>
+        <div id="notifyMessage"></div>
+        </div>
+    </div>
     <h2>Thêm sản phẩm</h2>
-    <table>
-        <form action="" method="post" enctype="multipart/form-data">
-            <tr>
-                <td>Tên sản phẩm</td>
-                <td><input type="text" name="product_name" required></td>
-            </tr>
-            <tr>
-                <td>Danh mục</td>
-                <td>
-                    <select id="categoryFilter" name="category_id" required>
-                    <!-- Options sẽ được điền động bằng JavaScript -->
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Đơn giá</td>
-                <td><input type="number" name="price" required></td>
-            </tr>
-            <tr>
-                <td>Mô tả</td>
-                <td><textarea name="description" required></textarea></td>
-            </tr>
-            <tr>
-                <td>Trạng thái</td>
-                <td>
-                    <select name="status" required>
-                        <option value="1">Còn hàng</option>
-                        <option value="0">Hết hàng</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Hình ảnh</td>
-                <td><input type="file" name="image" accept="image/*" required></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="Thêm sản phẩm"></td>
-            </tr>
-        </form>
-    </table>
+    <form id="formAddProduct" class="form-add">
+        <label>Tên sản phẩm:</label><br>
+        <input type="text" name="nameSP" required><br><br>
 
+        <label>Danh mục:</label><br>
+        <select name="category" id="add_category" required></select><br><br>
+
+        <label>Đơn giá:</label><br>
+        <input type="number" name="price" required><br><br>
+
+        <label>Mô tả:</label><br>
+        <textarea name="description" rows="4" cols="50" required></textarea><br><br>
+        <label>Hình ảnh:</label><br>
+        <input type="file" name="image" accept="image/*" required><br><br>
+
+        <button type="submit" class="btn-add">Thêm sản phẩm</button>
+    </form>
+    <script src="assets/js/product_add.js"></script>
 </body>
 
 </html>

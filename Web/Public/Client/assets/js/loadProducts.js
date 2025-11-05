@@ -1,3 +1,25 @@
+function createProductCardHTML(product) {
+    const price = new Intl.NumberFormat('vi-VN', { 
+        style: 'currency', 
+        currency: 'VND' 
+    }).format(product.DonGia);
+
+    const imageUrl = product.HinhAnh ? `../img/${product.HinhAnh}` : '../img/placeholder.png';
+
+    return `
+    <div class="product-card">
+        <a href="Index.php?do=Details&id=${product.MaSP}">
+            <img src="${imageUrl}" alt="${product.TenSP}" onerror="this.src='../img/placeholder.png';">
+        </a>
+        <a href="Index.php?do=Details&id=${product.MaSP}">
+            <h3>${product.TenSP}</h3>
+        </a>
+        <p class="price">${price}</p>
+        <a href="Index.php?do=Details&id=${product.MaSP}" class="btn-detail">Xem chi tiết</a>
+    </div>
+    `;
+}
+
 let currentPages = {};
 let currentSearchPage = 1;
 
@@ -144,7 +166,7 @@ function displaySearchResults(category, search, page = 1) {
         });
 }
 
-function initialPageLoad() {
+function initHomePage() {
     const params = getUrlParams();
     const isSearching = params.hasCategory || params.hasSearch;
 
@@ -207,9 +229,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = `Index.php?do=Home&category=${encodeURIComponent(category)}&search=${encodeURIComponent(search)}&page=1`;
             }
         });
-    }
-
-    if (document.querySelector('.featured-section-v3')) {
-        initialPageLoad();
     }
 });
