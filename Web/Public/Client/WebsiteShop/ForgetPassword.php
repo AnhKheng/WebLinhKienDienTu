@@ -8,7 +8,7 @@
     </div>
     <h2 class="title">ĐỔI MẬT KHẨU</h2>
 
-    <form action="/password-action" method="post" class="password-form">
+    <form action="../../API/client/User/ForgotPassword_action.php" method="post" class="password-form">
         <div class="form-group">
             <label for="username">Tên tài khoản</label>
             <input type="text" name="username" placeholder="Tên tài khoản" required>

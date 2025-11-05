@@ -1,16 +1,19 @@
 <?php
+	require_once '../../Config/db_config.php';
+	session_start();
+	echo '<script src="../../../Public/Client/assets/js/messageBox.js"></script>';
 	$TenDangNhap = $_POST['username'];
 	$Email = $_POST['email'];
 	$MatKhauMoi = $_POST['password1'];
 	$XacNhanMatKhau = $_POST['password2'];
 	if(trim($TenDangNhap) == "")
-		ThongBaoLoi("Tên tài khoản không được bỏ trống!");
+		echo "<script> showNotify('Tên tài khoản không được bỏ trống!'); </script>";
 	elseif(trim($MatKhauMoi) == "")
-		ThongBaoLoi("Mật khẩu mới không được bỏ trống!");	
+		echo "<script> showNotify('Mật khẩu mới không được bỏ trống!'); </script>";
 	elseif(trim($Email) == "")
-		ThongBaoLoi("Email không được bỏ trống!");
+		echo "<script> showNotify('Email không được bỏ trống!'); </script>";
 	elseif($MatKhauMoi != $XacNhanMatKhau)
-		ThongBaoLoi("Xác nhận mật khẩu không đúng!");
+		echo "<script> showNotify('Xác nhận mật khẩu không đúng!'); </script>";
 	else	
 	{
 		$MatKhauCu= md5($MatKhauCu);
@@ -39,13 +42,13 @@
 			}
 			else
 			{
-				ThongBao("Chỉnh sửa thành công!");
+				echo "<script> showNotify('Chỉnh sửa thành công!'); </script>";
 			}
 			
 		}
 		else
 		{
-			ThongBao("Tên tài khoản không đúng!");
+			echo "<script> showNotify('Tên tài khoản không đúng!'); </script>";
 		}
 			
 	}	

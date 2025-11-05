@@ -1,7 +1,7 @@
 <?php
 	require_once '../../Config/db_config.php';
 	session_start();
-	include_once '../../../Public/Client/WebsiteShop/ThuVien.php';
+	echo '<script src="../../../Public/Client/assets/js/messageBox.js"></script>';
 	// Lấy thông tin từ FORM
 	$HoVaTen = $_POST['name'];
 	$TenDangNhap = $_POST['username'];
@@ -11,15 +11,15 @@
 	
 	// Kiểm tra
 	if(trim($HoVaTen) == "")
-		ThongBaoLoi("Họ và tên không được bỏ trống!");
+		echo "<script> showNotify('Họ và tên không được bỏ trống!'); </script>";
 	elseif(trim($TenDangNhap) == "")
-		ThongBaoLoi("Tên đăng nhập không được bỏ trống!");
+		echo "<script> showNotify('Tên đăng nhập không được bỏ trống!'); </script>";
 	elseif(trim($MatKhau) == "")
-		ThongBaoLoi("Mật khẩu không được bỏ trống!");
+		echo "<script> showNotify('Mật khẩu không được bỏ trống!'); </script>";
 	elseif($MatKhau != $XacNhanMatKhau)
-		ThongBaoLoi("Xác nhận mật khẩu không đúng!");
+		echo "<script> showNotify('Xác nhận mật khẩu không đúng!'); </script>";
 	elseif(trim($Email) == "")
-		ThongBaoLoi("Email không được bỏ trống!");
+		echo "<script> showNotify('Email không được bỏ trống!'); </script>";
 	else
 	{	
 		// Kiểm tra người dùng đã tồn tại chưa
@@ -51,9 +51,13 @@
 			$themkhachhang = $connect->query($sql_themkh);
 			
 			if($themkhachhang)
-				ThongBao("Thêm khách hàng thành công!");
+			{
+				echo "<script> showNotify('Thêm khách hàng thành công!'); </script>";
+			}
 			else
-				ThongBaoLoi($connect->error);
+			{
+				echo "<script> showNotify('" .$connect->error. "'); </script>";
+			}
             
             // Mã hóa mật khẩu
 			$MatKhau = md5($MatKhau);
@@ -65,13 +69,17 @@
             $themtkkh = $connect->query($sql_themtkkh);
 
             if($themtkkh)
-				ThongBao("Thêm tài khoản khách hàng thành công!");
+			{
+				echo "<script> showNotify('Thêm tài khoản khách hàng thành công!'); </script>";
+			}
 			else
-				ThongBaoLoi($connect->error);
+			{
+				echo "<script> showNotify('" .$connect->error. "'); </script>";
+			}
 		}
 		else
 		{
-			ThongBaoLoi("Người dùng với tên đăng nhập đã được sử dụng!");
+			echo "<script> showNotify('Người dùng với tên đăng nhập đã được sử dụng!'); </script>";
 		}
 	}
 ?>

@@ -1,16 +1,16 @@
 <?php
 	require_once '../../Config/db_config.php';
 	session_start();
-	include_once '../../../Public/Client/WebsiteShop/ThuVien.php';
+	echo '<script src="../../../Public/Client/assets/js/messageBox.js"></script>';
 	// Lấy thông tin từ FORM
 	$TenDangNhap = $_POST['Username'];
 	$MatKhau = $_POST['Password'];
 	
 	// Kiểm tra
 	if(trim($TenDangNhap) == "")
-		ThongBaoLoi("Tên đăng nhập không được bỏ trống!");
+		echo "<script> showNotify('Tên đăng nhập không được bỏ trống!'); </script>";
 	elseif(trim($MatKhau) == "")
-		ThongBaoLoi("Mật khẩu không được bỏ trống!");
+		echo "<script> showNotify('Mật khẩu không được bỏ trống!'); </script>";
 	else
 	{
 		// Mã hóa mật khẩu
@@ -38,12 +38,10 @@
 			
 			// Chuyển hướng về trang index.php
 			echo "<script>window.location.href = '../../../Public/Client/Index.php';</script>";
-
-		
 		}
 		else
 		{
-			echo "<p>Tài khoản hoặc mật khẩu không đúng.</p>";
+			echo "<script> showNotify('Tài khoản hoặc mật khẩu không đúng.'); </script>";
 		}
 	}
 	

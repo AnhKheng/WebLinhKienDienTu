@@ -1,4 +1,7 @@
 <?php
+	require_once '../../Config/db_config.php';
+	session_start();
+	echo '<script src="../../../Public/Client/assets/js/messageBox.js"></script>';
 	$MaKH = $_POST['MaKH'];
 	$MatKhauCu = $_POST['MatKhauCu'];
 	$MatKhauMoi = $_POST['MatKhauMoi'];
