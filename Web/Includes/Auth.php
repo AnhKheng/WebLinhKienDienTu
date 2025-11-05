@@ -9,7 +9,7 @@ class Auth {
 
     // ==== ĐĂNG NHẬP ====
     public function login($username, $password) {
-        $sql = "SELECT tk.*, nv.TenNV 
+        $sql = "SELECT tk.*, nv.TenNV, nv.MaCH
                 FROM tbl_taikhoan tk
                 JOIN tbl_nhanvien nv ON tk.MaNV = nv.MaNV
                 WHERE tk.TenDangNhap = ?";
@@ -36,6 +36,7 @@ class Auth {
         $_SESSION["ten_nv"] = $user["TenNV"];
         $_SESSION["vai_tro"] = $user["VaiTro"];
         $_SESSION["ma_nv"] = $user["MaNV"];
+        $_SESSION["ma_ch"] = $user["MaCH"];
 
         return [
             "status" => "success",
@@ -43,7 +44,8 @@ class Auth {
             "data" => [
                 "id" => $user["MaNV"],
                 "username" => $user["TenNV"],
-                "role" => $user["VaiTro"]
+                "role" => $user["VaiTro"],
+                "IdCH"=> $user["MaCH"],
             ]
         ];
     }
@@ -94,7 +96,8 @@ class Auth {
             "data" => [
                 "TenNV" => $_SESSION["ten_nv"],
                 "VaiTro" => $_SESSION["vai_tro"],
-                "MaNV" => $_SESSION["ma_nv"]
+                "MaNV" => $_SESSION["ma_nv"],
+                "MaCH" => $_SESSION["ma_ch"]
             ]
         ];
     }

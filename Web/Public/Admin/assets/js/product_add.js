@@ -39,15 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (closeNotify) closeNotify.addEventListener("click", hideNotify);
 });
 
-// ==============================
-// 🧩 THÊM SẢN PHẨM MỚI
-// ==============================
 async function handleAddProduct(e) {
-  e.preventDefault(); // Ngăn reload trang
+  e.preventDefault(); 
   const form = e.target;
   const formData = new FormData(form);
-
-  // Kiểm tra dữ liệu trống
   const name = formData.get("nameSP")?.trim();
   const category = formData.get("category");
   const price = formData.get("price");
@@ -66,7 +61,6 @@ async function handleAddProduct(e) {
     if (result.status === "success") {
       showNotify("Thêm sản phẩm thành công!");
       form.reset();
-      // Có thể gọi lại loadProducts() nếu bạn muốn refresh danh sách
     } else {
       showNotify(`${result.message || "Không thể thêm sản phẩm."}`);
     }
