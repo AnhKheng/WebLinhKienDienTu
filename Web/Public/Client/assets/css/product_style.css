@@ -1,9 +1,7 @@
 /* ===================================================== */
 /* product_style.css – ĐỒNG BỘ VỚI Style_main.css */
-/* Dựa trên .category-grid – ĐẸP, NHIỀU CỘT, RESPONSIVE */
 /* ===================================================== */
 
-/* Layout: Mỗi dòng = 1 danh mục + 4 sản phẩm ngang */
 .featured-section-v3 {
     padding: 30px;
     background: #fafafa;
@@ -19,14 +17,12 @@
     font-weight: 600;
 }
 
-/* Danh sách các dòng */
 .featured-list {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
 
-/* Mỗi dòng: [Tên DM] + [4 sản phẩm] */
 .featured-row {
     display: flex !important;
     align-items: stretch !important;
@@ -38,7 +34,6 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-/* Tên danh mục */
 .category-label {
     flex: 0 0 120px;
     font-weight: 600;
@@ -56,7 +51,6 @@
     font-weight: 500;
 }
 
-/* Khu vực sản phẩm */
 .product-row {
     flex: 1 !important;
     min-width: 0 !important;
@@ -136,7 +130,6 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
 }
 
-/* Phân trang nhỏ */
 .pagination-mini {
     display: flex;
     flex-direction: row;
@@ -184,17 +177,16 @@
 }
 
 /* ===================================================== */
-/* TÌM KIẾM: DỰA TRÊN .category-grid – NHIỀU CỘT, ĐỒNG BỘ */
+/* TÌM KIẾM */
 /* ===================================================== */
 
-/* GRID CHO TÌM KIẾM */
 .product-grid {
     min-height: calc(100vh - 200px);
     padding: 20px;
-    display: flex;            /* Thêm dòng này */
-    flex-wrap: wrap;          /* Thêm dòng này */
-    gap: 20px;                /* Thêm khoảng cách giữa các card */
-    justify-content: flex-start; /* Canh trái các card, có thể dùng center nếu muốn căn giữa */
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: flex-start;
 }
 
 
@@ -205,7 +197,7 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     margin-top: 20px;
 }
-/* === ẢNH KHI TÌM KIẾM: KHÔNG CẮT, GIỮ TỶ LỆ === */
+
 .product-grid .product-card {
     width: calc(20% - 16px);
     background: #fff;
@@ -251,7 +243,7 @@
 
 .product-grid .product-card .btn-detail {
     margin: 0 6px 10px;
-    margin-top: auto;   /* Thêm dòng này */
+    margin-top: auto; 
     margin-bottom: 10px;
     padding: 8px;
     background: #d10024;
@@ -299,7 +291,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px; /* To hơn cho mũi tên */
+    font-size: 20px;
 }
 
 .pagination-main .page-btn:not(:disabled):hover {
@@ -350,7 +342,6 @@
     align-items: center;
 }
 
-/* Căn chỉnh lại cho .page-numbers (an toàn) */
 .pagination-main .page-numbers,
 .pagination-mini .page-numbers {
     display: flex;
@@ -358,6 +349,117 @@
     align-items: center;
     gap: 6px;
 }
+
 /* ===================================================== */
-/* KẾT THÚC – ĐỒNG BỘ, ĐẸP, NHIỀU CỘT */
+/* CSS CHO TRANG CHI TIẾT (DETAILS.PHP) */
 /* ===================================================== */
+
+.product-detail-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px; 
+    
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.product-gallery {
+    flex: 1; 
+    min-width: 300px; 
+    max-width: 450px; 
+    margin: 0 auto; 
+}
+
+#product-image {
+    width: 100%; 
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+}
+
+.product-info {
+    flex: 1.5; 
+    min-width: 320px;
+    display: flex;
+    flex-direction: column; 
+}
+
+#product-name {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.price-area {
+    margin-bottom: 20px;
+}
+
+#product-price.price {
+    font-size: 32px;
+    font-weight: bold;
+    color: #d10024; 
+}
+
+.description-area {
+    margin-top: 25px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.description-area h4 {
+    font-size: 18px;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.action-buttons {
+    display: flex; 
+    gap: 15px; 
+    margin-top: 25px; 
+}
+
+.action-buttons button {
+    flex: 1; 
+    padding: 16px 20px; 
+    font-size: 16px;    
+    font-weight: 600;
+    border: 2px solid #d10024; 
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase; 
+    transition: all 0.3s ease;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.action-buttons .btn-primary {
+    background-color: #fff;
+    color: #007bff; 
+    border-color: #007bff; 
+}
+
+.action-buttons .btn-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.action-buttons .btn-secondary {
+    background-color: #fff;
+    color: #d10024;
+    border-color: #d10024;
+}
+
+.action-buttons .btn-secondary:hover {
+    background-color: #d10024;
+    color: white;
+}

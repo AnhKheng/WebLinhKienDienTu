@@ -58,36 +58,18 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
   align-items: center;
   z-index: 2000;
 }
-.form-add {
-  width: 100%;
-  max-width: 1350px;
-  height: 100%;
-  margin: 30px auto;
-  padding: 24px 28px;
-  background: #fff;
-  border: 1px solid #d1d3e2;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  font-family: "Segoe UI", sans-serif;
-  color: #333;
-}
+
 /* Hiệu ứng hộp nội dung */
-.popup-content, .modal-box, .notify-box, .modal-content  {
+.popup-content, .modal-box, .notify-box, .modal-content {
   background: #ffffff;
   padding: 25px 30px;
   border-radius: 12px;
-  width: 400px;
+  width: 380px;
   max-width: 90%;
   box-shadow: 0 5px 15px rgba(0,0,0,0.25);
   position: relative;
   animation: fadeIn 0.3s ease;
   font-family: "Segoe UI", sans-serif;
-}
-.modal-box {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 800px;
 }
 
 /* =========================================================
@@ -136,11 +118,9 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
    ✍️ 4️⃣ HÀNH ĐỘNG NHẬP LIỆU (FORM & INPUT)
 ========================================================= */
 .modal-box input[type="text"],
-.modal-box input[type="number"],
 .product-table input,
 .form-group input,
-.customPriceInputs input,
-.form-add input{
+.customPriceInputs input {
   width: 100%;
   padding: 8px 10px;
   border: 1px solid #ccc;
@@ -153,32 +133,6 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
 .customPriceInputs input {
   width: 100px;
     padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  outline: none;
-  transition: 0.2s;
-}
-.modal-box textarea,
-.form-add textarea {
-  width: 100%;
-  height: 80px;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  outline: none;
-  transition: 0.2s;
-  resize: vertical;
-}
-.modal-box textarea:focus {
-  border-color: #4e73df;
-  box-shadow: 0 0 4px rgba(78,115,223,0.3);
-}
-.modal-box select,
-.form-add select {
-  width: 100%;
-  padding: 8px 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;

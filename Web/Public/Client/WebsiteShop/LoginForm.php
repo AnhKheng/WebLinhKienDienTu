@@ -3,13 +3,12 @@
 </head>
 <body>
     <div class="account-container">
-        <form action="../../API/client/User/Login_action.php" method="post" class="login-form">
-            <!-- <div class="logo">
-                <a href = "#"><img src="../img/logo.png" alt="Logo" /></a>
-            </div> -->
+        <div class="logo">
+            <a href = "#"><img src="../img/logo.png" alt="Logo" /></a>
+        </div>
+        <h2 class="title">ĐĂNG NHẬP</h2>
 
-            <h2 class="title">ĐĂNG NHẬP</h2>
-
+        <form action="Index.php?do=Login_action" method="post" class="login-form">
             <div class="form-group">
                 <label for="username">Tên tài khoản</label>
                 <input type="text" name="Username" placeholder="Số điện thoại / Email" required>
@@ -30,8 +29,8 @@
             </div>
 
             <div class="links">
-                <a href="#" onclick="closeLoginForm(); openRegisterForm(); return false;">Đăng ký</a>
-                <a href="#" onclick="closeLoginForm(); openPassWordForm(); return false;">Quên mật khẩu</a>
+                <a href="Index.php?do=RegisterForm">Đăng ký</a>
+                <a href="Index.php?do=ChangePassword">Quên mật khẩu</a>
             </div>
         </form>
     </div>

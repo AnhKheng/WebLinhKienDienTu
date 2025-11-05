@@ -9,11 +9,7 @@ class Product {
 
     // ===== Sinh mã sản phẩm mới tự động =====
     private function generateMaSP() {
-        // Lấy mã có giá trị số lớn nhất
-        $sql = "SELECT MaSP 
-                FROM $this->table 
-                ORDER BY CAST(SUBSTRING(MaSP, 3) AS UNSIGNED) DESC 
-                LIMIT 1";
+        $sql = "SELECT MaSP FROM $this->table ORDER BY MaSP DESC LIMIT 1";
         $result = $this->conn->query($sql);
 
         if ($result && $result->num_rows > 0) {
@@ -23,31 +19,20 @@ class Product {
         } else {
             $newId = 'SP001';
         }
-
         return $newId;
     }
 
-
+    // ===== 1. Thêm sản phẩm =====
     public function add($TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh) {
-        $MaSP = $this->generateMaSP();
+        $MaSP = $this->generateMaSP(); // tự sinh mã
 
-        $sql = "INSERT INTO $this->table 
-                (MaSP, TenSP, MaDM, DonGia, MoTa, TrangThai, HinhAnh)
+        $sql = "INSERT INTO $this->table (MaSP, TenSP, MaDM, DonGia, MoTa, TrangThai, HinhAnh)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-
-        $DonGia = floatval($DonGia);
-        $TrangThai = intval($TrangThai);
-        $HinhAnh = $HinhAnh ?? '';
-        $stmt->bind_param("sssdsis", 
-            $MaSP, $TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh
-        );
-
+        $stmt->bind_param("sssdsbs", $MaSP, $TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh);
         if ($stmt->execute()) {
-            return $MaSP;
+            return $MaSP; // trả về mã sản phẩm mới để client biết
         }
-
-        error_log("❌ SQL Error (add): " . $stmt->error);
         return false;
     }
 
@@ -80,7 +65,7 @@ class Product {
                 SET TenSP = ?, MaDM = ?, DonGia = ?, MoTa = ?, TrangThai = ?, HinhAnh = ?
                 WHERE MaSP = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssdsiss", $TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh, $MaSP);
+        $stmt->bind_param("ssdssss", $TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh, $MaSP);
         return $stmt->execute();
     }
 

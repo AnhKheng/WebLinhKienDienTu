@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>  
+  <meta charset="UTF-8" />
+  <title>Danh sách sản phẩm - Admin</title>
+  <link rel="stylesheet" href="assets/css/style_pages.css" />
+</head>
+<body>
+  <h2>Danh sách sản phẩm</h2>
+<div class="filter-container">
+  <label for="categoryFilter">Lọc theo danh mục:</label>
+  <select class="select-filter" id="categoryFilter" onchange="applyFilter()">
+    <option value="all">Tất cả</option>
+  </select>
+
+  <label for="priceRange">Khoảng giá:</label>
+  <select class="select-filter" id="priceRange" onchange="onPriceRangeChange()">
+    <option value="all">Tất cả</option>
+    <option value="1">Dưới 50.000₫</option>
+    <option value="2">50.000₫ - 100.000₫</option>
+    <option value="3">100.000₫ - 200.000₫</option>
+    <option value="4">200.000₫ - 500.000₫</option>
+    <option value="5">500.000₫ - 1.000.000₫</option>
+    <option value="6">1.000.000₫ - 2.000.000₫</option>
+    <option value="7">Trên 2.000.000₫</option>
+    <option value="custom">Tùy chỉnh...</option>
+  </select>
+
+  <!-- Ẩn theo mặc định, chỉ hiện khi chọn "Tùy chỉnh" -->
+  <span class="customPriceInputs" id="customPriceInputs" style="display:none;">
+    <label for="minPrice">Từ:</label>
+    <input type="number" id="minPrice" placeholder="Min" min="0">
+    <label for="maxPrice">Đến:</label>
+    <input type="number" id="maxPrice" placeholder="Max" min="0">
+    <button class="sort-btn" onclick="filterByPrice()">Lọc giá</button>
+  </span>
+
+  <button class="sort-btn" onclick="sortByPrice('asc')">Sắp xếp ↑</button>
+  <button class="sort-btn" onclick="sortByPrice('desc')">Sắp xếp ↓</button>
+</div>
+
+  <table id="productTable">
+    <thead>
+      <tr>
+        <th>Mã SP</th>
+        <th>Tên SP</th>
+        <th>Danh mục</th>
+        <th class="price-col">Đơn giá</th>
+        <th class="description-col">Mô tả</th>
+        <th>Trạng thái</th>
+        <th>Hình ảnh</th>
+        <th class="action-col">Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+  <div id="pagination" class="pagination-container"></div>
+
+
+  <script src="assets/js/products.js"></script>
+</body>
+</html>

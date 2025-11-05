@@ -1,49 +1,11 @@
 let allProducts = [];
 let filteredProducts = [];
 
+// ====== CẤU HÌNH PHÂN TRANG ======
 let currentPage = 1;
-const rowsPerPage = 10;
+const rowsPerPage = 10; // số sản phẩm mỗi trang
 
-// Hiển thị thông báo popup
-function showNotify(message) {
-  const notifyOverlay = document.getElementById("notifyOverlay");
-  const notifyMessage = document.getElementById("notifyMessage");
-  if (!notifyOverlay || !notifyMessage) return;
-  notifyMessage.textContent = message;
-  notifyOverlay.style.display = "flex";
-}
-
-// Ẩn popup thông báo
-function hideNotify() {
-  const notifyOverlay = document.getElementById("notifyOverlay");
-  if (notifyOverlay) notifyOverlay.style.display = "none";
-}
-
-// ======== 🔹 HÀM DÙNG CHUNG MỞ/ĐÓNG POPUP (MODAL) =========
-function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.style.display = "flex";
-    modal.setAttribute("aria-hidden", "false");
-  }
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.style.display = "none";
-    modal.setAttribute("aria-hidden", "true");
-  }
-}
-
-// Đóng popup khi click ra ngoài
-window.addEventListener("click", (e) => {
-  document.querySelectorAll(".modal-overlay").forEach((modal) => {
-    if (e.target === modal) closeModal(modal.id);
-  });
-});
-
-
+// 🧩 Tải dữ liệu từ API
 async function loadProducts() {
   try {
     const response = await fetch("../../API/admin/product_api.php?action=getAll");
@@ -68,18 +30,19 @@ async function loadProducts() {
   }
 }
 
-
+// 🧩 Hiển thị bảng (có phân trang)
 function renderTable(products) {
   const tbody = document.querySelector("#productTable tbody");
-  const pagination = document.getElementById("pagination");
   tbody.innerHTML = "";
 
   if (!products.length) {
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Không có sản phẩm phù hợp.</td></tr>`;
+    const pagination = document.getElementById("pagination");
     if (pagination) pagination.innerHTML = "";
     return;
   }
 
+ 
   setupPagination(products);
 
   const start = (currentPage - 1) * rowsPerPage;
@@ -112,7 +75,7 @@ function renderTable(products) {
   });
 }
 
-
+// 🧩 Sinh danh mục
 function renderCategoryOptions(products) {
   const select = document.getElementById("categoryFilter");
   select.innerHTML = '<option value="all">Tất cả</option>';
@@ -125,6 +88,7 @@ function renderCategoryOptions(products) {
   });
 }
 
+// 🧩 Khi người dùng chọn loại khoảng giá
 function onPriceRangeChange() {
   const value = document.getElementById("priceRange").value;
   const customInputs = document.getElementById("customPriceInputs");
@@ -132,10 +96,11 @@ function onPriceRangeChange() {
     customInputs.style.display = "inline";
   } else {
     customInputs.style.display = "none";
-    applyFilter();
+    applyFilter(); // lọc ngay khi chọn khoảng giá có sẵn
   }
 }
 
+// 🧩 Lọc theo danh mục + khoảng giá
 function applyFilter() {
   const selectedCat = document.getElementById("categoryFilter").value;
   const priceRange = document.getElementById("priceRange").value;
@@ -157,10 +122,11 @@ function applyFilter() {
     return matchCat && matchPrice;
   });
 
-  currentPage = 1;
+  currentPage = 1; // về trang đầu
   renderTable(filteredProducts);
 }
 
+// 🧩 Lọc tùy chỉnh (từ input)
 function filterByPrice() {
   const min = parseFloat(document.getElementById("minPrice").value) || 0;
   const max = parseFloat(document.getElementById("maxPrice").value) || Infinity;
@@ -176,6 +142,7 @@ function filterByPrice() {
   renderTable(filteredProducts);
 }
 
+// 🧩 Sắp xếp theo giá
 function sortByPrice(order) {
   filteredProducts.sort((a, b) =>
     order === "asc" ? a.DonGia - b.DonGia : b.DonGia - a.DonGia
@@ -183,7 +150,7 @@ function sortByPrice(order) {
   renderTable(filteredProducts);
 }
 
-
+// 🧩 Phân trang
 function setupPagination(products) {
   const pagination = document.getElementById("pagination");
   if (!pagination) return;
@@ -193,7 +160,7 @@ function setupPagination(products) {
 
   if (totalPages <= 1) return;
 
-  const maxButtons = 5;
+  const maxButtons = 5; // tối đa nút hiển thị cùng lúc
   let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
   let endPage = startPage + maxButtons - 1;
 
@@ -201,25 +168,29 @@ function setupPagination(products) {
     endPage = totalPages;
     startPage = Math.max(1, endPage - maxButtons + 1);
   }
-
-  const makeButton = (text, disabled, handler) => {
-    const btn = document.createElement("button");
-    btn.textContent = text;
-    btn.disabled = disabled;
-    btn.addEventListener("click", handler);
-    pagination.appendChild(btn);
-  };
-
-  makeButton("« Trang đầu", currentPage === 1, () => {
-    currentPage = 1;
-    renderTable(filteredProducts);
+  const firstBtn = document.createElement("button");
+  firstBtn.textContent = "« Trang đầu";
+  firstBtn.disabled = currentPage === 1;
+  firstBtn.addEventListener("click", () => {
+    if (currentPage !== 1) {
+      currentPage = 1;
+      renderTable(filteredProducts);
+    }
   });
-
-  makeButton("« Trước", currentPage === 1, () => {
-    if (currentPage > 1) currentPage--;
-    renderTable(filteredProducts);
+  pagination.appendChild(firstBtn);
+  // Nút "Trước"
+  const prevBtn = document.createElement("button");
+  prevBtn.textContent = "« Trước";
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderTable(filteredProducts);
+    }
   });
+  pagination.appendChild(prevBtn);
 
+  // Nút số trang
   for (let i = startPage; i <= endPage; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
@@ -231,209 +202,40 @@ function setupPagination(products) {
     pagination.appendChild(btn);
   }
 
-  makeButton("Sau »", currentPage === totalPages, () => {
-    if (currentPage < totalPages) currentPage++;
-    renderTable(filteredProducts);
-  });
-
-  makeButton("Trang cuối »", currentPage === totalPages, () => {
-    currentPage = totalPages;
-    renderTable(filteredProducts);
-  });
-}
-
-async function viewProduct(maSP) {
-  try {
-    const response = await fetch(`../../API/admin/product_api.php?action=getOne&MaSP=${maSP}`);
-    const result = await response.json();
-
-    if (result.status === "success" && result.data) {
-      const p = result.data;
-
-      document.getElementById("detail_idSP").value = p.MaSP || "";
-      document.getElementById("detail_nameSP").value = p.TenSP || "";
-      document.getElementById("detail_category").value = p.TenDM || p.MaDM || "";
-      document.getElementById("detail_price").value = `${Number(p.DonGia).toLocaleString("vi-VN")} ₫` || "";
-      document.getElementById("detail_description").value = p.MoTa || "";
-      document.getElementById("detail_status").value =
-        p.TrangThai == 1 || p.TrangThai === "Hoạt động" ? "Còn hàng" : "Hết hàng";
-
-      const img = document.getElementById("detail_image");
-      img.src = p.HinhAnh ? `../img/${p.HinhAnh}` : "../img/no-image.png";
-      img.alt = p.TenSP || "Hình sản phẩm";
-
-      openModal("productDetailModal");
-    } else {
-      showNotify(result.message || "Không thể tải chi tiết sản phẩm.");
-    }
-  } catch (error) {
-    console.error("Lỗi khi tải chi tiết sản phẩm:", error);
-    showNotify("Không thể kết nối đến API.");
-  }
-}
-
-async function editProduct(maSP) {
-  try {
-    const response = await fetch(`../../API/admin/product_api.php?action=getOne&MaSP=${maSP}`);
-    const result = await response.json();
-
-    if (result.status === "success" && result.data) {
-      const p = result.data;
-
-      // Gán dữ liệu vào form
-      document.getElementById("edit_idSP").value = p.MaSP || "";
-      document.getElementById("edit_nameSP").value = p.TenSP || "";
-      document.getElementById("edit_price").value = p.DonGia || "";
-      document.getElementById("edit_description").value = p.MoTa || "";
-
-      document.getElementById("edit_status").value =
-        p.TrangThai == 1 || p.TrangThai === "Hoạt động" ? "1" : "0";
-
-      // 🧩 Load danh mục
-      const categorySelect = document.getElementById("edit_category");
-      categorySelect.innerHTML = "";
-      const categoryMap = new Map();
-      allProducts.forEach(prod => {
-        if (prod.MaDM && prod.TenDM) categoryMap.set(prod.MaDM, prod.TenDM);
-      });
-
-      // Render option
-      for (const [ma, ten] of categoryMap.entries()) {
-        const opt = document.createElement("option");
-        opt.value = ma;      
-        opt.textContent = ten; 
-        if (ma === p.MaDM) opt.selected = true;
-        categorySelect.appendChild(opt);
-      }
-      // 🧩 Hiển thị ảnh cũ (nếu có)
-      let imgPreview = document.getElementById("edit_preview");
-      if (!imgPreview) {
-        imgPreview = document.createElement("img");
-        imgPreview.id = "edit_preview";
-        imgPreview.style.width = "120px";
-        imgPreview.style.marginTop = "10px";
-        imgPreview.style.borderRadius = "8px";
-        document.getElementById("edit_image").insertAdjacentElement("afterend", imgPreview);
-      }
-      imgPreview.src = p.HinhAnh ? `../img/${p.HinhAnh}` : "../img/no-image.png";
-      imgPreview.alt = p.TenSP || "Hình sản phẩm";
-
-      openModal("productEditModal");
-    } else {
-      showNotify(result.message || "Không thể tải thông tin sản phẩm.");
-    }
-  } catch (error) {
-    console.error("Lỗi khi tải sản phẩm để sửa:", error);
-    showNotify("Không thể kết nối đến API.");
-  }
-}
-// 🖼️ Hiển thị ảnh xem trước khi chọn file mới trong form sửa
-document.getElementById("edit_image").addEventListener("change", function(e) {
-  const file = e.target.files[0];
-  const preview = document.getElementById("edit_preview");
-  if (file) {
-    preview.src = URL.createObjectURL(file);
-  }
-});
-
-// 🧩 HÀM HIỂN THỊ HỘP XÁC NHẬN TUỲ CHỈNH
-function showConfirm(message = "Bạn có chắc chắn muốn xóa mục này không?") {
-  return new Promise((resolve) => {
-    const overlay = document.getElementById("confirmOverlay");
-    const msg = document.getElementById("confirmMessage");
-    const btnYes = document.getElementById("confirmYes");
-    const btnNo = document.getElementById("confirmNo");
-    const btnClose = document.getElementById("closeConfirm");
-
-    msg.textContent = message;
-    overlay.style.display = "flex";
-
-    // Gỡ các sự kiện cũ nếu có
-    btnYes.onclick = btnNo.onclick = btnClose.onclick = null;
-
-    // Khi người dùng chọn "Đồng ý"
-    btnYes.onclick = () => {
-      overlay.style.display = "none";
-      resolve(true);
-    };
-
-    // Khi người dùng chọn "Hủy" hoặc đóng
-    const cancel = () => {
-      overlay.style.display = "none";
-      resolve(false);
-    };
-    btnNo.onclick = btnClose.onclick = cancel;
-  });
-}
-
-// 🧩 HÀM XOÁ SẢN PHẨM
-async function deleteProduct(maSP) {
-  const isConfirmed = await showConfirm(`Bạn có chắc chắn muốn xóa sản phẩm [${maSP}] này không?`);
-  if (!isConfirmed) return;
-
-  try {
-    const response = await fetch("../../API/admin/product_api.php?action=delete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ MaSP: maSP }),
-    });
-
-    const result = await response.json();
-
-    if (result.status === "success") {
-      showNotify("Đã xóa sản phẩm thành công!");
-      loadProducts();
-    } else {
-      showNotify(result.message || "Không thể xóa sản phẩm.");
-    }
-  } catch (error) {
-    console.error("Lỗi khi xóa sản phẩm:", error);
-    showNotify("Không thể kết nối đến API.");
-  }
-}
-
-const formEdit = document.getElementById("formEditProduct");
-if (formEdit) {
-  formEdit.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const formData = new FormData(formEdit);
-    formData.append("action", "update");
-
-    try {
-      const response = await fetch("../../API/admin/product_api.php?action=update", {
-        method: "POST",
-        body: formData
-      });
-      const result = await response.json();
-
-      if (result.status === "success") {
-        showNotify("Cập nhật sản phẩm thành công!");
-        closeModal("productEditModal");
-        loadProducts();
-      } else {
-        showNotify(result.message || "Không thể cập nhật sản phẩm.");
-      }
-    } catch (error) {
-      console.error("Lỗi khi cập nhật sản phẩm:", error);
-      showNotify("Không thể kết nối đến API.");
+  // Nút "Sau"
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = "Sau »";
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.addEventListener("click", () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderTable(filteredProducts);
     }
   });
-}
-// Gắn sự kiện cho tất cả nút close (nút X)
-document.querySelectorAll(".modal-close").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const modalId = btn.dataset.closeModal; // lấy id modal cần đóng
-    if (modalId) closeModal(modalId);
-    else btn.closest(".modal-overlay").style.display = "none";
+  pagination.appendChild(nextBtn);
+  
+  const lastBtn = document.createElement("button");
+  lastBtn.textContent = "Trang cuối »";
+  lastBtn.disabled = currentPage === totalPages;
+  lastBtn.addEventListener("click", () => {
+    if (currentPage !== totalPages) {
+      currentPage = totalPages;
+      renderTable(filteredProducts);
+    }
   });
-});
-
-// Gắn cho popup thông báo riêng
-const closeNotify = document.getElementById("closeNotify");
-if (closeNotify) {
-  closeNotify.addEventListener("click", hideNotify);
+  pagination.appendChild(lastBtn);
 }
 
+// 🧩 Hiển thị thông báo popup
+function showNotify(message) {
+  const notifyOverlay = document.getElementById("notifyOverlay");
+  const notifyMessage = document.getElementById("notifyMessage");
+  if (!notifyOverlay || !notifyMessage) return;
+  notifyMessage.textContent = message;
+  notifyOverlay.style.display = "flex";
+}
+
+// 🧩 Load khi khởi động
 document.addEventListener("DOMContentLoaded", () => {
   loadProducts();
 });
