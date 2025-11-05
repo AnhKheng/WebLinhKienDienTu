@@ -279,8 +279,6 @@ async function editProduct(maSP) {
 
     if (result.status === "success" && result.data) {
       const p = result.data;
-
-      // Gán dữ liệu vào form
       document.getElementById("edit_idSP").value = p.MaSP || "";
       document.getElementById("edit_nameSP").value = p.TenSP || "";
       document.getElementById("edit_price").value = p.DonGia || "";
@@ -289,7 +287,6 @@ async function editProduct(maSP) {
       document.getElementById("edit_status").value =
         p.TrangThai == 1 || p.TrangThai === "Hoạt động" ? "1" : "0";
 
-      // 🧩 Load danh mục
       const categorySelect = document.getElementById("edit_category");
       categorySelect.innerHTML = "";
       const categoryMap = new Map();
@@ -297,7 +294,6 @@ async function editProduct(maSP) {
         if (prod.MaDM && prod.TenDM) categoryMap.set(prod.MaDM, prod.TenDM);
       });
 
-      // Render option
       for (const [ma, ten] of categoryMap.entries()) {
         const opt = document.createElement("option");
         opt.value = ma;      
@@ -305,7 +301,6 @@ async function editProduct(maSP) {
         if (ma === p.MaDM) opt.selected = true;
         categorySelect.appendChild(opt);
       }
-      // 🧩 Hiển thị ảnh cũ (nếu có)
       let imgPreview = document.getElementById("edit_preview");
       if (!imgPreview) {
         imgPreview = document.createElement("img");
@@ -327,7 +322,6 @@ async function editProduct(maSP) {
     showNotify("Không thể kết nối đến API.");
   }
 }
-// 🖼️ Hiển thị ảnh xem trước khi chọn file mới trong form sửa
 document.getElementById("edit_image").addEventListener("change", function(e) {
   const file = e.target.files[0];
   const preview = document.getElementById("edit_preview");
@@ -336,7 +330,6 @@ document.getElementById("edit_image").addEventListener("change", function(e) {
   }
 });
 
-// 🧩 HÀM HIỂN THỊ HỘP XÁC NHẬN TUỲ CHỈNH
 function showConfirm(message = "Bạn có chắc chắn muốn xóa mục này không?") {
   return new Promise((resolve) => {
     const overlay = document.getElementById("confirmOverlay");
@@ -348,16 +341,11 @@ function showConfirm(message = "Bạn có chắc chắn muốn xóa mục này k
     msg.textContent = message;
     overlay.style.display = "flex";
 
-    // Gỡ các sự kiện cũ nếu có
     btnYes.onclick = btnNo.onclick = btnClose.onclick = null;
-
-    // Khi người dùng chọn "Đồng ý"
     btnYes.onclick = () => {
       overlay.style.display = "none";
       resolve(true);
     };
-
-    // Khi người dùng chọn "Hủy" hoặc đóng
     const cancel = () => {
       overlay.style.display = "none";
       resolve(false);
@@ -366,7 +354,6 @@ function showConfirm(message = "Bạn có chắc chắn muốn xóa mục này k
   });
 }
 
-// 🧩 HÀM XOÁ SẢN PHẨM
 async function deleteProduct(maSP) {
   const isConfirmed = await showConfirm(`Bạn có chắc chắn muốn xóa sản phẩm [${maSP}] này không?`);
   if (!isConfirmed) return;
@@ -419,16 +406,14 @@ if (formEdit) {
     }
   });
 }
-// Gắn sự kiện cho tất cả nút close (nút X)
 document.querySelectorAll(".modal-close").forEach(btn => {
   btn.addEventListener("click", () => {
-    const modalId = btn.dataset.closeModal; // lấy id modal cần đóng
+    const modalId = btn.dataset.closeModal; 
     if (modalId) closeModal(modalId);
     else btn.closest(".modal-overlay").style.display = "none";
   });
 });
 
-// Gắn cho popup thông báo riêng
 const closeNotify = document.getElementById("closeNotify");
 if (closeNotify) {
   closeNotify.addEventListener("click", hideNotify);

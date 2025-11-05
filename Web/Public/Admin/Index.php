@@ -22,7 +22,7 @@
                     include("Includes/header.php");
                     ?>
                 </div>
-                <dev class="main-content">
+                <div class="main-content">
                     <?php
                     include("Includes/main.php");
                     ?>

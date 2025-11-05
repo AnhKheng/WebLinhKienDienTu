@@ -10,21 +10,16 @@ require_once "../Config/db_config.php";
 require_once "../../Includes/Products.php";
 
 $product = new Product($connect);
-
-// 🧭 Lấy hành động từ query
 $action = $_GET["action"] ?? "";
-
-// 🧩 Xử lý các hành động
 switch ($action) {
 
-    // ===== 1️ Thêm sản phẩm =====
     case "add":
         if (isset($_POST["nameSP"], $_POST["category"], $_POST["price"], $_POST["description"])) {
             $TenSP = trim($_POST["nameSP"]);
             $MaDM = trim($_POST["category"]);
             $DonGia = floatval($_POST["price"]);
             $MoTa = trim($_POST["description"]);
-            $TrangThai = 1; // Mặc định đang hoạt động
+            $TrangThai = 0; 
 
             $HinhAnh = '';
             if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
@@ -33,10 +28,9 @@ switch ($action) {
                 $fileName = uniqid() . "_" . basename($_FILES["image"]["name"]);
                 $targetPath = $uploadDir . $fileName;
                 if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetPath)) {
-                    $HinhAnh = "img/" . $fileName; // đường dẫn client dùng hiển thị
+                    $HinhAnh =  $fileName; 
                 }
             }
-
             $MaSP = $product->add($TenSP, $MaDM, $DonGia, $MoTa, $TrangThai, $HinhAnh);
             if ($MaSP) {
                 echo json_encode([
@@ -56,7 +50,6 @@ switch ($action) {
         }
         break;
 
-    // ===== 2️ Cập nhật sản phẩm =====
     case "update":
     if (
         isset($_POST["idSP"], $_POST["nameSP"], $_POST["category"], $_POST["price"], $_POST["description"], $_POST["status"])
@@ -67,19 +60,16 @@ switch ($action) {
         $DonGia = floatval($_POST["price"]);
         $MoTa = $_POST["description"];
         $TrangThai = $_POST["status"];
-
-        // Lấy ảnh cũ trước
         $oldData = $product->getOne($MaSP);
         $HinhAnh = $oldData["HinhAnh"] ?? null;
 
-        // Nếu có upload ảnh mới thì cập nhật
         if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
             $uploadDir = __DIR__ . "/../../Public/img/";
             if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
             $fileName = uniqid() . "_" . basename($_FILES["image"]["name"]);
             $targetPath = $uploadDir . $fileName;
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetPath)) {
-                $HinhAnh = $fileName; // đường dẫn client dùng hiển thị
+                $HinhAnh = $fileName;
             }
         }
 
@@ -95,7 +85,6 @@ switch ($action) {
     }
     break;
 
-    // ===== 3️ Xóa sản phẩm =====
     case "delete":
         $data = json_decode(file_get_contents("php://input"), true);
         if (!isset($data["MaSP"])) {
@@ -117,7 +106,6 @@ switch ($action) {
         ]);
         break;
 
-    // ===== 4️ Xem chi tiết 1 sản phẩm =====
     case "getOne":
         if (isset($_GET["MaSP"])) {
             $MaSP = $_GET["MaSP"];
@@ -128,7 +116,6 @@ switch ($action) {
         }
         break;
 
-    // ===== 5️ Lấy tất cả sản phẩm =====
     case "getAll":
         $data = $product->getAll();
         if (!empty($data)) {
@@ -142,7 +129,6 @@ switch ($action) {
         }
         break;
 
-    // ===== 6️ Phân trang =====
     case "paginate":
         $limit = isset($_GET["limit"]) ? intval($_GET["limit"]) : 10;
         $page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
@@ -172,9 +158,8 @@ switch ($action) {
         ]);
         break;
 
-    // ===== 8️ Sắp xếp theo giá =====
     case "sort":
-        $order = $_GET["order"] ?? "asc"; // asc | desc
+        $order = $_GET["order"] ?? "asc"; 
         $data = $product->sortByPrice($order);
         echo json_encode([
             "status" => "success",
@@ -183,7 +168,6 @@ switch ($action) {
         ]);
         break;
 
-    //=======9 Lấy theo mã CH=========
     case "getByStore":
     $MaCH = $_GET["MaCH"] ?? '';
 
@@ -192,7 +176,7 @@ switch ($action) {
         exit;
     }
 
-    // ✅ Dùng prepared statement đúng cách, KHÔNG có dấu ' ' bao quanh ?
+
     $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh, 
                    k.SoLuongTon AS TonKho
             FROM tbl_sanpham sp
@@ -219,14 +203,10 @@ switch ($action) {
     }
     break;
 
-
-
-
-    // ===== 0 Mặc định =====
     default:
         echo json_encode([
             "status" => "error",
-            "message" => "Hành động không hợp lệ. Hãy dùng ?action=add|getOne|getAll|paginate|update|delete"
+            "message" => "Hành động không hợp lệ."
         ]);
         break;
 }
