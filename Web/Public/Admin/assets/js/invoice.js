@@ -62,7 +62,7 @@ function renderTable(hoadons) {
           <button type="button" class="btn-detail" onclick="viewDetail('${hd.MaHD}')">Chi tiết</button>
           <button type="button" class="btn-edit" onclick="openUpdateModal('${hd.MaHD}')">Cập nhật</button>        
           <button type="button" class="btn-delete" onclick="deleteHoaDon('${hd.MaHD}')">Xóa</button>
-
+          <button type="button" class="btn-detail" onclick="exportInvoiceExcel('${hd.MaHD}')">In HĐ</button>
       </tr>
     `;
     tbody.insertAdjacentHTML("beforeend", row);
@@ -195,24 +195,20 @@ function closeUpdateModal() {
 // 🟢 Lưu cập nhật
 async function saveUpdate() {
   const maHD = document.getElementById("txtMaHD").value;
-
-  // ✅ Chuyển định dạng datetime-local -> MySQL
   const rawNgayBan = document.getElementById("txtNgayBan").value;
   const ngayBan = rawNgayBan ? rawNgayBan.replace("T", " ") + ":00" : null;
-
   const maNV = document.getElementById("txtMaNV").value;
   const maKH = document.getElementById("txtMaKH").value;
-  const maCH = document.getElementById("txtMaCH").value;
+  let maCH = document.getElementById("txtMaCH").value; // 👈 dùng let
   const tongTien = parseFloat(document.getElementById("txtTongTien").value);
 
-  const data = {
-    MaHD: maHD,
-    NgayBan: ngayBan,  // ✅ định dạng MySQL hợp lệ
-    MaNV: maNV,
-    MaKH: maKH,
-    MaCH: maCH,
-    TongTien: tongTien
-  };
+  // ✅ Nếu MaCH rỗng, lấy lại từ dữ liệu cũ
+  if (!maCH) {
+    const oldInvoice = allHoaDon.find(item => item.MaHD === maHD);
+    if (oldInvoice) maCH = oldInvoice.MaCH;
+  }
+
+  const data = { MaHD: maHD, NgayBan: ngayBan, MaNV: maNV, MaKH: maKH, MaCH: maCH, TongTien: tongTien };
 
   try {
     const res = await fetch("../../API/admin/invoice_api.php?action=update", {
@@ -220,7 +216,6 @@ async function saveUpdate() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
-
     const result = await res.json();
 
     if (result.status === "success") {
@@ -234,6 +229,7 @@ async function saveUpdate() {
     alert("⚠️ Lỗi khi cập nhật: " + err.message);
   }
 }
+
 //---------------------------add---------------------------
 
 
@@ -387,6 +383,29 @@ function filterByCategory() {
   const filtered = allProducts.filter(sp => sp.MaDM === selectedCategory);
   renderProducts(filtered);
 }
+
+// 🟢 Xuất 1 hóa đơn ra file Excel
+async function exportInvoiceExcel(maHD) {
+  try {
+    const res = await fetch(`../../API/admin/excel.php?MaHD=${maHD}`);
+    
+    if (!res.ok) throw new Error("Không thể tạo file Excel.");
+
+    // Nhận dữ liệu dạng blob (file)
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `HoaDon_${maHD}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch (err) {
+    alert("Lỗi khi xuất hóa đơn: " + err.message);
+  }
+}
+
+
 
 window.addEventListener("DOMContentLoaded", () => {
   const path = window.location.pathname;

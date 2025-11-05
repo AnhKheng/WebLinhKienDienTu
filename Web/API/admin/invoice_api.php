@@ -9,6 +9,48 @@ require_once("../../Includes/Invoices.php");
 
 $hoadon = new HoaDon($connect);
 $action = $_GET['action'] ?? 'view_all';
+// ==========================
+// ✅ LẤY MÃ HÓA ĐƠN MỚI TỰ ĐỘNG
+// ==========================
+if ($action == 'getNewCode') {
+    $query = "SELECT MaHD FROM tbl_hoadonban ORDER BY MaHD DESC LIMIT 1";
+    $result = mysqli_query($connect, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row) {
+        $lastCode = $row['MaHD']; // ví dụ: HD06
+        $num = (int)substr($lastCode, 2) + 1;
+        $newCode = "HD" . str_pad($num, 2, "0", STR_PAD_LEFT);
+    } else {
+        $newCode = "HD01";
+    }
+
+    echo json_encode(["status" => "success", "newCode" => $newCode]);
+    exit;
+}
+
+
+// LẤY MÃ NHÂN VIÊN ĐĂNG NHẬP
+if ($action == 'getCurrentNV') {
+    session_start();
+    if (isset($_SESSION['ma_nv'])) {
+        echo json_encode(["status" => "success", "MaNV" => $_SESSION['ma_nv']]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Chưa đăng nhập hoặc chưa có session ma_nv"]);
+    }
+    exit;
+}
+
+if ($action == 'getCurrentCH') {
+    session_start();
+    if (isset($_SESSION['ma_ch'])) {
+        echo json_encode(["status" => "success", "MaCH" => $_SESSION['ma_ch']]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Chưa đăng nhập hoặc chưa có session ma_ch"]);
+    }
+    exit;
+}
+
 
 
 switch ($action) {
@@ -27,16 +69,28 @@ switch ($action) {
     break;
 
   // ✅ Sửa hóa đơn
-  case 'update':
-    $input = json_decode(file_get_contents("php://input"), true);
-    $updated = $hoadon->update($input);
+    case 'update':
+    header('Content-Type: application/json; charset=utf-8');
 
-    if ($updated) {
-        echo json_encode(["status" => "success", "message" => "Cập nhật thành công"]);
-    } else {
-        echo json_encode(["status" => "error", "message" => "Cập nhật thất bại"]);
+    
+    $data = json_decode(file_get_contents("php://input"), true);
+    if (!$data) {
+        echo json_encode(["status" => "error", "message" => "Dữ liệu JSON không hợp lệ"]);
+        exit;
     }
+
+    // ✅ Gọi hàm update() trong class HoaDon
+    $result = $hoadon->update($data);
+
+    if ($result) {
+        echo json_encode(["status" => "success", "message" => "Cập nhật hóa đơn thành công!"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => $hoadon->lastError]);
+    }
+
     break;
+
+
 // them
   case 'add':
     $input = json_decode(file_get_contents("php://input"), true);
