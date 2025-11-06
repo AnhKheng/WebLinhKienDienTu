@@ -2,14 +2,14 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Thêm Hóa Đơn</title>
+  <title>Phiếu nhập hàng</title>
   <link rel="stylesheet" href="assets/css/style_pages.css">
 </head>
 <body>
 
   <div class="main-content">
   <div class="page-header">
-    <h2>Thêm Hóa Đơn</h2>
+    <h2>Phiếu nhập hàng</h2>
   </div>
 
   <!-- Khối chính -->
@@ -19,28 +19,26 @@
     <div class="top-row">
       <!-- CỘT TRÁI -->
       <div class="left-column card smooth-shadow">
-        <h3>Thông tin hóa đơn</h3>
+        <h3>Thông tin phiếu nhập</h3>
         <div class="form-grid">
           <div class="form-group">
-            <label>Mã hóa đơn</label>
-            <input type="text" id="maHD">
+            <label>Mã phiếu nhập</label>
+            <input type="text" id="maPN">
           </div>
 
           <div class="form-group">
-            <label>Ngày bán</label>
-            <input type="date" id="ngayBan">
+            <label>Ngày nhập</label>
+            <input type="date" id="ngayNhap">
+          </div>
+
+          <div class="form-group">
+            <label>Mã nhà cung cấp</label>
+            <input type="text" id="maNCC">
           </div>
 
           <div class="form-group">
             <label>Mã nhân viên</label>
             <input type="text" id="maNV">
-          </div>
-
-          <div class="form-group">
-            <label>Mã khách hàng</label>
-            <select id="maKH" class="select-filter">
-              <option value="">-- Chọn khách hàng --</option>
-            </select>
           </div>
 
           <div class="form-group">
@@ -51,24 +49,25 @@
 
         <div class="total-section">
           <label>Tổng tiền:</label>
-          <input type="number" id="tongTien" readonly value="0">
+          <input type="number" id="tongTienNhap" readonly value="0">
         </div>
 
         <div class="form-actions">
-          <button class="btn btn-save" onclick="saveInvoice()">💾 Lưu Hóa Đơn</button>
-          <button class="btn btn-cancel" onclick="window.location.href='index.php?module=invoice&page=invoice'">Hủy</button>
+          <button class="btn btn-save" onclick="saveImport()">💾 Lưu Phiếu Nhập</button>
+          <button class="btn btn-cancel" onclick="window.location.href='index.php?module=Import&page=Import'">Hủy</button>
         </div>
       </div>
 
       <!-- CỘT PHẢI -->
       <div class="right-column card smooth-shadow">
-        <h3>Chi tiết hóa đơn</h3>
-        <table class="styled-table" id="invoiceDetail">
+        <h3>Chi tiết phiếu nhập</h3>
+        <table class="styled-table" id="importDetail">
           <thead>
             <tr>
-              <th>Sản phẩm</th>
+              
+              <th>Mã sản phẩm</th>
               <th>Số lượng</th>
-              <th>Đơn giá</th>
+              <th>Đơn giá nhập</th>
               <th>Thành tiền</th>
               <th></th>
             </tr>
@@ -92,11 +91,12 @@
           <thead>
             <tr>
               <th>Ảnh</th>
+              <th>Mã SP</th>
               <th>Tên sản phẩm</th>
               <th>Danh mục</th>
-              <th>Giá bán</th>
-              <th>Tồn kho</th>
-              <th>Số lượng</th>
+              <th>Giá nhập</th>
+
+              <th>Số lượng nhập</th>
               <th class="add-col"></th>
             </tr>
           </thead>
@@ -107,6 +107,6 @@
   </div>
 
 
-<script src="assets/js/invoice_add.js"></script>
+<script src="assets/js/import.js"></script>
 </body>
 </html>
