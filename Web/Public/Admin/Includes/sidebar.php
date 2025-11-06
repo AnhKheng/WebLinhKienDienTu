@@ -45,6 +45,16 @@
           <li><a href="index.php?module=Import&page=Add"><i class="fa-solid fa-file-pen"></i> Thêm phiếu nhập</a></li>
         </ul>
       </li>
+      <li class="menu-item has-sub">
+        <button class="menu-toggle">
+          <i class="fas fa-file-invoice-dollar"></i>  
+          <span>Kho hàng</span>
+        </button>
+        <ul class="submenu">
+          <li><a href="index.php?module=Inventory&page=ViewAll"><i class="fa-solid fa-building"></i> Kho hàng tổng</a></li>
+          <li><a href="index.php?module=Inventory&page=ViewOne"><i class="fa-solid fa-boxes-packing"></i> Kho hàng</a></li>
+        </ul>
+      </li>
       
 
       <li>

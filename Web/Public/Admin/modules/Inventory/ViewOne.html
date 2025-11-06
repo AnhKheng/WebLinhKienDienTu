@@ -1,0 +1,40 @@
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Danh mục sản phẩm</title>
+                <link rel="stylesheet" href="assets/css/style_pages.css ">
+            </head>
+            <body>
+                <div id="notifyOverlay" class="modal-overlay" aria-hidden="true" style="display:none;">
+                    <div class="notify-box popup-content" role="dialog" aria-live="polite">
+                        <span id="closeNotify" class="modal-close" role="button" aria-label="Đóng">&times;</span>
+                        <div id="notifyMessage"></div>
+                    </div>
+                </div>
+
+                <h2> Kho hàng</h2>
+                <h2 class="NameStore"></h2>
+                
+                <div class="filter-container">
+                    <input type="text" id="inventorySearch" placeholder="Nhập sản phẩm cần tìm">
+                    <button class="btn-refresh" id="btnRefresh">Refresh</button>
+                </div>
+
+                
+                <table id="InventoryTable">
+                    <thead>
+                        <tr>
+                            <th>Mã sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng tồn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <div id="pagination" class="pagination-container"></div>
+                <script src="assets/js/inventory_one.js"></script>
+            </body>
+        </html>
