@@ -391,3 +391,17 @@ footer {
 .overlay-content .close-btn:hover {
   color: #d10024;
 }
+
+/* --- Sidebar Container (THÊM VÀO CUỐI Style_main.css) --- */
+.sidebar-container {
+  flex: 0 0 250px;  /* Chiều rộng cố định 250px, không co giãn */
+  display: flex;
+  flex-direction: column; /* Các item bên trong xếp dọc (quan trọng) */
+  gap: 0;
+}
+
+/* Đảm bảo nút filter bên trong sidebar luôn 100% width */
+.sidebar-container .btn-filter {
+    width: 100%;
+    box-sizing: border-box; /* Đảm bảo padding không làm vỡ width */
+}

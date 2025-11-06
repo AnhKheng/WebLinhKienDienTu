@@ -116,36 +116,60 @@ if (isset($_GET['id'])) {
   </nav>
 
   <div class="main">
-  <div class="menu-box">
-    <div class="menu-header">
-      <i class="fas fa-filter"></i> Bộ lọc sản phẩm theo giá
+    <div class="sidebar-container">
+        <div class="menu-box">
+          <div class="menu-header">
+              <i class="fas fa-filter"></i> Bộ lọc sản phẩm theo giá
+          </div>
+        <form class="menu-items" id="priceFilterForm">
+            <label class="menu-item">
+                <input type="radio" name="price" value="" checked>
+                <i class="fas fa-globe"></i> Tất cả mức giá
+            </label>
+            <label class="menu-item">
+                <input type="radio" name="price" value="0-500k">
+                <i class="fas fa-money-bill-wave"></i> Dưới 500k
+            </label>
+            <label class="menu-item">
+                <input type="radio" name="price" value="500k-1m">
+                <i class="fas fa-money-bill-wave"></i> 500k - 1 triệu
+            </label>
+            <label class="menu-item">
+                <input type="radio" name="price" value="1m-2m">
+                <i class="fas fa-money-bill-wave"></i> 1 triệu - 2 triệu
+            </label>
+            <label class="menu-item">
+                <input type="radio" name="price" value="2m-5m">
+                <i class="fas fa-money-bill-wave"></i> 2 triệu - 5 triệu
+            </label>
+            <label class="menu-item">
+                <input type="radio" name="price" value="over-5m">
+                <i class="fas fa-money-bill-wave"></i> Trên 5 triệu
+            </label>
+        </form>
+        </div>
+        
+        <div class="menu-box" id="dynamicFilterBox" style="display:none; margin-top: 10px;">
+            <div class="menu-header" id="dynamicFilterHeader">
+                <i class="fas fa-cogs"></i> Bộ lọc theo Tính năng
+            </div>
+            <form class="menu-items" id="dynamicFilterForm">
+                <p style="padding: 10px 15px; color: #888; margin: 0;">(Đang tải...)</p>
+            </form>
+        </div>
+        
+        <button type="button" class="btn-filter" id="applyFiltersBtn" style="width: 100%; margin: 10px 0 0 0;">
+            Áp dụng bộ lọc
+        </button>
+
     </div>
-    <form class="menu-items">
-      <label class="menu-item">
-        <input type="radio" name="price" value="Max">
-        <i class="fas fa-arrow-down"></i> Từ cao đến thấp
-      </label>
-      <label class="menu-item">
-        <input type="radio" name="price" value="Min">
-        <i class="fas fa-arrow-up"></i> Từ thấp đến cao
-      </label>
-      <label class="menu-item">
-        <input type="radio" name="price" value="500k">
-        <i class="fas fa-money-bill-wave"></i> Dưới 500k
-      </label>
-
-      <button type="submit" class="btn-filter">Lọc sản phẩm</button>
-    </form>
-  </div>
-
-
     <div class="main-content">
-      <?php     
-        $do = isset($_GET['do']) ? $_GET['do'] : "Home";     
+      <?php      
+        $do = isset($_GET['do']) ? $_GET['do'] : "Home";      
         include "WebsiteShop/" . $do . ".php";
       ?>
     </div>
-  </div>
+</div>
 
     <div id="loginOverlay" class="overlay">
       <div class="overlay-content">
@@ -180,7 +204,7 @@ if (isset($_GET['id'])) {
   </footer>
 
   <script src="assets/js/loginOverlay.js?v=19"></script>
-  <script src="assets/js/loadProducts.js?v=22"></script>
+  <script src="assets/js/loadProducts.js?v=25"></script>
   <script src="assets/js/loadDetails.js?v=22"></script>
   <script src="assets/js/addCart.js?v=22"></script>
 </body>
