@@ -42,8 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("detail_nameSup").value = s.TenNCC;
         document.getElementById("detail_addressSup").value = s.DiaChi;
         document.getElementById("detail_phoneSup").value = s.SoDienThoai;
-        document.getElementById("countImport").value = s.SoLuongNhap ?? 0;
-
         document.getElementById("supplierViewModal").style.display = "flex";
         } else {
         showNotify(data.message || "Không thể tải dữ liệu.");
