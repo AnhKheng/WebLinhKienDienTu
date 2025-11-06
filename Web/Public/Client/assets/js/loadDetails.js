@@ -15,7 +15,6 @@ function initDetailPage(id) {
         container.innerHTML = '<p style="color:red; text-align:center;">Không tìm thấy mã sản phẩm.</p>';
         return;
     }
-
     fetch(`../../API/client/Product/Detail.php?id=${encodeURIComponent(id)}`)
         .then(r => r.json())
         .then(data => {
@@ -42,6 +41,14 @@ function initDetailPage(id) {
             if (btnBuyNow) {
                 btnBuyNow.addEventListener('click', function() {
                     alert('Chức năng "Mua ngay" sẽ được triển khai sau. Sản phẩm: ' + product.TenSP);
+                    window.location.href = `Index.php?do=CartForm&action=mua&MaSP=${encodeURIComponent(id)}`;
+                });
+            }
+            if(btnAddToCart)
+            {
+                btnAddToCart.addEventListener('click', function() {
+                    alert('Đã thêm sản phẩm: ' + product.TenSP + ' vào giỏ hàng');
+                    window.location.href = `Index.php?do=CartForm&action=them&MaSP=${encodeURIComponent(id)}`;
                 });
             }
         })

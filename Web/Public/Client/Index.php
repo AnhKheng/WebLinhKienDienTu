@@ -64,7 +64,7 @@ if (isset($_GET['id'])) {
     <div class="header-right" x-data="{ openTieuDe: false }">
       <div class="cart-area">
         <a href="#"><i class="fas fa-heart"></i> Yêu thích</a>
-        <a href="#"><i class="fas fa-shopping-cart"></i> Giỏ Hàng</a>
+        <a href="Index.php?do=CartForm"><i class="fas fa-shopping-cart"></i> Giỏ Hàng</a>
       </div>
 
   <?php if (isset($_SESSION['MaKH'])): ?>
