@@ -1,5 +1,6 @@
 <?php
 $product_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
+$matk = $_SESSION['MaTKKH'] ?? "";
 ?>
 
 <div class="product-detail-layout" id="product-detail-container">
@@ -17,11 +18,11 @@ $product_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
         </div>
 
         <div class="action-buttons">
-            <button id="btn-add-to-cart" class="btn-primary" data-id="<?php echo htmlspecialchars($product_id); ?>">
+            <button id="btn-add-to-cart" class="btn-primary" data-id="<?php echo htmlspecialchars($product_id); ?>" data-matk="<?php echo htmlspecialchars($matk); ?>">
                 <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
             </button>
 
-            <button id="btn-buy-now" class="btn-secondary">
+            <button id="btn-buy-now" class="btn-secondary" data-id="<?php echo htmlspecialchars($product_id); ?>" data-matk="<?php echo htmlspecialchars($matk); ?>">
                 <i class="fa fa-bolt"></i> Mua ngay
             </button>
         </div>

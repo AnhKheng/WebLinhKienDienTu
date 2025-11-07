@@ -9,7 +9,7 @@ $maSP = $_GET['MaSP'] ?? '';
 $input = json_decode(file_get_contents('php://input'), true);
 
 if (!$maTKKH) {
-    echo json_encode(['success' => false, 'message' => 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ.']);
+    header("Location: Index.php");
     exit;
 }
 
