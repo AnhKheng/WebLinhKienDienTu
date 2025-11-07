@@ -1,6 +1,9 @@
 <?php
 include_once '../../Includes/Cart.php';
-
+if (!isset($_SESSION['MaKH'])) {
+    echo json_encode(['success' => false, 'message' => 'Bạn cần đăng nhập để thực hiện chức năng này.']);
+    exit;
+}
 
 class GioHangBUS {
     private $dal;
