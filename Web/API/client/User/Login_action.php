@@ -35,7 +35,7 @@
 			$_SESSION['MaKH'] = $dong['MaKH'];
 			$_SESSION['TenDangNhap'] = $dong['TenDangNhap'];
 			$_SESSION['Email'] = $dong['Email'];
-
+			$_SESSION['MaTKKH'] = $dong['MaTKKH'];
 			
 			// Chuyển hướng về trang index.php
 			echo "<script>window.location.href = '../../../Public/Client/Index.php';</script>";

@@ -59,6 +59,7 @@ if ($action == 'giam' && $maSP) {
 }
 
 ?>
+<link rel="stylesheet" href="assets/css/cart.css">
 
 <table style="width:100%; border-collapse:collapse; text-align:center;">
     <tr>
