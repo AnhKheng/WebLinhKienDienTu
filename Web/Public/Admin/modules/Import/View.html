@@ -1,112 +1,85 @@
+
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <title>Phiếu nhập hàng</title>
-  <link rel="stylesheet" href="assets/css/style_pages.css">
+<head>  
+  <meta charset="UTF-8" />
+  <title>Danh sách hóa đơn nhập - Admin</title>
+  <link rel="stylesheet" href="assets/css/style_pages.css" />
 </head>
 <body>
-
-  <div class="main-content">
-  <div class="page-header">
-    <h2>Phiếu nhập hàng</h2>
+  <h2>Danh sách hóa đơn nhập</h2>
+  <div class="filter-container">
+  <label for="cuahangFilter">Lọc theo mã cửa hàng:</label>
+  <select class="select-filter" id="cuahangFilter" onchange="applyFilter()">
+    <option value="all">Tất cả</option>
+  </select>
   </div>
+  <table id="hoadonTable">
+    <thead>
+      <tr>
+        <th>Mã PN</th>
+        <th>Ngày nhập</th>
+        <th>Mã NCC</th>
+        <th>Mã NV</th>
+        <th>Mã CH</th>
+        <th>Tổng tiền</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-  <!-- Khối chính -->
-  <div class="invoice-add-container">
+  <button type="button" class="btn-add" onclick="openAddModal()">Thêm</button>
 
-    <!-- HÀNG TRÊN: 2 cột -->
-    <div class="top-row">
-      <!-- CỘT TRÁI -->
-      <div class="left-column card smooth-shadow">
-        <h3>Thông tin phiếu nhập</h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Mã phiếu nhập</label>
-            <input type="text" id="maPN">
-          </div>
-
-          <div class="form-group">
-            <label>Ngày nhập</label>
-            <input type="date" id="ngayNhap">
-          </div>
-
-          <div class="form-group">
-            <label>Mã nhà cung cấp</label>
-            <input type="text" id="maNCC">
-          </div>
-
-          <div class="form-group">
-            <label>Mã nhân viên</label>
-            <input type="text" id="maNV">
-          </div>
-
-          <div class="form-group">
-            <label>Mã cửa hàng</label>
-            <input type="text" id="maCH">
-          </div>
-        </div>
-
-        <div class="total-section">
-          <label>Tổng tiền:</label>
-          <input type="number" id="tongTienNhap" readonly value="0">
-        </div>
-
-        <div class="form-actions">
-          <button class="btn btn-save" onclick="saveImport()">💾 Lưu Phiếu Nhập</button>
-          <button class="btn btn-cancel" onclick="window.location.href='index.php?module=Import&page=Import'">Hủy</button>
-        </div>
-      </div>
-
-      <!-- CỘT PHẢI -->
-      <div class="right-column card smooth-shadow">
-        <h3>Chi tiết phiếu nhập</h3>
-        <table class="styled-table" id="importDetail">
-          <thead>
-            <tr>
-              
-              <th>Mã sản phẩm</th>
-              <th>Số lượng</th>
-              <th>Đơn giá nhập</th>
-              <th>Thành tiền</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+<div id="detailModal" class="popup active">
+  <div class="popup-content">
+    <div class="popup-header">
+      <h2>Chi tiết hóa đơn</h2>
+      <span class="close-btn" onclick="closeModal()">&times;</span>
     </div>
-
-    <!-- HÀNG DƯỚI: DANH SÁCH SẢN PHẨM -->
-    <div class="bottom-row card smooth-shadow">
-      <h3>Danh sách sản phẩm</h3>
-      <div class="filter-container">
-      <label for="categoryFilter">Lọc theo danh mục:</label>
-      <select class="select-filter" id="categoryFilter" onchange="filterByCategory()">
-        <option value="all">Tất cả</option>
-      </select>
-      <input type="text" id="searchBox" placeholder="🔍 Tìm sản phẩm..." oninput="searchProduct()" />
-      <div class="table-wrapper">
-        <table class="styled-table" id="productTable">
-          <thead>
-            <tr>
-              <th>Ảnh</th>
-              <th>Mã SP</th>
-              <th>Tên sản phẩm</th>
-              <th>Danh mục</th>
-              <th>Giá nhập</th>
-
-              <th>Số lượng nhập</th>
-              <th class="add-col"></th>
-            </tr>
-          </thead>
-          <tbody id="productList"></tbody>
-        </table>
-      </div>
+    <div class="popup-body" id="detailContent">
+      <!-- Dữ liệu chi tiết sẽ được nạp bằng JS -->
+    </div>
+    <div class="popup-footer" style="text-align:center;">
+      <button class="btn-cancel" onclick="closeModal()">Đóng</button>
     </div>
   </div>
+</div>
 
+<!-- 🟢 POPUP CẬP NHẬT HÓA ĐƠN -->
+<div id="updateModal" class="popup" style="display:none;">
+  <div class="popup-content">
+    <span class="close" onclick="closeUpdateModal()">&times;</span>
 
-<script src="assets/js/import.js"></script>
+    <h3 style="margin-top:0; text-align:center; color:#4e73df;">Cập nhật hóa đơn</h3>
+
+    <label>Mã hóa đơn</label>
+    <input type="text" id="txtMaHD" readonly>
+
+    <label>Ngày bán</label>
+    <input type="datetime-local" id="txtNgayBan" />
+
+    <label>Mã nhân viên</label>
+    <input type="text" id="txtMaNV">
+
+    <label>Mã khách hàng</label>
+    <input type="text" id="txtMaKH">
+
+    <label>Mã cửa hàng</label>
+    <input type="text" id="txtMaCH">
+
+    <label>Tổng tiền</label>
+    <input type="number" id="txtTongTien">
+
+    <div style="display:flex; justify-content:center; gap:10px; margin-top:12px;">
+      <button class="btn-save" onclick="saveUpdate()">Lưu</button>
+      <button class="btn-cancel" onclick="closeUpdateModal()">✖ Đóng</button>
+    </div>
+  </div>
+</div>
+
+  <script src="assets/js/import_view.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 </body>
 </html>

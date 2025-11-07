@@ -11,6 +11,11 @@ $supplier = new Supplier($connect);
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
 switch ($action) {
+    // lấy tất cả
+    case "getAll":
+        $data = $supplier->getAll();
+        echo json_encode(["status" => "success", "data" => $data]);
+    break;
 
     // Lấy danh sách hoặc 1
     case 'view':
