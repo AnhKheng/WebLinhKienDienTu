@@ -38,22 +38,42 @@ function initDetailPage(id) {
             
 
             // ĐÃ XÓA LOGIC .classList
-            if (btnBuyNow) {
-                btnBuyNow.addEventListener('click', function() {
-                    alert('Chức năng "Mua ngay" sẽ được triển khai sau. Sản phẩm: ' + product.TenSP);
-                    window.location.href = `Index.php?do=CartForm&action=mua&MaSP=${encodeURIComponent(id)}`;
-                });
-            }
-            if(btnAddToCart)
-            {
-                btnAddToCart.addEventListener('click', function() {
-                    alert('Đã thêm sản phẩm: ' + product.TenSP + ' vào giỏ hàng');
-                    window.location.href = `Index.php?do=CartForm&action=them&MaSP=${encodeURIComponent(id)}`;
-                });
-            }
         })
         .catch(err => {
             container.innerHTML = '<p style="color:red;">Lỗi kết nối khi tải chi tiết.</p>';
             console.error(err);
         });
 }
+
+document.getElementById('btn-add-to-cart').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const productId = this.getAttribute('data-id');
+    const maTKKH = this.getAttribute('data-matk');
+
+            if(maTKKH != "")
+            {
+                alert('Đã thêm sản phẩm: ' + productId + ' vào giỏ hàng');
+                window.location.href = `Index.php?do=CartForm&action=them&MaSP=` +productId;
+            }
+            else
+            {
+                alert("Vui lòng đăng nhập để thêm vào giỏ hàng!");
+            }
+
+});
+
+document.getElementById('btn-buy-now').addEventListener('click', function (e) {
+    e.preventDefault();
+    const productId = this.getAttribute('data-id');
+    const maTKKH = this.getAttribute('data-matk');
+            if(maTKKH == "")
+            {
+                alert("Vui lòng đăng nhập để mua sản phẩm!");
+            }
+            else
+            {
+                window.location.href = `Index.php?do=CartForm&action=mua&MaSP=` +productId;
+            }
+
+});

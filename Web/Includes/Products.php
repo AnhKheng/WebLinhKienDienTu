@@ -192,5 +192,82 @@ class Product {
         $result = $this->conn->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    //========13.láy sp theo mã============
+    public function getProductsByStore($MaCH) {
+        if (empty($MaCH)) {
+            return ["status" => "error", "message" => "Thiếu mã cửa hàng"];
+        }
+
+        $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh, 
+                       k.SoLuongTon AS TonKho
+                FROM tbl_sanpham sp
+                JOIN tbl_danhmuc dm ON sp.MaDM = dm.MaDM
+                JOIN tbl_kho k ON sp.MaSP = k.MaSP
+                WHERE k.MaCH = ? AND k.SoLuongTon > 0";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $MaCH);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            $data = [];
+            while ($row = $result->fetch_assoc()) {
+                $row["DonGia"] = floatval($row["DonGia"]);
+                $row["TonKho"] = intval($row["TonKho"]);
+                $data[] = $row;
+            }
+            return ["status" => "success", "data" => $data];
+        } else {
+            return ["status" => "error", "message" => "Không có sản phẩm tồn trong cửa hàng này."];
+        }
+    }
+
+    //===========14.search============
+
+    public function searchProducts($keyword, $MaCH = "") {
+        if (empty($keyword)) {
+            return ["status" => "error", "message" => "Thiếu từ khóa tìm kiếm"];
+        }
+
+        // Nếu có mã cửa hàng => tìm trong kho của cửa hàng đó
+        if (!empty($MaCH)) {
+            $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh,
+                        k.SoLuongTon AS TonKho
+                    FROM tbl_sanpham sp
+                    JOIN tbl_danhmuc dm ON sp.MaDM = dm.MaDM
+                    JOIN tbl_kho k ON sp.MaSP = k.MaSP
+                    WHERE k.MaCH = ? AND sp.TenSP LIKE ? AND k.SoLuongTon > 0";
+            $stmt = $this->conn->prepare($sql);
+            $likeKeyword = "%$keyword%";
+            $stmt->bind_param("ss", $MaCH, $likeKeyword);
+        } else {
+            // Không chọn cửa hàng => tìm toàn hệ thống
+            $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh
+                    FROM tbl_sanpham sp
+                    JOIN tbl_danhmuc dm ON sp.MaDM = dm.MaDM
+                    WHERE sp.TenSP LIKE ?";
+            $stmt = $this->conn->prepare($sql);
+            $likeKeyword = "%$keyword%";
+            $stmt->bind_param("s", $likeKeyword);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            $data = [];
+            while ($row = $result->fetch_assoc()) {
+                $row["DonGia"] = floatval($row["DonGia"]);
+                if (isset($row["TonKho"])) $row["TonKho"] = intval($row["TonKho"]);
+                $data[] = $row;
+            }
+            return ["status" => "success", "count" => count($data), "data" => $data];
+        } else {
+            return ["status" => "error", "message" => "Không tìm thấy sản phẩm nào."];
+        }
+    }
+
 }
 ?>

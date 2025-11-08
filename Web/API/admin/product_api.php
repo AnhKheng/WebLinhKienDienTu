@@ -169,85 +169,17 @@ switch ($action) {
         break;
 
     case "getByStore":
-    $MaCH = $_GET["MaCH"] ?? '';
-
-    if (empty($MaCH)) {
-        echo json_encode(["status" => "error", "message" => "Thiếu mã cửa hàng"]);
-        exit;
-    }
-
-
-    $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh, 
-                   k.SoLuongTon AS TonKho
-            FROM tbl_sanpham sp
-            JOIN tbl_danhmuc dm ON sp.MaDM = dm.MaDM
-            JOIN tbl_kho k ON sp.MaSP = k.MaSP
-            WHERE k.MaCH = ? AND k.SoLuongTon > 0";
-
-    $stmt = $connect->prepare($sql);
-    $stmt->bind_param("s", $MaCH);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-
-    if ($result && $result->num_rows > 0) {
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $row["DonGia"] = floatval($row["DonGia"]);
-            $row["TonKho"] = intval($row["TonKho"]);
-            $data[] = $row;
-        }
-        echo json_encode(["status" => "success", "data" => $data]);
-    } else {
-        echo json_encode(["status" => "error", "message" => "Không có sản phẩm tồn trong cửa hàng này."]);
-    }
-    break;
+        $MaCH = $_GET["MaCH"] ?? '';
+        $data =$product->getProductsByStore($MaCH);
+        echo json_encode($data);
+        break;
+   
 
     case "search":
         $keyword = $_GET["keyword"] ?? "";
         $MaCH = $_GET["MaCH"] ?? ""; // có thể rỗng nếu không chọn cửa hàng
-
-        if (empty($keyword)) {
-            echo json_encode(["status" => "error", "message" => "Thiếu từ khóa tìm kiếm"]);
-            exit;
-        }
-
-        // Nếu có mã cửa hàng => chỉ lấy sản phẩm thuộc cửa hàng đó
-        if (!empty($MaCH)) {
-            $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh,
-                           k.SoLuongTon AS TonKho
-                    FROM tbl_sanpham sp
-                    JOIN tbl_danhmuc dm ON sp.MaDM = dm.MaDM
-                    JOIN tbl_kho k ON sp.MaSP = k.MaSP
-                    WHERE k.MaCH = ? AND sp.TenSP LIKE ? AND k.SoLuongTon > 0";
-            $stmt = $connect->prepare($sql);
-            $likeKeyword = "%$keyword%";
-            $stmt->bind_param("ss", $MaCH, $likeKeyword);
-        } else {
-            // Không chọn cửa hàng => tìm trên toàn hệ thống
-            $sql = "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.DonGia, sp.HinhAnh
-                    FROM tbl_sanpham sp
-                    JOIN tbl_danhmuc dm ON sp.MaDM = dm.MaDM
-                    WHERE sp.TenSP LIKE ?";
-            $stmt = $connect->prepare($sql);
-            $likeKeyword = "%$keyword%";
-            $stmt->bind_param("s", $likeKeyword);
-        }
-
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result && $result->num_rows > 0) {
-            $data = [];
-            while ($row = $result->fetch_assoc()) {
-                $row["DonGia"] = floatval($row["DonGia"]);
-                if (isset($row["TonKho"])) $row["TonKho"] = intval($row["TonKho"]);
-                $data[] = $row;
-            }
-            echo json_encode(["status" => "success", "count" => count($data), "data" => $data]);
-        } else {
-            echo json_encode(["status" => "error", "message" => "Không tìm thấy sản phẩm nào."]);
-        }
+        $data=$product->searchProducts($keyword,$MaCH);
+        echo json_encode($data);  
         break;
 
     default:
@@ -256,5 +188,6 @@ switch ($action) {
             "message" => "Hành động không hợp lệ."
         ]);
         break;
+        
 }
 ?>

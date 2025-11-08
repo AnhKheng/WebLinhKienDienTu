@@ -244,7 +244,6 @@ function addToInvoice(maSP) {
 }
 
 
-
 // 6 Hiển thị bảng chi tiết hóa đơn
 
 function renderInvoiceDetail() {

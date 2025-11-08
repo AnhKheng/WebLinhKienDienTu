@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>  
+  <meta charset="UTF-8" />
+  <title>Thông tin khách hàng</title>
+  <link rel="stylesheet" href="assets/css/style_pages.css" />
+</head>
+<body>
+  <div id="notifyOverlay" class="modal-overlay" aria-hidden="true" style="display:none;">
+    <div class="notify-box popup-content" role="dialog" aria-live="polite">
+      <span id="closeNotify" class="modal-close" role="button" aria-label="Đóng">&times;</span>
+      <div id="notifyMessage"></div>
+    </div>
+  </div>
+
+  <h2>Thông tin khách hàng</h2>
+
+    <div class="formInfo">
+        <label>Mã KH: </label> <span class="value MaKH"></span><br>
+        <label>Tên KH: </label> <span class="value TenKH"></span><br>
+        <label>Số điện thoại: </label> <span class="value SoDienThoai"></span><br>
+        <label>Địa chỉ: </label> <span class="value DiaChi"></span><br>
+    </div>
+  <h3>Lịch sử mua hàng</h3>
+  <table id="HistoryTable">
+    <thead>
+      <tr>
+        <th>Mã HD</th>
+        <th>Ngày bán</th>
+        <th>Mã SP</th>
+        <th>Tên Sản Phẩm</th>
+        <th>Số Lượng</th>
+        <th>Đơn Giá</th>
+        <th>Thành Tiền</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <div id="pagination" class="pagination-container"></div>
+
+
+  <script src="assets/js/Detail_customer.js"></script>
+</body>
+</html>

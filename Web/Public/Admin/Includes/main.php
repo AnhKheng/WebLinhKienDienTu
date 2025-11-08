@@ -2,7 +2,6 @@
   <?php
     $module = $_GET['module'] ?? 'dashboard'; // Lấy module từ URL
     $page   = $_GET['page'] ?? 'index';       // Lấy page từ URL
-
     // Tạo đường dẫn gốc
     $basePath = "modules/" . ucfirst($module) . "/" . ucfirst($page);
 

@@ -9,7 +9,7 @@ $maSP = $_GET['MaSP'] ?? '';
 $input = json_decode(file_get_contents('php://input'), true);
 
 if (!$maTKKH) {
-    echo json_encode(['success' => false, 'message' => 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ.']);
+    header("Location: Index.php");
     exit;
 }
 
@@ -59,6 +59,7 @@ if ($action == 'giam' && $maSP) {
 }
 
 ?>
+<link rel="stylesheet" href="assets/css/cart.css">
 
 <table style="width:100%; border-collapse:collapse; text-align:center;">
     <tr>

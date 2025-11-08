@@ -9,9 +9,9 @@ require_once("../../Includes/Invoices.php");
 
 $hoadon = new HoaDon($connect);
 $action = $_GET['action'] ?? 'view_all';
-// ==========================
-// ✅ LẤY MÃ HÓA ĐƠN MỚI TỰ ĐỘNG
-// ==========================
+
+// LẤY MÃ HÓA ĐƠN MỚI TỰ ĐỘNG
+
 if ($action == 'getNewCode') {
     $query = "SELECT MaHD FROM tbl_hoadonban ORDER BY MaHD DESC LIMIT 1";
     $result = mysqli_query($connect, $query);
@@ -131,24 +131,6 @@ case 'viewDetail':
     echo json_encode(["status" => "error", "message" => "Không có chi tiết hóa đơn"]);
   }
   break;
-// case 'add':
-//     $input = json_decode(file_get_contents("php://input"), true);
-
-//     if (!$input || empty($input['MaHD']) || empty($input['MaNV']) || empty($input['MaKH']) || empty($input['MaCH']) || empty($input['TongTien'])) {
-//       echo json_encode(["status" => "error", "message" => "Thiếu dữ liệu cần thiết để thêm hóa đơn."]);
-//       break;
-//     }
-
-//     $added = $hoadon->add($input);
-
-//     if ($added) {
-//       echo json_encode(["status" => "success", "message" => "Thêm hóa đơn thành công."]);
-//     } else {
-//       echo json_encode(["status" => "error", "message" => "Không thể thêm hóa đơn."]);
-//     }
-//     break;
-
-
 
   default:
     echo json_encode(["status" => "error", "message" => "Hành động không hợp lệ"]);
