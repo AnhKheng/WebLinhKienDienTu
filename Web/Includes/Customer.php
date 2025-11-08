@@ -77,5 +77,31 @@ class Customers {
 
         return $data ?: ["status" => "error", "message" => "Không tìm thấy khách hàng!"];
     }
-}
+    public function getAllPaged($page = 1, $limit = 10) {
+        $offset = ($page - 1) * $limit;
+        $sql = "SELECT MaKH, TenKH, SoDienThoai, DiaChi FROM {$this->table} LIMIT ?, ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $offset, $limit);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        // Lấy tổng số khách hàng để trả về info phân trang
+        $totalRes = $this->conn->query("SELECT COUNT(*) as total FROM {$this->table}");
+        $total = $totalRes->fetch_assoc()['total'] ?? 0;
+        $totalPages = ceil($total / $limit);
+
+        return [
+            "data" => $data,
+            "page" => $page,
+            "limit" => $limit,
+            "total" => $total,
+            "totalPages" => $totalPages
+        ];
+    }
+    }
 ?>
