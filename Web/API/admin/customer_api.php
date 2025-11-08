@@ -14,7 +14,6 @@ $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
 switch ($action) {
 
-    // ==== 1️⃣ LẤY DANH SÁCH KHÁCH HÀNG ====
     case 'getAll':
         $result = $customers->getAll();
         echo json_encode([
@@ -23,7 +22,6 @@ switch ($action) {
         ], JSON_UNESCAPED_UNICODE);
         break;
 
-    // ==== 2️⃣ LẤY THÔNG TIN KHÁCH HÀNG THEO MÃ ====
     case 'get_by_id':
         $maKH = $_GET['MaKH'] ?? $_POST['MaKH'] ?? '';
         if (empty($maKH)) {
@@ -39,7 +37,6 @@ switch ($action) {
         }
         break;
 
-    // ==== 3️⃣ THÊM KHÁCH HÀNG MỚI ====
     case 'add':
         $TenKH = trim($_POST['TenKH'] ?? '');
         $SoDienThoai = trim($_POST['SoDienThoai'] ?? '');
@@ -54,7 +51,6 @@ switch ($action) {
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
         break;
 
-    // ==== ⚠️ ACTION KHÔNG HỢP LỆ ====
     default:
         echo json_encode(["status" => "error", "message" => "Action không hợp lệ hoặc chưa gửi!"], JSON_UNESCAPED_UNICODE);
         break;

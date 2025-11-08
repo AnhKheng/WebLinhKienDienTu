@@ -6,8 +6,6 @@ class Customers {
     public function __construct($db) {
         $this->conn = $db;
     }
-
-    // ==== 1️⃣ LẤY TOÀN BỘ KHÁCH HÀNG ====
     public function getAll() {
         $sql = "SELECT MaKH, TenKH, SoDienThoai, DiaChi FROM {$this->table}";
         $result = $this->conn->query($sql);
@@ -18,8 +16,6 @@ class Customers {
         }
         return $data;
     }
-
-    // ==== 2️⃣ LẤY KHÁCH HÀNG THEO MÃ ====
     public function getById($MaKH) {
         $stmt = $this->conn->prepare("SELECT MaKH, TenKH, SoDienThoai, DiaChi FROM {$this->table} WHERE MaKH = ?");
         $stmt->bind_param("s", $MaKH);
@@ -28,7 +24,6 @@ class Customers {
         return $result->fetch_assoc() ?: ["status" => "error", "message" => "Không tìm thấy khách hàng!"];
     }
 
-    // ==== 3️⃣ THÊM KHÁCH HÀNG MỚI ====
     public function add($TenKH, $SoDienThoai, $DiaChi) {
         // Sinh mã KH tự động (KH01, KH02, …)
         $res = $this->conn->query("SELECT MAX(CAST(SUBSTRING(MaKH, 3) AS UNSIGNED)) AS max_id FROM {$this->table}");
@@ -43,6 +38,44 @@ class Customers {
         } else {
             return ["status" => "error", "message" => "Không thể thêm khách hàng: " . $stmt->error];
         }
+    }
+    public function update($MaKH, $TenKH, $SoDienThoai, $DiaChi) {
+        $stmt = $this->conn->prepare("UPDATE {$this->table} SET TenKH = ?, SoDienThoai = ?, DiaChi = ? WHERE MaKH = ?");
+        $stmt->bind_param("ssss", $TenKH, $SoDienThoai, $DiaChi, $MaKH);
+
+        if ($stmt->execute()) {
+            return ["status" => "success", "message" => "Cập nhật khách hàng thành công!"];
+        } else {
+            return ["status" => "error", "message" => "Không thể cập nhật khách hàng: " . $stmt->error];
+        }
+    }
+
+    // Xóa khách hàng
+    public function delete($MaKH) {
+        $stmt = $this->conn->prepare("DELETE FROM {$this->table} WHERE MaKH = ?");
+        $stmt->bind_param("s", $MaKH);
+
+        if ($stmt->execute()) {
+            return ["status" => "success", "message" => "Xóa khách hàng thành công!"];
+        } else {
+            return ["status" => "error", "message" => "Không thể xóa khách hàng: " . $stmt->error];
+        }
+    }
+
+    // Tìm kiếm khách hàng theo tên
+    public function searchByName($TenKH) {
+        $like = "%" . $TenKH . "%";
+        $stmt = $this->conn->prepare("SELECT MaKH, TenKH, SoDienThoai, DiaChi FROM {$this->table} WHERE TenKH LIKE ?");
+        $stmt->bind_param("s", $like);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        return $data ?: ["status" => "error", "message" => "Không tìm thấy khách hàng!"];
     }
 }
 ?>

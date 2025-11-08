@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Thêm nhân viên</title>
+  <link rel="stylesheet" href="assets/css/style_pages.css">
+</head>
+<body>
+  <!-- Thông báo popup -->
+  <div id="notifyOverlay" class="modal-overlay" style="display:none;">
+    <div class="notify-box popup-content">
+      <span id="closeNotify" class="modal-close">&times;</span>
+      <div id="notifyMessage"></div>
+    </div>
+  </div>
+
+  <h2>Thêm nhân viên</h2>
+  <form id="formAddEmployee" class="form-add">
+    <label>Tên nhân viên:</label><br>
+    <input type="text" id="name" required><br><br>
+
+    <label>Giới tính:</label><br>
+    <select id="gender">
+      <option value="Nam">Nam</option>
+      <option value="Nữ">Nữ</option>
+    </select><br><br>
+
+    <label>Ngày sinh:</label><br>
+    <input type="date" id="birth" required><br><br>
+
+    <label>Số điện thoại:</label><br>
+    <input type="tel" id="phone" required><br><br>
+
+    <label>Mã cửa hàng:</label><br>
+    <select id="store" required></select><br><br>
+
+    <label>Vai trò:</label><br>
+    <select id="role" required>
+      <option value="nhanvien">Nhân viên</option>
+      <option value="quanly">Quản lý</option>
+    </select><br><br>
+
+    <button type="submit" class="btn-add">Thêm nhân viên</button>
+  </form>
+
+  <script src="assets/js/ad_add_employee.js"></script>
+</body>
+</html>

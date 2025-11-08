@@ -70,7 +70,7 @@ switch ($action) {
         ]);
         break;
 
-    case 'countByStore':
+    case 'getStore':
         $MaCH = trim($_GET['MaCH'] ?? '');
         if (empty($MaCH)) {
             echo json_encode(["status" => "error", "message" => "Thiếu mã cửa hàng!"]);
