@@ -68,11 +68,25 @@
         </ul>
       </li>
 
+
       <li>
         <a href="#" class="menu-link">
           <i class="fas fa-user"></i>
           <span>Tài khoản</span>
         </a>
+      </li>
+
+      <li class="menu-item has-sub">
+        <button class="menu-toggle">
+          <i class="fas fa-file-invoice-dollar"></i>  
+          <span>Báo cáo thống kê</span>
+        </button>
+        <ul class="submenu">
+          <li><a href="index.php?module=Statistical&page=Statistical"><i class="fa-solid fa-building"></i> Báo cáo doanh thu</a></li>
+          <li><a href="index.php?module=Statistical&page=Inventory_report"><i class="fa-solid fa-building"></i> Báo cáo tồn kho</a></li>
+          
+          
+        </ul>
       </li>
     </ul>
   </aside>
