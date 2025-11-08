@@ -89,6 +89,26 @@ select::-webkit-scrollbar-thumb { background-color: #c1c1c1; border-radius: 10px
   gap: 15px;
   width: 800px;
 }
+.formInfo {
+  background-color: #f9f9f9;
+  padding: 15px 20px;        
+  border-radius: 8px;        
+  border: 1px solid #ddd;  
+  width: 400px;              
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 20px auto;
+}
+.formInfo label {
+  display: inline-block;     /* để các nhãn nằm cạnh nhau */
+  margin-bottom: 8px;        /* khoảng cách dòng */
+}
+
+.formInfo label:first-child {
+  width: 80px;               /* nhãn Mã KH, Tên KH… cố định chiều rộng */
+  font-weight: bold;
+}
 
 /* =========================================================
    💬 3️⃣ HIỂN THỊ THÔNG BÁO / POPUP / MODAL

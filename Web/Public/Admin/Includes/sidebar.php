@@ -67,7 +67,16 @@
           <li><a href="index.php?module=Employee&page=Add"><i class="fa-solid fa-building"></i> Thêm nhân viên</a></li>
         </ul>
       </li>
-
+      <li class="menu-item has-sub">
+        <button class="menu-toggle">
+          <i class="fas fa-file-invoice-dollar"></i>  
+          <span>Khách hàng</span>
+        </button>
+        <ul class="submenu">
+          <li><a href="index.php?module=Customer&page=View"><i class="fa-solid fa-building"></i> Quản lý khách hàng</a></li>
+          <li><a href="index.php?module=Customer&page=Add"><i class="fa-solid fa-building"></i> Thêm khách hàng</a></li>
+        </ul>
+      </li>
       <li>
         <a href="#" class="menu-link">
           <i class="fas fa-user"></i>
