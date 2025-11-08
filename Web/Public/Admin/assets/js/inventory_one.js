@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadStoreName() {
     try {
-      const res = await fetch(`../../API/admin/inventory_api.php?action=countByStore&MaCH=${MaCH}`);
+      const res = await fetch(`../../API/admin/inventory_api.php?action=getStore&MaCH=${MaCH}`);
       const data = await res.json();
       if (data.status === "success" && data.store) {
         storeNameElement.textContent = "Cửa hàng: " + data.store;

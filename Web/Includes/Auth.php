@@ -103,27 +103,67 @@ class Auth {
     }
 
     // ==== TẠO TÀI KHOẢN ====
-    public function register($TenDangNhap, $MatKhau, $MaNV, $VaiTro, $TrangThai) {
-        // Kiểm tra trùng tên đăng nhập
+    public function register($TenDangNhap, $MatKhau, $MaNV, $VaiTro) {
+        if (!$this->conn) {
+            return ["status" => "error", "message" => "Không có kết nối CSDL!"];
+        }
+
         $check = $this->conn->prepare("SELECT * FROM tbl_taikhoan WHERE TenDangNhap = ?");
-        $check->bind_param("s", $TenDangNhap);
+        if (!$check) {
+            return ["status" => "error", "message" => "Lỗi prepare SELECT: " . $this->conn->error];
+        }
+
+        $check->bind_param("s", $TenDangNhap);  
         $check->execute();
         $res = $check->get_result();
 
-        if ($res->num_rows > 0) {
+        if ($res && $res->num_rows > 0) {
             return ["status" => "error", "message" => "Tên đăng nhập đã tồn tại!"];
         }
 
-        $sql = "INSERT INTO tbl_taikhoan (TenDangNhap, MatKhau, MaNV, VaiTro, TrangThai)
-                VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO tbl_taikhoan (TenDangNhap, MatKhau, MaNV, VaiTro)
+                VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sssss", $TenDangNhap, $MatKhau, $MaNV, $VaiTro, $TrangThai);
+
+        if (!$stmt) {
+          
+            return ["status" => "error", "message" => "Lỗi prepare INSERT: " . $this->conn->error];
+        }
+
+        $stmt->bind_param("ssss", $TenDangNhap, $MatKhau, $MaNV, $VaiTro);
 
         if ($stmt->execute()) {
             return ["status" => "success", "message" => "Tạo tài khoản thành công!"];
         } else {
-            return ["status" => "error", "message" => "Không thể tạo tài khoản!"];
+            return ["status" => "error", "message" => "Không thể tạo tài khoản! Lỗi: " . $stmt->error];
         }
     }
+        // ==== XÓA TÀI KHOẢN ==== 
+    public function deleteAccount($MaNV) {
+        if (!$this->conn) {
+            return ["status" => "error", "message" => "Không có kết nối CSDL!"];
+        }
+
+        $sql = "DELETE FROM tbl_taikhoan WHERE MaNV = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            return ["status" => "error", "message" => "Lỗi prepare DELETE: " . $this->conn->error];
+        }
+
+        $stmt->bind_param("s", $MaNV);
+
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
+                return ["status" => "success", "message" => "Xóa tài khoản thành công!"];
+            } else {
+                return ["status" => "error", "message" => "Không tìm thấy tài khoản cần xóa!"];
+            }
+        } else {
+            return ["status" => "error", "message" => "Lỗi khi xóa tài khoản: " . $stmt->error];
+        }
+    }
+
+
 }
 ?>

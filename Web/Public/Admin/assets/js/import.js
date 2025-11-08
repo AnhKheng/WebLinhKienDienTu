@@ -3,6 +3,75 @@ let productList = [];
 let allProducts = []; 
 let importDetails = [];
 
+// ======== LOAD nha cung cap ========
+
+async function loadSupplier() {
+  try {
+    
+    const res = await fetch("../../API/admin/supplier_api.php?action=getAll");
+    const data = await res.json();
+
+    if (data.status === "success" && Array.isArray(data.data)) {
+      const select = document.getElementById("maNCC");
+      select.innerHTML = `<option value="">-- Chọn mã NCC --</option>`;
+      data.data.forEach(kh => {
+        select.innerHTML += `<option value="${kh.MaNCC}">${kh.TenNCC} (${kh.MaNCC})</option>`;
+      });
+    } else {
+      console.error("Không tải được danh sách NCC");
+    }
+  } catch (error) {
+    console.error("Lỗi loadSupplier:", error);
+  }
+}
+// ============== Lấy mã nhân viên tự động
+async function loadCurrentEmployee() {
+  try {
+    const res = await fetch("../../API/admin/invoice_api.php?action=getCurrentNV");
+    const data = await res.json();
+    if (data.status === "success") {
+      document.getElementById("maNV").value = data.MaNV;
+      document.getElementById("maNV").readOnly = true;
+    } else {
+      console.warn("Chưa đăng nhập hoặc chưa có mã NV trong session");
+    }
+  } catch (err) {
+    console.error("Lỗi loadCurrentEmployee:", err);
+  }
+}
+
+// ======== LOAD CỬA HÀNG ========
+
+async function loadCurrentStore() {
+  try {
+    const res = await fetch("../../API/admin/invoice_api.php?action=getCurrentCH");
+    const data = await res.json();
+    if (data.status === "success") {
+      document.getElementById("maCH").value = data.MaCH;
+      document.getElementById("maCH").readOnly = true;
+    } else {
+      console.warn("Chưa đăng nhập hoặc chưa có mã NV trong session");
+    }
+  } catch (err) {
+    console.error("Lỗi loadCurrentEmployee:", err);
+  }
+}
+// 🔹 Lấy mã hóa đơn tự động
+async function loadNewImportCode() {
+  try {
+    const res = await fetch("../../API/admin/import_api.php?action=getNewCode");
+    const data = await res.json();
+    if (data.status === "success") {
+      document.getElementById("maPN").value = data.newCode;
+      document.getElementById("maPN").readOnly = true;
+    } else {
+      console.error("Không lấy được mã hóa đơn nhập mới");
+    }
+  } catch (err) {
+    console.error("Lỗi loadNewImportCode:", err);
+  }
+}
+
 //------------- Tải danh sách sản phẩm
 
 async function loadProducts() {
@@ -175,7 +244,6 @@ function removeItem(index) {
   renderImportDetail();
 }
 
-
 // Cập nhật tổng tiền
 function updateTotal() {
   const total = importDetails.reduce(
@@ -185,9 +253,58 @@ function updateTotal() {
   document.getElementById("tongTienNhap").value = total;
 }
 
+//---------------Lưu phiếu nhập
+async function saveImport() {
+  const maPN = document.getElementById("maPN").value.trim();
+  const maNV = document.getElementById("maNV").value.trim();
+  const maNCC = document.getElementById("maNCC").value.trim();
+  const maCH = document.getElementById("maCH").value.trim();
+  const ngayNhap = document.getElementById("ngayNhap").value;
+  const tongTien = parseFloat(document.getElementById("tongTienNhap").value);
+
+  if (!maPN || !maNV || !maNCC || !maCH || !ngayNhap || importDetails.length === 0) {
+    alert("⚠️ Vui lòng nhập đầy đủ thông tin và thêm sản phẩm nhập.");
+    return;
+  }
+
+  const data = {
+    MaPN: maPN,
+    MaNV: maNV,
+    MaNCC: maNCC,
+    MaCH: maCH,
+    NgayNhap: ngayNhap,
+    TongTien: tongTien,
+    ChiTiet: importDetails, 
+  };
+
+  try {
+    const res = await fetch('../../API/admin/import_api.php?action=add', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    if (result.status === "success") {
+      alert("✅ Thêm phiếu nhập thành công!");
+      window.location.href = "index.php?module=import&page=Add";
+    } else {
+      alert("❌ Lỗi: " + (result.message || "Không thể thêm phiếu nhập."));
+    }
+  } catch (error) {
+    console.error("Lỗi khi lưu phiếu nhập:", error);
+  }
+}
+
+
 //---------load trang---------
 document.addEventListener("DOMContentLoaded", async () => {
   try {
+    await loadSupplier();
+    await loadNewImportCode();
+    await loadCurrentEmployee();
+    await loadCurrentStore();
     await loadProducts();
     await loadCategories();
 

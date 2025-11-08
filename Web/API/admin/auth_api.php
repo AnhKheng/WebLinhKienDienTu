@@ -43,20 +43,30 @@ switch ($action) {
 
     // ==== 4️⃣ TẠO TÀI KHOẢN MỚI ====
     case 'register':
-        $TenDangNhap = trim($_POST['TenDangNhap'] ?? '');
-        $MatKhau = trim($_POST['MatKhau'] ?? '');
-        $MaNV = trim($_POST['MaNV'] ?? '');
-        $VaiTro = trim($_POST['VaiTro'] ?? 'NhanVien');
+        $data = json_decode(file_get_contents("php://input"), true);
+        $TenDangNhap = trim($data['username'] ?? '');
+        $MatKhau = trim($data['password'] ?? '');
+        $MaNV = trim($data['MaNV'] ?? '');
+        $VaiTro = trim($data['role'] ?? 'nhanvien');
 
-        if (empty($TenDangNhap) || empty($MatKhau) || empty($MaNV)) {
-            echo json_encode(["status" => "error", "message" => "Thiếu thông tin để tạo tài khoản!"]);
+        if ($TenDangNhap === '' || $MatKhau === '' || $MaNV === '') {
+        echo json_encode(["status" => "error", "message" => "Thiếu thông tin tạo tài khoản!"]);
+        exit;
+        }
+
+        echo json_encode($auth->register($TenDangNhap, $MatKhau, $MaNV, $VaiTro));
+        break;
+    case 'delete_account':
+        $data = json_decode(file_get_contents("php://input"), true);
+        $MaNV = $data["MaNV"] ?? null;
+
+        if ($MaNV === '') {
+            echo json_encode(["status" => "error", "message" => "Thiếu MaNV để xóa tài khoản!"]);
             exit;
         }
 
-        $result = $auth->register($TenDangNhap, $MatKhau, $MaNV, $VaiTro, $TrangThai);
-        echo json_encode($result);
+        echo json_encode($auth->deleteAccount($MaNV));
         break;
-
     // ==== ACTION KHÔNG HỢP LỆ ====
     default:
         echo json_encode(["status" => "error", "message" => "Action không hợp lệ hoặc chưa được gửi!"]);
