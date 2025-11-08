@@ -32,8 +32,8 @@
 
       <div id="profile-menu" class="profile-menu hidden">
         <ul>
-          <li><i class="fas fa-user"></i> Hồ sơ</li>
-          <li><i class="fas fa-cog"></i> Cài đặt</li>
+          <li id="infoBtn"><i class="fas fa-user" ></i> Hồ sơ</li>
+          <li id="changePwBtn"><i class="fas fa-cog"></i> Đổi mật khẩu</li>
           <li id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</li>
         </ul>
       </div>
