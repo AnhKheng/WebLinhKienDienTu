@@ -83,9 +83,18 @@
         </button>
         <ul class="submenu">
           <li><a href="index.php?module=Statistical&page=Statistical"><i class="fa-solid fa-building"></i> Báo cáo doanh thu</a></li>
-          <li><a href="index.php?module=Statistical&page=Inventory_report"><i class="fa-solid fa-building"></i> Báo cáo tồn kho</a></li>
-          
-          
+          <li><a href="index.php?module=Statistical&page=Inventory_report"><i class="fa-solid fa-building"></i> Báo cáo tồn kho</a></li> 
+        </ul>
+      </li>
+
+      <li class="menu-item has-sub">
+        <button class="menu-toggle">
+          <i class="fas fa-file-invoice-dollar"></i>  
+          <span>Quản lý cửa hàng</span>
+        </button>
+        <ul class="submenu">
+          <li><a href="index.php?module=Store&page=Store"><i class="fa-solid fa-building"></i> Cửa hàng</a></li>
+           
         </ul>
       </li>
     </ul>
