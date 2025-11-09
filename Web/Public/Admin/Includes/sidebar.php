@@ -8,7 +8,7 @@
   <ul class="menu">
     <!-- Bảng điều khiển -->
     <li>
-      <a href="#" class="menu-link">
+      <a href="index.php?module=Dashboard&page=dashboard" class="menu-link" >
         <i class="fa-solid fa-gauge-high"></i>
         <span>Bảng điều khiển</span>
       </a>
