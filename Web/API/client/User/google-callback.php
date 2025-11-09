@@ -40,25 +40,34 @@ if (isset($_GET['code'])) {
             $maKH = $row['MaKH'];
             $maTKKH = $row['MaTKKH']; // <<< LẤY MaTKKH KHI TÌM THẤY
         } else {
-            // Tạo mã KH ngẫu nhiên, đảm bảo không trùng
-            $maKH = 'KH' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
 
-            // Thêm vào bảng khách hàng
-            $sql_kh = "INSERT INTO tbl_khachhang (MaKH, TenKH) VALUES ('$maKH', '$name')";
-            if (!mysqli_query($connect, $sql_kh)) {
-                die("❌ Lỗi thêm khách hàng: " . mysqli_error($connect));
-            }
+               $query = "SELECT MAX(CAST(SUBSTRING(MaKH, 3) AS UNSIGNED)) AS max_id FROM tbl_khachhang";
+                $res = mysqli_query($connect, $query);
 
-            // Thêm vào bảng tài khoản khách hàng
-            $sql_tkkh = "INSERT INTO tbl_taikhoankhachhang (MaKH, LoaiDangNhap, TenDangNhap, Email)
-                         VALUES ('$maKH', 'google', '$name', '$email')";
-            if (!mysqli_query($connect, $sql_tkkh)) {
-                die("❌ Lỗi thêm tài khoản KH: " . mysqli_error($connect));
+                if (!$res) {
+                    die("❌ Lỗi truy vấn lấy mã KH: " . mysqli_error($connect));
+                }
+
+                $row = mysqli_fetch_assoc($res);
+                $nextId = "KH" . str_pad(($row['max_id'] ?? 0) + 1, 2, "0", STR_PAD_LEFT);
+                $maKH = $nextId;
+
+                // 🔹 2. Thêm vào bảng khách hàng
+                $sql_kh = "INSERT INTO tbl_khachhang (MaKH, TenKH) VALUES ('$maKH', '$name')";
+                if (!mysqli_query($connect, $sql_kh)) {
+                    die("❌ Lỗi thêm khách hàng: " . mysqli_error($connect));
+                }
+
+                // 🔹 3. Thêm vào bảng tài khoản khách hàng (liên kết với KH vừa tạo)
+                $sql_tkkh = "INSERT INTO tbl_taikhoankhachhang (MaKH, LoaiDangNhap, TenDangNhap, Email)
+                            VALUES ('$maKH', 'google', '$name', '$email')";
+                if (!mysqli_query($connect, $sql_tkkh)) {
+                    die("❌ Lỗi thêm tài khoản KH: " . mysqli_error($connect));
+                }
+
+                // 🔹 4. Lấy mã tài khoản khách hàng vừa tạo
+                $maTKKH = mysqli_insert_id($connect);
             }
-            
-            // <<< LẤY MaTKKH VỪA TẠO
-            $maTKKH = mysqli_insert_id($connect); 
-        }
 
         // === LƯU SESSION MỚI ===
         $_SESSION['MaKH'] = $maKH;
