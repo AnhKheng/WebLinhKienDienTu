@@ -107,6 +107,10 @@ if ($action == 'giam' && $maSP) {
     <tr>
         <td colspan="4" style="text-align:right;">Tổng cộng:</td>
         <td><strong><?= number_format($tongtien) ?> $</strong></td>
-        <td> <input type="submit" value="Thanh toán"> </td>
+        <td> <a href="Index.php?do=CheckoutForm" 
+            style="background-color:#007bff; color:white; padding:8px 20px; border-radius:5px; text-decoration:none;">
+            Thanh toán
+            </a> 
+        </td>
     </tr>
 </table>
