@@ -3,71 +3,131 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-require_once "../Config/db_config.php";     // file kết nối CSDL
-require_once "../../Includes/Auth.php";      // class xử lý logic
+require_once "../Config/db_config.php";
+require_once "../../Includes/Auth.php";
 
 $auth = new Auth($connect);
 
-// Nhận action từ GET hoặc POST
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
 switch ($action) {
-    // ==== 1️⃣ ĐĂNG NHẬP ====
+
+    // ==== LOGIN ====
     case 'login':
         $username = trim($_POST['username'] ?? '');
         $password = trim($_POST['password'] ?? '');
 
-
-        if (empty($username) || empty($password)) {
-            echo json_encode(["status" => "error", "message" => "Vui lòng nhập đầy đủ thông tin!"]);
+        if ($username === '' || $password === '') {
+            echo json_encode(["status" => "error", "message" => "Vui lòng nhập đầy đủ thông tin đăng nhập!"]);
             exit;
         }
 
-        $result = $auth->login($username, $password);
-        echo json_encode($result);
+        echo json_encode($auth->login($username, $password));
         break;
 
-
-    // ==== 2️⃣ ĐĂNG XUẤT ====
+    // ==== LOGOUT ====
     case 'logout':
-        $result = $auth->logout();
-        echo json_encode($result);
+        echo json_encode($auth->logout());
         break;
 
-    // ==== 3️⃣ LẤY THÔNG TIN NGƯỜI DÙNG ====
+    // ==== LẤY THÔNG TIN USER HIỆN ĐANG LOGIN ====
     case 'get_user':
-        $result = $auth->getUserInfo();
-        echo json_encode($result);
+        echo json_encode($auth->getUserInfo());
         break;
 
-    // ==== 4️⃣ TẠO TÀI KHOẢN MỚI ====
+    // ==== TẠO TÀI KHOẢN ====
     case 'register':
         $data = json_decode(file_get_contents("php://input"), true);
+
         $TenDangNhap = trim($data['username'] ?? '');
         $MatKhau = trim($data['password'] ?? '');
         $MaNV = trim($data['MaNV'] ?? '');
         $VaiTro = trim($data['role'] ?? 'nhanvien');
 
         if ($TenDangNhap === '' || $MatKhau === '' || $MaNV === '') {
-        echo json_encode(["status" => "error", "message" => "Thiếu thông tin tạo tài khoản!"]);
-        exit;
+            echo json_encode(["status" => "error", "message" => "Thiếu thông tin tạo tài khoản!"]);
+            exit;
         }
 
         echo json_encode($auth->register($TenDangNhap, $MatKhau, $MaNV, $VaiTro));
         break;
+
+    // ==== XOÁ TÀI KHOẢN ====
     case 'delete_account':
         $data = json_decode(file_get_contents("php://input"), true);
-        $MaNV = $data["MaNV"] ?? null;
+        $MaNV = $data['MaNV'] ?? null;
 
-        if ($MaNV === '') {
+        if (empty($MaNV)) {
             echo json_encode(["status" => "error", "message" => "Thiếu MaNV để xóa tài khoản!"]);
             exit;
         }
 
         echo json_encode($auth->deleteAccount($MaNV));
         break;
-    // ==== ACTION KHÔNG HỢP LỆ ====
+
+    // ==== LẤY DANH SÁCH ====
+    case 'get_all':
+        echo json_encode($auth->getAll());
+        break;
+
+    // ==== LẤY 1 TÀI KHOẢN ====
+    case 'get_one':
+        $MaNV = $_GET['MaNV'] ?? ($_POST['MaNV'] ?? '');
+        if ($MaNV === '') {
+            echo json_encode(["status" => "error", "message" => "Thiếu MaNV để lấy thông tin!"]);
+            exit;
+        }
+        echo json_encode($auth->getAccountById($MaNV));
+        break;
+
+    // ==== CẬP NHẬT TÀI KHOẢN (KHÔNG ĐỔI MẬT KHẨU) ====
+    case 'update_account':
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $MaNV = $data['MaNV'] ?? '';
+        $TenDangNhap = $data['TenDangNhap'] ?? '';
+        $VaiTro = $data['VaiTro'] ?? '';
+        $MaCH = $data['MaCH'] ?? '';
+        if (!$MaNV || !$TenDangNhap || !$VaiTro) {
+            echo json_encode(["status" => "error", "message" => "Thiếu thông tin cập nhật tài khoản!"]);
+            exit;
+        }
+
+        echo json_encode($auth->updateAccount($MaNV, $TenDangNhap, $VaiTro, $MaCH));
+        break;
+
+    // ==== ĐỔI MẬT KHẨU ====
+    case 'change_password':
+        $data = json_decode(file_get_contents("php://input"), true);
+        $MaNV = $data['MaNV'] ?? '';
+        $oldPassword = $data['oldPassword'] ?? '';
+        $newPassword = $data['newPassword'] ?? '';
+
+        if (!$MaNV || !$oldPassword || !$newPassword) {
+            echo json_encode(["status" => "error", "message" => "Thiếu thông tin đổi mật khẩu!"]);
+            exit;
+        }
+
+        echo json_encode($auth->changePassword($MaNV, $oldPassword, $newPassword));
+        break;
+
+    // ==== RESET MẬT KHẨU (MẶC ĐỊNH: 123456) ====
+    case 'reset_password':
+        $data = json_decode(file_get_contents("php://input"), true);
+        $MaNV = $data['MaNV'] ?? '';
+
+        if ($MaNV === '') {
+            echo json_encode(["status" => "error", "message" => "Thiếu MaNV để reset mật khẩu!"]);
+            exit;
+        }
+
+        echo json_encode($auth->resetPassword($MaNV));
+        break;
+
+    // ==== ACTION SAI ====
     default:
         echo json_encode(["status" => "error", "message" => "Action không hợp lệ hoặc chưa được gửi!"]);
         break;

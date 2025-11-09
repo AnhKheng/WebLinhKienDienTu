@@ -389,7 +389,7 @@ INSERT INTO `tbl_nhanvien` (`MaNV`, `TenNV`, `GioiTinh`, `NgaySinh`, `SoDienThoa
 
 -- Bảng: tbl_taikhoan
 INSERT INTO `tbl_taikhoan` (`TenDangNhap`, `MatKhau`, `MaNV`, `VaiTro`) VALUES
-('admin', '123456', 'NV01', 'QuanTri'),
+('admin', '123456', 'NV01', 'QuanLy'),
 ('nv_binh', '123456', 'NV02', 'NhanVien'),
 ('nv_hoa', '123456', 'NV03', 'NhanVien');
 

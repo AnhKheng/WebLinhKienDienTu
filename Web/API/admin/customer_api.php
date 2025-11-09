@@ -38,9 +38,10 @@ switch ($action) {
         break;
 
     case 'add':
-        $TenKH = trim($_POST['TenKH'] ?? '');
-        $SoDienThoai = trim($_POST['SoDienThoai'] ?? '');
-        $DiaChi = trim($_POST['DiaChi'] ?? '');
+        $input = json_decode(file_get_contents('php://input'), true);
+        $TenKH = trim($input['TenKH'] ?? '');
+        $SoDienThoai = trim($input['SoDienThoai'] ?? '');
+        $DiaChi = trim($input['DiaChi'] ?? '');
 
         if (empty($TenKH)) {
             echo json_encode(["status" => "error", "message" => "Vui lòng nhập tên khách hàng!"], JSON_UNESCAPED_UNICODE);
@@ -50,7 +51,44 @@ switch ($action) {
         $result = $customers->add($TenKH, $SoDienThoai, $DiaChi);
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
         break;
+    case 'update': // Cập nhật khách hàng
+        $input = json_decode(file_get_contents('php://input'), true);
+        $MaKH = trim($input['MaKH'] ?? '');
+        $TenKH = trim($input['TenKH'] ?? '');
+        $SoDienThoai = trim($input['SoDienThoai'] ?? '');
+        $DiaChi = trim($input['DiaChi'] ?? '');
+        if (empty($MaKH) || empty($TenKH)) {
+            echo json_encode(["status" => "error", "message" => "Thiếu mã hoặc tên khách hàng!"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $result = $customers->update($MaKH, $TenKH, $SoDienThoai, $DiaChi);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        break;
 
+    case 'delete': // Xóa khách hàng
+        $input = json_decode(file_get_contents('php://input'), true);
+        $MaKH = trim($input['MaKH'] ?? $_GET['MaKH'] ?? '');
+        if (empty($MaKH)) {
+            echo json_encode(["status" => "error", "message" => "Thiếu mã khách hàng!"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $result = $customers->delete($MaKH);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        break;
+    case 'getAllPaged':
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+
+        $result = $customers->getAllPaged($page, $limit);
+        echo json_encode([
+            "status" => "success",
+            "data" => $result['data'],
+            "page" => $result['page'],
+            "limit" => $result['limit'],
+            "total" => $result['total'],
+            "totalPages" => $result['totalPages']
+        ], JSON_UNESCAPED_UNICODE);
+        break;
     default:
         echo json_encode(["status" => "error", "message" => "Action không hợp lệ hoặc chưa gửi!"], JSON_UNESCAPED_UNICODE);
         break;
