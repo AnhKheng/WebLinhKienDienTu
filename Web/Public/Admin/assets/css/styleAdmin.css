@@ -33,7 +33,7 @@ body, html {
   color: #fff;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   padding: 15px auto;
   overflow-y: auto;
   overflow-x: hidden;
@@ -47,6 +47,7 @@ body, html {
   height: 70px;
   border-radius: 50%;
   overflow: hidden;
+  flex-shrink: 0;
   background: #ffffff;
   border: 3px solid #ffffff; 
   margin: 10px auto 20px auto;
@@ -209,6 +210,7 @@ body, html {
   overflow: hidden;
   background: transparent;
   border: none;
+  flex-shrink: 0;
 }
 .btn-user img {
   width: 100%;
@@ -270,4 +272,25 @@ body, html {
   line-height: 1.6;
   border-top: 2px solid #3b3b4f;
   text-align: center;
+}
+.pw-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pw-wrapper input {
+  flex: 1;
+  padding-right: 30px; /* để icon không che text */
+}
+
+.pw-wrapper .togglePw {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+}
+.pw-wrapper .togglePw:hover {
+  color: #000;
 }

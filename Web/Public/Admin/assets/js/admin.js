@@ -23,8 +23,20 @@ async function checkLogin() {
     document.getElementById("userRole").textContent = role;
 
     // Ẩn menu admin nếu không phải quản trị
-    if (role !== "QuanTri") {
+    if (role !== "QuanLy") {
       document.querySelectorAll(".admin-only").forEach(el => el.style.display = "none");
+    }
+    const btnInfo = document.getElementById("infoBtn");
+    const btnChange = document.getElementById("changePwBtn");
+    if (btnInfo) {
+      btnInfo.addEventListener("click", () => {
+        window.location.href = `index.php?module=Auth&page=Info&id=${id}`;
+      });
+    }
+    if (btnChange) {
+      btnChange.addEventListener("click", () => {
+        window.location.href = `index.php?module=Auth&page=ChangePw&id=${id}`;
+      });
     }
 
   } catch (err) {
