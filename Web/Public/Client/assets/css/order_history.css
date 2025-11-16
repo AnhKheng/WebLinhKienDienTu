@@ -1,0 +1,61 @@
+/* CSS cho trang Lịch Sử Đơn Hàng */
+
+.order-summary-header {
+    background-color: #f8f8f8;
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.order-summary-header:hover {
+    background-color: #e9e9e9;
+}
+.order-summary-header .order-info {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.order-summary-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #d10024; /* Màu đỏ chủ đạo */
+}
+.order-summary-header .order-total {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+.order-summary-header .order-status {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+}
+/* Đổi màu trạng thái */
+.order-status.processed {
+    background-color: #4CAF50;
+}
+.order-status.pending {
+    background-color: #ffc107;
+    color: #333;
+}
+.order-summary-header .toggle-icon {
+    font-weight: bold;
+    font-size: 20px;
+    color: #555;
+}
+/* Mặc định ẩn chi tiết đơn hàng */
+.order-details-content {
+    display: none; 
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    background-color: #fff;
+}

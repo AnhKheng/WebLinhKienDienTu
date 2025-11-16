@@ -92,6 +92,9 @@ if (isset($_GET['id'])) {
         Thông tin tài khoản
       </div>
       <div class="submenu-item">
+        <a href="Index.php?do=OrderHistory">Hàng đã thanh toán</a>
+      </div>
+      <div class="submenu-item">
         <a href="WebsiteShop/Logout_action.php">Đăng xuất</a>
       </div>
     </div>
@@ -164,9 +167,18 @@ if (isset($_GET['id'])) {
 
     </div>
     <div class="main-content">
-      <?php      
-        $do = isset($_GET['do']) ? $_GET['do'] : "Home";      
-        include "WebsiteShop/" . $do . ".php";
+      <?php       
+        $do = isset($_GET['do']) ? $_GET['do'] : "Home"; 
+        
+        // Logic router đã sửa lại theo ý bạn
+        if ($do == 'OrderSummary') {
+            include "WebsiteShop/OrderSummary.php";
+        } else if ($do == 'OrderHistory') {
+            include "WebsiteShop/OrderHistory.php";
+        } else {
+            // Giữ nguyên logic cũ của bạn
+            include "WebsiteShop/" . $do . ".php";
+        }
       ?>
     </div>
 </div>
