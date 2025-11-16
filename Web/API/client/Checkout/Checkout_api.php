@@ -73,18 +73,18 @@ class MuaHangBUS {
     {
         // 1. Lấy maGH
         $maGH = $this->layGioHang($maTKKH);
-        if (!$maGH) return "Không tìm thấy giỏ hàng.";
+        if (!$maGH) return ['success' => false, 'message' => 'Không tìm thấy giỏ hàng.'];
 
         // 2. Lấy chi tiết
         $chiTiet = $this->layChiTiet($maGH);
-        if (!$chiTiet || $chiTiet->num_rows == 0) return "Giỏ hàng trống.";
+        if (!$chiTiet || $chiTiet->num_rows == 0) return ['success' => false, 'message' => 'Giỏ hàng trống.'];
 
         // 3. Tính tổng tiền
         $tongTien = $this->tinhTongTien($maGH);
 
         // 4. Lấy MaKH thực (mapping từ MaTKKH -> MaKH)
         $maKH = $this->dal->getMaKHByMaTKKH($maTKKH);
-        if (!$maKH) return "Không tìm thấy thông tin khách hàng.";
+        if (!$maKH) return ['success' => false, 'message' => 'Không tìm thấy thông tin khách hàng.'];
 
         // 5. Sinh mã hóa đơn **CHỈ 1 LẦN**
         $maHD = $this->taoMaHoaDonMoi(); // gọi đến DAL->getNextMaHD()
@@ -92,7 +92,8 @@ class MuaHangBUS {
         // 6. Thêm hóa đơn (nếu thêm thất bại, trả lỗi)
         $themHD = $this->dal->themHoaDon($maHD, $maKH, $maCH, $tongTien);
         if (!$themHD) {
-            return "Lỗi khi tạo hóa đơn! " . $this->dal->getLastErrorMessage(); // tùy bạn implement
+            $errorMsg = $this->dal->getLastErrorMessage() ?? 'Lỗi khi tạo hóa đơn!';
+            return ['success' => false, 'message' => $errorMsg];
         }
 
         // 7. Thêm chi tiết và trừ kho
@@ -106,7 +107,8 @@ class MuaHangBUS {
         // 8. Cập nhật giỏ hàng
         $this->capNhatGioHang($maGH);
 
-        return "Thanh toán thành công! Mã hóa đơn: $maHD";
+        // 9. TRẢ VỀ MẢNG THÀNH CÔNG
+        return ['success' => true, 'MaHD' => $maHD];
     }
 
 }

@@ -22,11 +22,25 @@ if (isset($_POST['btnXacNhan'])) {
         exit;
     }
 
-    // Gọi xử lý mua hàng từ BUS (truyền thêm mã cửa hàng được chọn)
+    // Gọi xử lý mua hàng từ BUS
     $ketQua = $muaHangBUS->xuLyMuaHang($maTKKH, $maCH);
 
-    echo "<script>alert('$ketQua'); window.location.href='Index.php?do=CartForm';</script>";
+    // --- THAY ĐỔI LOGIC XỬ LÝ KẾT QUẢ ---
+    if (is_array($ketQua) && $ketQua['success'] == true) {
+        // Thành công! Lấy MaHD
+        $maHD = $ketQua['MaHD'];
+        // Chuyển hướng đến trang tóm tắt đơn hàng (Yêu cầu 1)
+        echo "<script>
+                alert('Thanh toán thành công! Mã hóa đơn của bạn là: $maHD');
+                window.location.href='Index.php?do=OrderSummary&MaHD=$maHD';
+              </script>";
+    } else {
+        // Thất bại, hiển thị lỗi
+        $errorMessage = is_array($ketQua) ? $ketQua['message'] : 'Đã xảy ra lỗi không xác định.';
+        echo "<script>alert('Lỗi thanh toán: $errorMessage'); window.history.back();</script>";
+    }
     exit;
+    // --- KẾT THÚC THAY ĐỔI ---
 }
 ?>
 
