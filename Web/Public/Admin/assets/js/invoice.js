@@ -54,10 +54,11 @@ function renderTable(hoadons) {
       <tr data-mahd="${hd.MaHD}">
         <td>${hd.MaHD}</td>
         <td>${date}</td>
-        <td>${hd.MaNV}${hd.TenNV || ""}</td>
-        <td>${hd.MaKH}${hd.TenKH || ""}</td>
-        <td>${hd.MaCH}${hd.TenCH || ""}</td>
+        <td>${hd.MaNV}</td>
+        <td>${hd.MaKH}</td>
+        <td>${hd.MaCH}</td>
         <td>${Number(hd.TongTien).toLocaleString("vi-VN")} ₫</td>
+        <td>${hd.MaNV == null ? "Đang xử lý" : "Đã xử lý"}</td>
         <td>
           <button type="button" class="btn-detail" onclick="viewDetail('${hd.MaHD}')">Chi tiết</button>
           <button type="button" class="btn-edit" onclick="openUpdateModal('${hd.MaHD}')">Cập nhật</button>        

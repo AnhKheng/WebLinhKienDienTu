@@ -72,7 +72,7 @@ class MuaHangDaL {
 
     // ✅ 6. Thêm hóa đơn mới
     public function themHoaDon($maHD, $maKH, $maCH, $tongTien) {
-        $ngayBan = date('Y-m-d H:i:s');
+        $ngayBan = date('Y-m-d H:i');
         $sql = "INSERT INTO tbl_hoadonban (MaHD, NgayBan, MaKH, MaCH, TongTien)
                 VALUES ('$maHD', '$ngayBan', '$maKH', '$maCH', $tongTien)";
         $result = $this->connect->query($sql);
