@@ -105,12 +105,35 @@ if ($action == 'giam' && $maSP) {
     ?>
 
     <tr>
-        <td colspan="4" style="text-align:right;">Tổng cộng:</td>
-        <td><strong><?= number_format($tongtien) ?> $</strong></td>
-        <td> <a href="Index.php?do=CheckoutForm" 
-            style="background-color:#007bff; color:white; padding:8px 20px; border-radius:5px; text-decoration:none;">
-            Thanh toán
-            </a> 
+        <td colspan="4" style="text-align:right; vertical-align: middle; padding-right: 10px;">
+            <strong>Tổng cộng:</strong>
+        </td>
+        <td style="vertical-align: middle;">
+            <strong><?= number_format($tongtien) ?> $</strong>
+        </td>
+        <td style="padding: 10px;"> 
+            <input type="text" id="diaChiNhanHang" placeholder="Nhập địa chỉ nhận hàng..." 
+                   style="width: 90%; padding: 8px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            
+            <button onclick="kiemTraVaDatHang()" 
+                    style="background-color:#007bff; color:white; padding:8px 20px; border:none; border-radius:5px; cursor:pointer; width: 90%;">
+                Đặt hàng
+            </button>
         </td>
     </tr>
 </table>
+
+<script>
+    function kiemTraVaDatHang() {
+        var diaChi = document.getElementById('diaChiNhanHang').value.trim();
+        
+        if (diaChi === "") {
+            alert("Vui lòng nhập địa chỉ nhận hàng trước khi đặt hàng!");
+            document.getElementById('diaChiNhanHang').focus();
+            return;
+        }
+        
+        // Chuyển hướng sang trang Checkout kèm theo địa chỉ trên URL
+        window.location.href = "Index.php?do=CheckoutForm&address=" + encodeURIComponent(diaChi);
+    }
+</script>

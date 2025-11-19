@@ -3,9 +3,11 @@ include_once '../../Includes/Checkout.php'; // Giả sử file này đã include
 
 class MuaHangBUS {
     private $dal;
+    private $conn; // Biến lưu kết nối database
 
     public function __construct($connect) {
         $this->dal = new MuaHangDaL($connect);
+        $this->conn = $connect; // Lưu kết nối vào biến của class này để dùng
     }
 
     // ✅ 1. Lấy mã giỏ hàng đang active của tài khoản
@@ -48,9 +50,15 @@ class MuaHangBUS {
         return $this->dal->getNextMaHD();
     }
 
-    // ✅ 6. Thêm hóa đơn mới
-    public function themHoaDon($maKH, $maCH, $tongTien) {
-        return $this->dal->themHoaDon($maHD, $maKH, $maCH, $tongTien) ? $maHD : false;
+    // ✅ 6. Thêm hóa đơn mới (Hàm này được viết đè để hỗ trợ Địa chỉ)
+    public function themHoaDonMoi($maHD, $maKH, $maCH, $tongTien, $diaChi) {
+        $ngayBan = date('Y-m-d H:i:s');
+        
+        // Sử dụng $this->conn đã lưu thay vì truy cập vào DAL
+        $sql = "INSERT INTO tbl_hoadonban (MaHD, NgayBan, MaKH, DiaChi, MaCH, TongTien) 
+                VALUES ('$maHD', '$ngayBan', '$maKH', '$diaChi', '$maCH', '$tongTien')";
+        
+        return mysqli_query($this->conn, $sql);
     }
 
     // ✅ 7. Thêm chi tiết hóa đơn
@@ -68,8 +76,8 @@ class MuaHangBUS {
         return $this->dal->capNhatTrangThaiGioHang($maGH);
     }
 
-    // ✅ 10. Quy trình mua hàng hoàn chỉnh
-    public function xuLyMuaHang($maTKKH, $maCH)
+    // ✅ 10. Quy trình mua hàng hoàn chỉnh (Đã cập nhật nhận Địa chỉ)
+    public function xuLyMuaHang($maTKKH, $maCH, $diaChi)
     {
         // 1. Lấy maGH
         $maGH = $this->layGioHang($maTKKH);
@@ -87,12 +95,14 @@ class MuaHangBUS {
         if (!$maKH) return ['success' => false, 'message' => 'Không tìm thấy thông tin khách hàng.'];
 
         // 5. Sinh mã hóa đơn **CHỈ 1 LẦN**
-        $maHD = $this->taoMaHoaDonMoi(); // gọi đến DAL->getNextMaHD()
+        $maHD = $this->taoMaHoaDonMoi(); 
 
-        // 6. Thêm hóa đơn (nếu thêm thất bại, trả lỗi)
-        $themHD = $this->dal->themHoaDon($maHD, $maKH, $maCH, $tongTien);
+        // 6. Thêm hóa đơn (GỌI HÀM MỚI CÓ ĐỊA CHỈ)
+        $themHD = $this->themHoaDonMoi($maHD, $maKH, $maCH, $tongTien, $diaChi);
+        
         if (!$themHD) {
-            $errorMsg = $this->dal->getLastErrorMessage() ?? 'Lỗi khi tạo hóa đơn!';
+            // Lấy lỗi từ connection
+            $errorMsg = mysqli_error($this->conn) ?? 'Lỗi khi tạo hóa đơn!';
             return ['success' => false, 'message' => $errorMsg];
         }
 
