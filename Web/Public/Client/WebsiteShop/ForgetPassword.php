@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -8,13 +7,10 @@
 </head>
 <body>
 <div class="account-container">
-    <div class="logo">
-        <a href="#"><img src="assets/img/logo.png" alt="Logo" /></a>
-    </div>
 
-    <h2 class="title">QUÊN MẬT KHẨU</h2>
 
     <form action="../../API/client/User/send_otp.php" method="post" class="password-form">
+        <h2 class="title">QUÊN MẬT KHẨU</h2>
         <div class="form-group">
             <label for="user">Tên tài khoản hoặc Email</label>
             <input type="text" name="user" placeholder="Nhập tên đăng nhập hoặc email" required>

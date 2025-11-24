@@ -7,7 +7,6 @@
   height: 100vh;
   background: linear-gradient(135deg, #b0001f, #300012);
   padding: 30px 40px; /* thu gọn không gian bên trong */
-  max-width: 420px;  /* tăng chiều rộng */
   width: 100%;
 }
 
@@ -64,7 +63,7 @@ label {
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 400px;
+  max-width: 300px;
   text-align: center;
 }
 
@@ -109,13 +108,13 @@ label {
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 380px;
+  max-width: 300px;
   text-align: center;
 }
 
 .register-form input {
-  width: 100%;
-  padding: 12px;
+  width: 80%;
+  padding: 9px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 16px;
@@ -145,11 +144,6 @@ label {
   background: #b0001f;
   transform: scale(1.02);
 }
-
-
-
-
-
 /* Change Password Form*/
 .password-form {
   background: #fff;
@@ -157,7 +151,7 @@ label {
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 380px;
+  max-width: 300px;
   text-align: center;
 }
 
@@ -193,5 +187,3 @@ label {
   background: #b0001f;
   transform: scale(1.02);
 }
-
-
